@@ -5,10 +5,7 @@
 </head>
 
 <body>
-    <title>It's true -- I don't know what I'm doing.</title>
-    <div class="workarea"></div>
-    <div class="workarea"></div>
-    <div class="workarea"></div>
+    <app class="top-app"></app>
     <script>
         requirejs.config({
             // module name mapped to CDN url
@@ -17,15 +14,10 @@
                 'react-dom': 'https://unpkg.com/react-dom@15.3.2/dist/react-dom'
             },
             deps: ['built/index'],
-            callback: () => {
-                let workareas = document.getElementsByClassName("workarea");
-                require(["app", "react-dom"], (App, reactDom) => {
-                    let app = new App();
-                    reactDom.render(app.render(), workareas[0]);
-                });
-            }
+            callback: () => require(["index"], go => console.log("app", go()))
         });
     </script>
+    <app class="bottom-app"></app>
 </body>
 
 </html>

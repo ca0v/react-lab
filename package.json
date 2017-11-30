@@ -1,14 +1,26 @@
 {
-  "name": "tsx-lab",
+  "name": "react-lab",
   "version": "1.0.0",
-  "description": "",
+  "description": "Typescript + TSX + React + RequireJS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compress": "pushd built && uglifyjs index.js --source-map=index.js.map --in-source-map=index.js.map --output=index.js --compress --mangle && popd"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
+  "license": "MIT",
+  "dev-dependencies": {
     "requirejs": "^2.3.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ca0v/react-lab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ca0v/react-lab/issues"
+  },
+  "homepage": "https://github.com/ca0v/react-lab#readme",
+  "devDependencies": {
+    "uglify": "^0.1.5"
   }
 }

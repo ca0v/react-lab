@@ -1,25 +1,18 @@
-import { Component as MyFooComponent } from './components/myfoo';
-import * as React from 'react'
+import { App } from 'app';
+import * as React from 'react';
+import * as reactDom from 'react-dom';
 
-export class Templates {
+function run() {
 
-    private _value: string;
-    public get value(): string {
-        return this._value;
-    }
-    public set value(v: string) {
-        this._value = v;
-    }
+    let nodes = document.getElementsByTagName("app");
+    let apps = [];
 
-    t1(title: string) {
-        return <h1>{title}</h1>;
+    for (let i = 0; i < nodes.length; i++) {
+        let title = `App ${i+1}`;
+        apps.push(reactDom.render(<App title={title}/>, nodes[i]));
     }
 
-    t2(list: string[]) {
-        return <ul>{list.map(v => <li title={v} key={v}>{v}</li>)}</ul>;
-    }
-
-    t3() {
-        return <div className="container"><MyFooComponent /></div>;
-    }
+    return apps;
 }
+
+export = run;

@@ -6,6 +6,14 @@ Typescript + TSX + React + RequireJS
 * components - tag definitions
 * built - static assets
 
+## Building
+* git clone https://github.com/ca0v/react-lab.git
+* cd react-lab
+* npm install
 
 ## All Examples
 * [master](https://rawgit.com/ca0v/react-lab/master/rawgit.html)
+
+## Known Issues
+The current react typings have errors so tsc reports errors.  If you fix them don't run npm install again or your fixes will get wiped out.
+

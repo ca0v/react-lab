@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compress": "pushd built && uglifyjs index.js --source-map=index.js.map --in-source-map=index.js.map --output=index.js --compress --mangle && popd"
+    "compress": "pushd built && uglifyjs index.js --source-map=index.js.map --in-source-map=index.js.map --output=index.js --compress --mangle && popd",
+    "compile": "tsc || echo",
+    "build": "npm run compile && npm run compress",
+    "install": "typings install && npm run build"
   },
   "author": "",
   "license": "MIT",
-  "dev-dependencies": {
-    "requirejs": "^2.3.5"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ca0v/react-lab.git"
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ca0v/react-lab#readme",
   "devDependencies": {
+    "requirejs": "^2.3.5",
     "uglify": "^0.1.5"
   }
 }

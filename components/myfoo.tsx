@@ -36,7 +36,7 @@ export class Component extends React.Component<ComponentProps, ComponentState> {
 
     componentWillMount() {
         console.log("componentWillMount", this);
-        this.setState({ tickHandler: setInterval(() => this.tick(), 1000) });
+        this.setState({ tickHandler: window.setInterval(() => this.tick(), 1000) });
     }
 
     componentWillUnmount() {

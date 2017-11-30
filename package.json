@@ -22,8 +22,9 @@
   },
   "homepage": "https://github.com/ca0v/react-lab#readme",
   "devDependencies": {
+    "@types/react": "^16.0.25",
+    "@types/react-dom": "^16.0.3",
     "typescript": "^2.7.0-dev.20171129",
-    "typings": "^2.1.1",
     "uglify": "^0.1.5"
   }
 }

@@ -2,54 +2,35 @@ import * as React from 'react';
 import * as reactDom from 'react-dom';
 import { Component as MyFoo } from './components/myfoo';
 
-function dump(o: any) {
-    let keys = Object.keys(o);
-    return keys.map(k => <li key={k}>{k}: {o[k]}</li>);
+let dump = (o: any) => Object.keys(o).map(k => <li key={k} title={k}>{k}: {o[k]}</li>);
+
+export interface AppProps {
+    title?: string;
+    value?: number;
 }
 
-class Templates {
-
-    private _value: string;
-    public get value(): string {
-        return this._value;
-    }
-    public set value(v: string) {
-        this._value = v;
-    }
-
-    t1(title: string) {
-        return <h1>{title}</h1>;
-    }
-
-    t2(list: string[]) {
-        return <ul>{list.map(v => <li title={v} key={v}>{v}</li>)}</ul>;
-    }
-
-    t3(title: string, value: number) {
-        return <div className="container"><MyFoo title={title} value={value}/></div>;
-    }
+export interface AppState {
+    value: number;
+    title: string;
 }
 
-let T = new Templates();
+export class App extends React.Component<AppProps, AppState> {
 
-export class App extends React.Component<{ title: string }, { value: number, subtitle?: string }> {
-
-    constructor(props: { title: string }) {
+    constructor(props: AppProps) {
         super(props);
-        this.state = { value: 123 };
+        this.state = {
+            value: props.value || Math.ceil(Math.random() * 100),
+            title: props.title || "untitled"
+        };
     }
 
     render() {
         return <div className="application">
-            {T.t1(this.props.title)}
-            <label><MyFoo title={this.props.title} value={this.state.value}/></label>
-            {T.t2("My List Of Items".split(" "))}
-            {T.t3(this.state.subtitle || this.props.title, this.state.value)}
-            <ul>
-                {dump(this.props)}
-                {dump(this.state)}
-            </ul>
-            <input type="text" value={this.state.subtitle || this.props.title} onChange={event => {this.setState({subtitle: event.target.value})}}/>
+            <h3>{this.state.title}</h3>
+            <label><MyFoo title={this.state.title || this.props.title} value={this.state.value} /></label>
+            <ol>{dump(this.props)}</ol>
+            <ol>{dump(this.state)}</ol>
+            <div>Change Title: <input type="text" value={this.state.title} onChange={event => { this.setState({ title: event.target.value }) }} /></div>
             <button onClick={() => this.increment()}>Increment</button>
             <button onClick={() => this.destroy()}>Destroy</button>
         </div>
@@ -61,7 +42,7 @@ export class App extends React.Component<{ title: string }, { value: number, sub
     }
 
     increment() {
-        this.setState((prev: {value: number}, props) => ({
+        this.setState((prev: { value: number }, props) => ({
             value: prev.value + 1
         }));
     }

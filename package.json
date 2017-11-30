@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compress": "pushd built && uglifyjs index.js --source-map=index.js.map --in-source-map=index.js.map --output=index.js --compress --mangle && popd",
     "compile": "tsc || echo",
+    "watch": "tsc -w",
     "build": "npm run compile && npm run compress",
     "install": "typings install && npm run build"
   },
@@ -21,7 +22,8 @@
   },
   "homepage": "https://github.com/ca0v/react-lab#readme",
   "devDependencies": {
-    "requirejs": "^2.3.5",
+    "typescript": "^2.7.0-dev.20171129",
+    "typings": "^2.1.1",
     "uglify": "^0.1.5"
   }
 }

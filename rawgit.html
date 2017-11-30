@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
 </head>
 
 <body>
@@ -10,8 +10,8 @@
         requirejs.config({
             // module name mapped to CDN url
             paths: {
-                'react': 'https://unpkg.com/react@15.3.2/dist/react',
-                'react-dom': 'https://unpkg.com/react-dom@15.3.2/dist/react-dom'
+                'react': 'https://unpkg.com/react@16.2.0/umd/react.production.min',
+                'react-dom': 'https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min'
             },
             deps: ['built/index'],
             callback: () => require(["index"], go => console.log("app", go()))

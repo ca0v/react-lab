@@ -1,0 +1,9 @@
+.maplet {
+    display: inline-block;
+}
+
+.map {
+    width: 240px;
+    height:240px;
+    margin: 4px;
+}

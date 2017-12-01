@@ -12,6 +12,7 @@ Typescript + TSX + React + RequireJS
 * npm install
 
 ## All Examples
+* [webpack-lab](https://rawgit.com/ca0v/react-lab/webpack-lab/build/index.html)
 * [master](https://rawgit.com/ca0v/react-lab/master/rawgit.html)
 
 ## Known Issues

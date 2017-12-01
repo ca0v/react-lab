@@ -1,31 +1,28 @@
 {
-  "name": "react-lab",
-  "version": "1.0.0",
-  "description": "Typescript + TSX + React + RequireJS",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "compress": "pushd built && uglifyjs index.js --source-map=index.js.map --in-source-map=index.js.map --output=index.js --compress --mangle && popd",
-    "compile": "tsc || echo",
-    "watch": "tsc -w",
-    "build": "npm run compile && npm run compress",
-    "install": "typings install && npm run build"
+  "name": "create-react-app-with-typescript",
+  "homepage" : "https://rawgit.com/ca0v/react-lab/webpack-lab/build/",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "material-ui": "next",
+    "ol": "^4.5.0",
+    "openlayers": "^4.5.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-scripts-ts": "latest"
   },
-  "author": "",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ca0v/react-lab.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ca0v/react-lab/issues"
-  },
-  "homepage": "https://github.com/ca0v/react-lab#readme",
   "devDependencies": {
+    "@types/jest": "latest",
+    "@types/node": "latest",
     "@types/openlayers": "^4.3.11",
-    "@types/react": "^16.0.25",
-    "@types/react-dom": "^16.0.3",
-    "typescript": "^2.7.0-dev.20171129",
-    "uglify": "^0.1.5"
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/recompose": "latest"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
   }
 }

@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { dump, input } from '../common/common';
 
 export interface ComponentState {
     tickHandler: number;
     ticks: number;
+    about: string;
 }
 
 export interface ComponentProps {
@@ -11,22 +13,24 @@ export interface ComponentProps {
 }
 
 
-function dump(o: any) {
-    let keys = Object.keys(o);
-    return keys.map(k => <li key={k}>{k}: {o[k]}</li>);
-}
 
-export class Component extends React.Component<ComponentProps, ComponentState> {
+export class Component extends React.PureComponent<ComponentProps, ComponentState> {
 
     constructor(props: ComponentProps) {
         super(props);
     }
-    
+
+    input() {
+        let result: JSX.Element = input(this);
+        return result;
+    }
+
     render() {
-        return <div className={(this.props.value || 0) % 2 === 0 ? "even" : "odd"}>
-            <h4>{this.props.title}</h4>
-            <ol>{dump(this.props)}</ol>
-            <ol>{dump(this.state)}</ol>
+        return <div className='component'>
+            <h5>{this.props.title}</h5>
+            <label>props: <ol>{dump(this.props)}</ol></label>
+            <label>state: <ol>{dump(this.state)}</ol></label>
+            <div>{this.input()}</div>
         </div>;
     }
 
@@ -35,12 +39,13 @@ export class Component extends React.Component<ComponentProps, ComponentState> {
     }
 
     componentWillMount() {
-        console.log("componentWillMount", this);
-        this.setState({ tickHandler: window.setInterval(() => this.tick(), 1000) });
+        this.setState((prev, props) => ({
+            tickHandler: window.setInterval(() => this.tick(), 1000),
+            about: (prev && prev.about) || 'About'
+        }));
     }
 
     componentWillUnmount() {
-        console.log("componentWillUnmount", this);
         clearInterval(this.state.tickHandler);
     }
 

@@ -1,7 +1,51 @@
-.even {
-    background: silver;
+div.panel {
+    color: silver;
+    background-color: rgb(92, 93, 177);
+    padding: 24px;
 }
 
-.odd {
-    color:silver;
+div.maplet {
+    padding: 4px;
+    display: inline-block;
+    vertical-align:top;
+}
+
+div.maplet .map {
+    width: 480px;
+    height: 240px;
+}
+
+div.maplet .map.portrait {
+    height: 480px;
+    width: 240px;
+}
+
+div.toolbar {
+    margin: 4px;
+    padding: 4px;
+    min-height: 24px;
+    border: 1px solid silver;
+}
+
+div.toolbar button {
+    margin-right: 4px;
+}
+
+label.input {
+    min-width: 120px;
+    display: inline-block;
+}
+
+.application {
+    background: silver;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.component {
+    margin-left: 20px;
 }

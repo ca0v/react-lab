@@ -8,19 +8,19 @@
 </head>
 
 <body>
-    <app class="top-app"></app>
+    <app/>
     <script>
         requirejs.config({
             // module name mapped to CDN url
             paths: {
                 'react': 'https://unpkg.com/react@16.2.0/umd/react.production.min',
-                'react-dom': 'https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min'
+                'react-dom': 'https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min',
+                'openlayers': 'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.5.0/ol-debug',
             },
             deps: ['built/index'],
             callback: () => require(["index"], go => console.log("app", go()))
         });
     </script>
-    <app class="bottom-app"></app>
 </body>
 
 </html>

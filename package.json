@@ -9,7 +9,8 @@
     "compile": "tsc || echo",
     "watch": "tsc -w",
     "build": "npm run compile && npm run compress",
-    "install": "typings install && npm run build"
+    "install": "npm run build",
+    "dev": "live-server --port=5000 --wait=2000"
   },
   "author": "",
   "license": "MIT",
@@ -25,6 +26,7 @@
     "@types/openlayers": "^4.3.11",
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
+    "live-server": "^1.2.0",
     "typescript": "^2.7.0-dev.20171129",
     "uglify": "^0.1.5"
   }

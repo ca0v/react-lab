@@ -1,18 +1,9 @@
+import {createElement as create} from 'react';
+import { render } from "react-dom";
 import { App } from 'app';
-import * as React from 'react';
-import * as reactDom from 'react-dom';
 
 function run() {
-
-    let nodes = document.getElementsByTagName("app");
-    let apps = [];
-
-    for (let i = 0; i < nodes.length; i++) {
-        let title = `App ${i+1}`;
-        apps.push(reactDom.render(<App title={title}/>, nodes[i]));
-    }
-
-    return apps;
+    render(<App showmap={true} center={[-82.408, 34.789]} zoom={12} />, document.querySelector("app"));
 }
 
 export = run;

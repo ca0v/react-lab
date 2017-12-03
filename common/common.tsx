@@ -1,8 +1,22 @@
-import * as React from 'react';
+import {PureComponent as Component, createElement as create} from 'react';
 
 export function dump(o: any) {
     return Object.keys(o).map(k => <li key={k}>{k}: {o[k]}</li>);
 }
+
+// https://davidwalsh.name/javascript-debounce-function
+export let debounce = (func: () => void, wait = 200) => {
+    let timeout: any;
+    return () => {
+        let later = () => {
+            clearTimeout(timeout);
+            func();
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    }
+}
+
 
 export function input(c: React.PureComponent) {
     let o: any = c.state;

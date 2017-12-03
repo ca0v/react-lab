@@ -2,8 +2,9 @@
 
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="app.css" />
     <style>
-        @import url('app.css');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/ol3/4.5.0/ol.css');
     </style>
 </head>
 
@@ -15,10 +16,12 @@
             paths: {
                 'react': 'https://unpkg.com/react@16.2.0/umd/react.production.min',
                 'react-dom': 'https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min',
-                'openlayers': 'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.5.0/ol-debug',
+                'openlayers': 'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.5.0/ol',
             },
             deps: ['built/index'],
-            callback: () => require(["index"], go => console.log("app", go()))
+            callback: function () {
+                require(["index"], function (go) { go() });
+            }
         });
     </script>
 </body>

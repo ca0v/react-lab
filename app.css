@@ -1,51 +1,42 @@
-div.panel {
-    color: silver;
-    background-color: rgb(92, 93, 177);
-    padding: 24px;
+html, body, .app {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-div.maplet {
+.app {
+    background: rgb(20,20,20);
+    color: rgb(220,220,220);
+    overflow: auto;
     padding: 4px;
-    display: inline-block;
-    vertical-align:top;
 }
 
-div.maplet .map {
-    width: 480px;
+.maplet {
+    display: inline-block;
+    border: 8px solid rgb(97, 112, 106);
+    margin: 4px;
+}
+
+.map {
+    width: 240px;
     height: 240px;
 }
 
-div.maplet .map.portrait {
-    height: 480px;
+.map.portrait {
     width: 240px;
+    height: 360px;    
 }
 
-div.toolbar {
-    margin: 4px;
-    padding: 4px;
-    min-height: 24px;
-    border: 1px solid silver;
+.map.landscape {
+    width: 360px;
+    height: 240px;    
 }
 
-div.toolbar button {
-    margin-right: 4px;
-}
-
-label.input {
-    min-width: 120px;
-    display: inline-block;
-}
-
-.application {
-    background: silver;
-    position: absolute;
-    top: 0;
-    left: 0;
+.map:full-screen
+.map:-webkit-full-screen, 
+.map:-ms-full-screen {
     width: 100%;
-    height: 100%;
-    overflow: auto;
-}
-
-.component {
-    margin-left: 20px;
+    height:100%;
 }

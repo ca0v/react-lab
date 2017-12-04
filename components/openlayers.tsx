@@ -109,7 +109,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         return <div className='maplet'>
             {this.props.title && <label>{this.props.title}</label>}
             <div className={`map ${this.props.orientation || ''}`} ref={v => this.setState({ target: v })}></div>
-            <Toolbar><DrawControls /></Toolbar>
+            <DrawControls />
             {this.props.children}
         </div>;
     }

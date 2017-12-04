@@ -1,6 +1,6 @@
 import { PureComponent as Component, createElement as create } from 'react';
 import { render } from "react-dom";
-import { OpenLayers, GeoJsonLayer } from "./openlayers";
+import { OpenLayers } from "./openlayers";
 import { input } from "../common/common";
 
 export interface ToggleMapState {
@@ -22,12 +22,11 @@ export class ToggleMap extends Component<ToggleMapProps, ToggleMapState> {
         this.state = this.props;
     }
 
-    onMountMap() {
-
-    }
-
-    onMountLayerMap() {
-
+    componentDidUpdate(prevProp: ToggleMapProps, prevState: ToggleMapState) {
+        if (prevState.portrait != this.state.portrait) {
+            // help openlayers detect resize
+            window.dispatchEvent(new Event('resize'));
+        }
     }
 
     render(): any {
@@ -76,12 +75,12 @@ export class ToggleMap extends Component<ToggleMapProps, ToggleMapState> {
                     }} />
                 <OpenLayers
                     orientation={orientation}
-                    controls={{ 
+                    controls={{
                         fullScreen: true,
                         draw: {
                             point: this.state.drawPointTest,
                         },
-                     }}
+                    }}
                     bingImagerySet="Aerial"
                     labels={true}
                     setCenter={setCenter}
@@ -109,12 +108,6 @@ export class ToggleMap extends Component<ToggleMapProps, ToggleMapState> {
                     zoom={this.state.zoom} />
             </div>}
         </div>;
-    }
-
-    toggleMap() {
-        this.setState(prev => ({
-            showmap: !prev.showmap
-        }));
     }
 
 }

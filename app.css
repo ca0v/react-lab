@@ -31,7 +31,7 @@ html, body, .app {
 }
 
 .maplet {
-    display: inline-block;
+    display: inline-grid;
     border: 8px solid rgb(97, 112, 106);
     margin: 4px;
 }

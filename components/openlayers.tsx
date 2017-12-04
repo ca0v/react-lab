@@ -8,6 +8,19 @@ import {
 import { debounce } from "../common/common";
 import * as ol from "openlayers";
 
+function addGeoJsonLayer(map: ol.Map, url: string) {
+    // how to access parent map to add layer...should be a inferred "props" of sorts
+    let vector = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: url,
+            format: new ol.format.GeoJSON()
+        })
+    });
+
+    map.addLayer(vector);
+}
+
+
 export type Orientations = "portrait" | "landscape";
 
 interface OpenLayersProps {
@@ -36,12 +49,21 @@ interface OpenLayersProps {
         rotate?: boolean;
         scaleLine?: boolean;
     };
-    geoJsonUrl?: string;
+    layers?: {
+        geoJson?: string[]
+    };
 }
 
 interface OpenLayersState {
     map?: ol.Map;
     target: Element | null;
+    activeDrawingTool?: ol.geom.GeometryType;
+}
+
+class Toolbar extends Component<{}, {}> {
+    render() {
+        return <span className="toolbar">{this.props.children}</span>;
+    }
 }
 
 export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
@@ -54,40 +76,42 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
     }
 
     render() {
-        let map = this.state.map;        
-        let DrawControls = () => <div />;
+        let map = this.state.map;
+        let DrawControls = () => <Toolbar />;
         if (this.props.controls) {
             if (this.props.controls.draw) {
                 let draw = this.props.controls.draw;
-                DrawControls = () => <div>
-                    {draw.point && <button onClick={() => map && this.draw(map, "Point")}>Point</button>}
-                    {draw.circle && <button onClick={() => map && this.draw(map, "Circle")}>Circle</button>}
-                    {draw.line && <button onClick={() => map && this.draw(map, "LineString")}>Line</button>}
-                    {draw.polygon && <button onClick={() => map && this.draw(map, "Polygon")}>Polygon</button>}
-                </div>
+                DrawControls = () => <Toolbar>
+                    {draw.point &&
+                        <button
+                            className={`${(this.state.activeDrawingTool === "Point") ? 'active' : 'inactive'}`}
+                            onClick={() => map && this.draw("Point")}>Point</button>
+                    }
+                    {draw.circle &&
+                        <button
+                            className={`${(this.state.activeDrawingTool === "Circle") ? 'active' : 'inactive'}`}
+                            onClick={() => map && this.draw("Circle")}>Circle</button>
+                    }
+                    {draw.line &&
+                        <button
+                            className={`${(this.state.activeDrawingTool === "LineString") ? 'active' : 'inactive'}`}
+                            onClick={() => map && this.draw("LineString")}>Line</button>
+                    }
+                    {draw.polygon &&
+                        <button
+                            className={`${(this.state.activeDrawingTool === "Polygon") ? 'active' : 'inactive'}`}
+                            onClick={() => map && this.draw("Polygon")}>Polygon</button>
+                    }
+                </Toolbar>
             }
         }
 
         return <div className='maplet'>
             {this.props.title && <label>{this.props.title}</label>}
             <div className={`map ${this.props.orientation || ''}`} ref={v => this.setState({ target: v })}></div>
-            <DrawControls />
+            <Toolbar><DrawControls /></Toolbar>
             {this.props.children}
         </div>;
-    }
-
-    /**
-     * BAD PRACTICE - Makes map available to child components
-     */
-    parent() {
-        return this;
-    }
-
-    /**
-     * BAD PRACTICE - Makes map available to child components
-     */
-    public static childContextTypes = {
-        parent: OpenLayers
     }
 
     componentDidMount() {
@@ -130,19 +154,13 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             map: map,
         }));
 
-        // one alternative is to not use child components but properties...
-        this.props.geoJsonUrl && GeoJsonLayer.addGeoJsonLayer(map, this.props.geoJsonUrl);
-
-        // another is to use child components and pass parent to a handler..
-        Children.forEach(this.props.children, c => {
-            c;
-            if (typeof c === "string") return;
-            if (typeof c === "number") return;
-            let child: any = c;
-            if (child.type === GeoJsonLayer) {
-                GeoJsonLayer.addGeoJsonLayer(map, c.props.url);
+        if (this.props.layers) {
+            if (this.props.layers.geoJson) {
+                this.props.layers.geoJson.forEach(url => {
+                    addGeoJsonLayer(map, url);
+                })
             }
-        });
+        }
 
         // I would prefer that the child trigger a cascading event that the parent could receive
         // and process
@@ -198,16 +216,16 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
 
     }
 
-    draw(map: ol.Map, type: ol.geom.GeometryType) {
+    draw(type: ol.geom.GeometryType) {
+        this.setState((prev) => ({
+            activeDrawingTool: prev.activeDrawingTool === type ? null : type
+        }));
+    }
+
+    activateDrawTool(map: ol.Map) {
         map.getInteractions().getArray().forEach(interaction => {
             if (interaction instanceof ol.interaction.Draw) {
-                if (interaction.get("type") === type) {
-                    // toggle
-                    interaction.setActive(!interaction.getActive());
-                } else {
-                    // disable
-                    interaction.setActive(false);
-                }
+                interaction.setActive(interaction.get("type") === this.state.activeDrawingTool);
             }
         });
     }
@@ -240,6 +258,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                 zoom: this.props.zoom,
                 duration: 250
             });
+            this.activateDrawTool(map);
         }
     }
 
@@ -255,49 +274,4 @@ export interface GeoJsonLayerProps {
 }
 
 export interface GeoJsonLayerState {
-}
-
-/**
- * This is not the react way I don't think...but what *is* the react way?
- * Need a shared state between parent/children so they all get access to "map"
- */
-export class GeoJsonLayer extends Component<GeoJsonLayerProps, GeoJsonLayerState> {
-    render() {
-        return <div>Here I am</div>;
-    }
-
-    static addGeoJsonLayer(map: ol.Map, url: string) {
-        // how to access parent map to add layer...should be a inferred "props" of sorts
-        let vector = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                url: url,
-                format: new ol.format.GeoJSON()
-            })
-        });
-
-        map.addLayer(vector);
-    }
-
-    componentDidMount() {
-        // how to access parent map to add layer...should be a inferred "props" of sorts
-        let vector = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                url: this.props.url,
-                format: new ol.format.GeoJSON()
-            })
-        });
-
-        console.log("context:", this.context);
-        let parent: OpenLayers = this.context.parent;
-        if (parent && parent.state.map) {
-            parent.state.map.getLayers().insertAt(0, vector);
-        }
-    }
-
-    /**
-     * BAD PRACTICE - Makes map available to this component
-     */
-    public static contextTypes = {
-        parent: OpenLayers
-    }
 }

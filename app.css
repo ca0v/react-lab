@@ -1,3 +1,20 @@
+.toolbar {
+    min-height: 22px;
+    background-color: rgb(97, 112, 106);
+    padding-top: 2px;
+    padding-left: 2px;
+    display: block;
+}
+
+button.inactive {
+}
+
+button.active {
+    border: 1px solid rgb(200, 255, 200);
+    color: rgb(200, 255, 200);
+    background-color: rgb(30, 30, 30);
+}
+
 html, body, .app {
     margin: 0;
     padding: 0;

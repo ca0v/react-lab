@@ -47,6 +47,9 @@ export class ToggleMap extends Component<ToggleMapProps, ToggleMapState> {
                 <OpenLayers
                     orientation={orientation}
                     controls={{
+                        draw: {
+                            point: this.state.drawPointTest,
+                        },
                         zoom: true,
                         zoomToExtent: true,
                     }}
@@ -54,26 +57,39 @@ export class ToggleMap extends Component<ToggleMapProps, ToggleMapState> {
                     center={this.state.center}
                     zoom={this.state.zoom}
                     osm={false}>
-                    <GeoJsonLayer url="http://openlayers.org/en/master/examples/data/geojson/countries.geojson" />
                 </OpenLayers>
                 <OpenLayers
                     orientation={orientation}
-                    controls={{ mousePosition: true }}
+                    controls={{
+                        mousePosition: true,
+                        draw: {
+                            point: this.state.drawPointTest,
+                        },
+                    }}
                     bingImagerySet="AerialWithLabels"
                     labels={true}
                     setCenter={setCenter}
                     center={this.state.center}
                     zoom={this.state.zoom}
-                    geoJsonUrl="http://openlayers.org/en/master/examples/data/geojson/countries.geojson" />
+                    layers={{
+                        geoJson: ["http://openlayers.org/en/master/examples/data/geojson/countries.geojson"]
+                    }} />
                 <OpenLayers
                     orientation={orientation}
-                    controls={{ fullScreen: true }}
+                    controls={{ 
+                        fullScreen: true,
+                        draw: {
+                            point: this.state.drawPointTest,
+                        },
+                     }}
                     bingImagerySet="Aerial"
                     labels={true}
                     setCenter={setCenter}
                     center={this.state.center}
                     zoom={this.state.zoom}
-                    geoJsonUrl="https://gist.githubusercontent.com/ca0v/78c82dbcb184d52f784a9aa11a452272/raw/5929e9469e02363665017202394aabba906845ae/trip.geojson" />
+                    layers={{
+                        geoJson: ["https://gist.githubusercontent.com/ca0v/78c82dbcb184d52f784a9aa11a452272/raw/5929e9469e02363665017202394aabba906845ae/trip.geojson"]
+                    }} />
                 <OpenLayers
                     orientation={orientation}
                     allowPan={false}
@@ -83,7 +99,7 @@ export class ToggleMap extends Component<ToggleMapProps, ToggleMapState> {
                         draw: {
                             circle: true,
                             line: true,
-                            point: this.state.drawPointTest,
+                            point: true,
                             polygon: true,
                         }
                     }}

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { PureComponent as Component, createElement as create } from 'react';
-import { ToggleMap } from './components/index';
-import { OpenLayers } from './components/openlayers';
+import { Maplet } from './components/maplet';
+import { QuizletComponent } from "./components/quizlet";
 import { input } from "./common/common";
 
 export interface AppState {
-    portrait: boolean;
+    orientation: "portrait" | "landscape";
+    url: string;
 }
 
 export interface AppProps {
@@ -19,14 +20,16 @@ export class App extends Component<AppProps, AppState> {
 
     constructor(props: AppProps) {
         super(props);
-        this.state = { portrait: true }
+        this.state = {
+            orientation: "landscape",
+            url: "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json"
+        };
     }
 
     render(): any {
         return <div className="app">
             <title>React + Openlayers Lab</title>
-            <ToggleMap showmap={this.props.showmap} center={this.props.center} zoom={this.props.zoom} portrait={this.state.portrait} />
-            {input(this)}
+            <QuizletComponent geojsonUrl={this.state.url} featureNameFieldName="name" />
         </div>;
     }
 }

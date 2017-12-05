@@ -18,20 +18,23 @@ function addGeoJsonLayer(map: ol.Map, url: string) {
     });
 
     map.addLayer(vector);
+
+    return vector;
 }
 
 
-export type Orientations = "portrait" | "landscape";
+export type Orientations = "portrait" | "landscape" | "full";
 
 interface OpenLayersProps {
+    className?: string;
     setCenter?: (v: [number, number], z: number) => void;
     title?: string;
-    bingImagerySet?: string;
+    bingImagerySet?: "Aerial"|"AerialWithLabels"|"Birdseye"|"CanvasDark"|"CanvasLight"|"CanvasGray"|"Road"|"RoadOnDemand"|"BirdseyeV2WithLabels";
     osm?: boolean;
-    labels?: boolean;
-    center: [number, number];
-    zoom: number;
+    center?: [number, number];
+    zoom?: number;
     orientation?: Orientations;
+    features?: ol.Collection<ol.Feature>;
     allowPan?: boolean;
     allowZoom?: boolean;
     controls?: {
@@ -52,6 +55,8 @@ interface OpenLayersProps {
     layers?: {
         geoJson?: string[]
     };
+    onFeatureClick?: (args: { layer: ol.layer.Vector, feature: ol.Feature }) => void;
+    onLayerAdd?: (args: { layer: ol.layer.Vector }) => void;
 }
 
 interface OpenLayersState {
@@ -106,9 +111,9 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             }
         }
 
-        return <div className='maplet'>
+        return <div className={`maplet ${this.props.className || ""} ${this.props.orientation || ''}`}>
             {this.props.title && <label>{this.props.title}</label>}
-            <div className={`map ${this.props.orientation || ''}`} ref={v => this.setState({ target: v })}></div>
+            <div className={`map`} ref={v => this.setState({ target: v })}></div>
             <DrawControls />
             {this.props.children}
         </div>;
@@ -117,8 +122,8 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
     componentDidMount() {
         let map = new ol.Map({
             view: new ol.View({
-                center: ol.proj.fromLonLat(this.props.center),
-                zoom: this.props.zoom
+                center: ol.proj.fromLonLat(this.props.center || [0, 0]),
+                zoom: this.props.zoom || 0
             }),
             controls: [],
             interactions: [],
@@ -150,6 +155,15 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             map.addLayer(new ol.layer.Tile({ source: new ol.source.OSM() }));
         }
 
+        if (this.props.features) {
+            let layer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: this.props.features
+                })
+            });
+            map.addLayer(layer);
+        }
+
         this.setState((prev, prop) => ({
             map: map,
         }));
@@ -157,7 +171,23 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         if (this.props.layers) {
             if (this.props.layers.geoJson) {
                 this.props.layers.geoJson.forEach(url => {
-                    addGeoJsonLayer(map, url);
+                    let vector = addGeoJsonLayer(map, url);                    
+                    if (this.props.onLayerAdd) {
+                        this.props.onLayerAdd({layer: vector});
+                    }
+                    if (this.props.onFeatureClick) {
+                        map.on("click", (args: ol.MapBrowserEvent) => {
+                            if (this.props.onFeatureClick) {
+                                let features = map.getFeaturesAtPixel(args.pixel);
+                                if (!features) return;
+                                if (features.length !== 1) return;
+                                let feature = features[0];
+                                if (feature instanceof ol.Feature) {
+                                    this.props.onFeatureClick({ layer: vector, feature: feature });
+                                }
+                            }
+                        });
+                    }
                 })
             }
         }
@@ -254,7 +284,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         if (map) {
             map.setTarget(target);
             map.getView().animate({
-                center: ol.proj.fromLonLat(this.props.center),
+                center: ol.proj.fromLonLat(this.props.center || [0,0]),
                 zoom: this.props.zoom,
                 duration: 250
             });

@@ -31,7 +31,8 @@ const styles = {
     }),
     indeterminate: new ol.style.Style({
         stroke: new ol.style.Stroke({
-            color: [0, 128, 0, 1],
+            color: [20, 20, 200, 1],
+            width: 2
         }),
     })
 };
@@ -109,16 +110,19 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     features={this.state.features}>
                 </OpenLayers>
             </OpenLayers>
-            <div className="score"><label>Score: {this.state.score}</label><label>Find: {this.state.answer}</label></div>
-            <button className="score" onClick={() => {
-                this.score(-1);
-                this.state.answer && answers.unshift(this.state.answer);
-                this.next();
-            }}>Skip</button>
-            <button className="score" onClick={() => {
-                this.score(-5);
-                this.hint();
-            }}>Hint</button>
+            <div className="score">Score<label>{this.state.score}</label></div>
+            <div className="score">Find<label>{this.state.answer}</label></div>
+            <br/><div className="score">
+                <button onClick={() => {
+                    this.score(-1);
+                    this.state.answer && answers.unshift(this.state.answer);
+                    this.next();
+                }}>Skip</button>
+                <button onClick={() => {
+                    this.score(-5);
+                    this.hint();
+                }}>Hint</button>
+            </div>
         </div>;
     }
 

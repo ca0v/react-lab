@@ -37,6 +37,7 @@ interface OpenLayersProps {
     features?: ol.Collection<ol.Feature>;
     allowPan?: boolean;
     allowZoom?: boolean;
+    allowKeyboard?: boolean;
     controls?: {
         draw?: {
             point?: boolean;
@@ -127,6 +128,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             }),
             controls: [],
             interactions: [],
+            keyboardEventTarget: this.props.allowKeyboard ? document : undefined,
         });
 
         if (this.props.allowPan !== false) {
@@ -137,6 +139,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             map.addInteraction(new ol.interaction.MouseWheelZoom());
             map.addInteraction(new ol.interaction.PinchZoom());
             map.addInteraction(new ol.interaction.DragZoom());
+            map.addInteraction(new ol.interaction.KeyboardZoom());
         }
 
         map.on("moveend", debounce(() => {

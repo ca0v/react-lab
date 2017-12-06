@@ -77,6 +77,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     render() {
         return <div className="quizlet">
             <OpenLayers
+                allowKeyboard={true}
                 orientation="full"
                 center={this.state.center}
                 zoom={this.state.zoom}
@@ -114,27 +115,27 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     className="inset"
                     bingImagerySet="AerialWithLabels"
                     center={this.state.center}
+                    zoom={10}
                     allowZoom={true}
                     allowPan={true}
                     orientation="landscape"
-                    onFeatureClick={()=> {}}
+                    onFeatureClick={() => { }}
                     features={this.state.features}>
                 </OpenLayers>
             </OpenLayers>
             <div className="score">Score<label>{this.state.score}</label></div>
             <div className="score">Find<label>{this.state.answer}</label></div>
-            <br/><div className="score">
-                <button onClick={() => {
-                    this.score(-1);
-                    this.state.answer && answers.unshift(this.state.answer);
-                    this.next();
-                }}>Skip</button>
-                <button onClick={() => {
-                    this.score(-5);
-                    this.hint();
-                }}>Hint</button>
+            <br /><div className="score">
+                <button onClick={() => this.skip()}>Skip</button>
+                <button onClick={() => this.hint()}>Hint</button>
             </div>
         </div>;
+    }
+
+    skip() {
+        this.score(-1);
+        this.state.answer && answers.unshift(this.state.answer);
+        this.next();
     }
 
     score(value: number) {
@@ -156,6 +157,13 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             zoom: 8,
             score: 0
         }));
+
+        document.addEventListener("keypress", (args) => {
+            switch (args.key.toUpperCase()) {
+                case "H": this.hint(); break;
+                case "S": this.skip(); break;
+            }
+        });
     }
 
     // return true if the feature matches the correct answer
@@ -205,6 +213,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     hint() {
         let feature = this.find();
         if (!feature) return;
+        this.score(-5);
         let center = ol.extent.getCenter(feature.getGeometry().getExtent());
         this.setState(prev => ({
             center: ol.proj.transform(center, "EPSG:3857", "EPSG:4326"),

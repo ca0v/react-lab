@@ -106,16 +106,11 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                         expectedFeature && this.state.features.push(expectedFeature);
                     }
                 }}
-                onLayerAdd={(args: { layer: ol.layer.Vector }) => setTimeout(() => {
-                    this.init(args.layer);
-                    this.next();
-                }, 500)}
             >
                 <OpenLayers
                     className="inset"
                     bingImagerySet="AerialWithLabels"
                     center={this.state.center}
-                    zoom={10}
                     allowZoom={true}
                     allowPan={true}
                     orientation="landscape"
@@ -150,11 +145,8 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         let features = source.getFeatures();
         features.forEach(f => f.setStyle(styles.indeterminate));
         answers = shuffle(features.map(f => f.get(fieldName)));
-        let randomFeature = features[Math.floor(Math.random() * answers.length)];
         this.setState(prev => ({
             layer: layer,
-            center: ol.proj.transform(ol.extent.getCenter(randomFeature.getGeometry().getExtent()), "EPSG:3857", "EPSG:4326"),
-            zoom: 8,
             score: 0
         }));
 

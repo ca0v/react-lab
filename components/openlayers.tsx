@@ -135,6 +135,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         }
         if (this.props.allowZoom !== false) {
             map.addInteraction(new ol.interaction.MouseWheelZoom());
+            map.addInteraction(new ol.interaction.PinchZoom());
             map.addInteraction(new ol.interaction.DragZoom());
         }
 

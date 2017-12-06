@@ -21,6 +21,7 @@ div.score > label {
     -webkit-text-fill-color: rgb(20, 20, 200); /* Will override color (regardless of order) */
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: rgb(200, 200, 200);
+    pointer-events: none;
 }
 
 div.score > button {

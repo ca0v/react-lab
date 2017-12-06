@@ -19,6 +19,10 @@ const styles = {
             text: "☺",
             scale: 5,
         }),
+        stroke: new ol.style.Stroke({
+            color: [20, 200, 200, 1],
+            width: 2
+        }),
     }),
     wrong: new ol.style.Style({
         fill: new ol.style.Fill({
@@ -27,6 +31,10 @@ const styles = {
         text: new ol.style.Text({
             text: "☹",
             scale: 5,
+        }),
+        stroke: new ol.style.Stroke({
+            color: [200, 20, 200, 1],
+            width: 2
         }),
     }),
     indeterminate: new ol.style.Style({
@@ -104,9 +112,12 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             >
                 <OpenLayers
                     className="inset"
+                    bingImagerySet="AerialWithLabels"
+                    center={this.state.center}
                     allowZoom={true}
                     allowPan={true}
                     orientation="landscape"
+                    onFeatureClick={()=> {}}
                     features={this.state.features}>
                 </OpenLayers>
             </OpenLayers>
@@ -197,7 +208,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         let center = ol.extent.getCenter(feature.getGeometry().getExtent());
         this.setState(prev => ({
             center: ol.proj.transform(center, "EPSG:3857", "EPSG:4326"),
-            zoom: prev.zoom + 1
+            zoom: prev.zoom + 0.25
         }));
     }
 }

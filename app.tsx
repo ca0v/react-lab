@@ -22,7 +22,7 @@ export class App extends Component<AppProps, AppState> {
         super(props);
         this.state = {
             orientation: "landscape",
-            url: "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json"
+            url: "./data/countries.json"
         };
     }
 

@@ -82,7 +82,7 @@ define("components/openlayers", ["require", "exports", "react", "common/common",
         map.addLayer(vector);
         return vector;
     }
-    var Toolbar = (function (_super) {
+    var Toolbar = /** @class */ (function (_super) {
         __extends(Toolbar, _super);
         function Toolbar() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -92,7 +92,7 @@ define("components/openlayers", ["require", "exports", "react", "common/common",
         };
         return Toolbar;
     }(react_2.PureComponent));
-    var OpenLayers = (function (_super) {
+    var OpenLayers = /** @class */ (function (_super) {
         __extends(OpenLayers, _super);
         function OpenLayers(props) {
             var _this = _super.call(this, props) || this;
@@ -101,6 +101,22 @@ define("components/openlayers", ["require", "exports", "react", "common/common",
             };
             return _this;
         }
+        OpenLayers.prototype.trigger = function (message, args) {
+            var map = this.state.map;
+            if (!map)
+                return;
+            switch (message) {
+                case "refresh":
+                    map.getLayers().getArray()
+                        .filter(function (l) { return l instanceof ol.layer.Vector; })
+                        .map(function (l) { return l.getSource().changed(); });
+                    break;
+                case "extent":
+                    var p = args;
+                    map.getView().fit(p.extent);
+                    break;
+            }
+        };
         OpenLayers.prototype.render = function () {
             var _this = this;
             var map = this.state.map;
@@ -129,7 +145,7 @@ define("components/openlayers", ["require", "exports", "react", "common/common",
             var _this = this;
             var map = new ol.Map({
                 view: new ol.View({
-                    center: ol.proj.fromLonLat(this.props.center || [0, 0]),
+                    center: this.props.center || ol.proj.fromLonLat([0, 0]),
                     zoom: this.props.zoom || 0
                 }),
                 controls: [],
@@ -146,8 +162,11 @@ define("components/openlayers", ["require", "exports", "react", "common/common",
                 map.addInteraction(new ol.interaction.DragZoom());
                 map.addInteraction(new ol.interaction.KeyboardZoom());
             }
+            map.on("singleclick", function (args) {
+                _this.props.onClick && _this.props.onClick({ coordinate: args.coordinate });
+            });
             map.on("moveend", common_1.debounce(function () {
-                _this.props.setCenter && _this.props.setCenter(ol.proj.toLonLat(map.getView().getCenter()), map.getView().getZoom());
+                _this.props.setCenter && _this.props.setCenter(map.getView().getCenter(), map.getView().getZoom());
             }, 50));
             if (this.props.bingImagerySet) {
                 map.addLayer(new ol.layer.Tile({
@@ -267,11 +286,16 @@ define("components/openlayers", ["require", "exports", "react", "common/common",
             if (map) {
                 map.setTarget(target);
                 map.getView().animate({
-                    center: ol.proj.fromLonLat(this.props.center || [0, 0]),
+                    center: this.props.center || ol.proj.fromLonLat([0, 0]),
                     zoom: this.props.zoom,
                     duration: 250
                 });
                 this.activateDrawTool(map);
+                if (this.props.trigger) {
+                    if (this.props.trigger !== prevProp.trigger) {
+                        this.trigger(this.props.trigger.message, this.props.trigger.args);
+                    }
+                }
             }
         };
         OpenLayers.prototype.componentWillUnmount = function () {
@@ -285,7 +309,7 @@ define("components/openlayers", ["require", "exports", "react", "common/common",
 define("components/maplet", ["require", "exports", "react", "components/openlayers", "common/common"], function (require, exports, react_3, openlayers_1, common_2) {
     "use strict";
     exports.__esModule = true;
-    var Maplet = (function (_super) {
+    var Maplet = /** @class */ (function (_super) {
         __extends(Maplet, _super);
         function Maplet(props) {
             var _this = _super.call(this, props) || this;
@@ -354,41 +378,54 @@ define("components/quizlet", ["require", "exports", "components/openlayers", "re
     "use strict";
     exports.__esModule = true;
     var styles = {
-        right: new ol.style.Style({
+        right: function (quizlet) { return function (feature, res) { return new ol.style.Style({
             fill: new ol.style.Fill({
                 color: [0, 128, 0, 0.5]
             }),
             text: new ol.style.Text({
-                text: "☺",
-                scale: 5
+                text: "\u2714 " + feature.get(quizlet.props.featureNameFieldName),
+                scale: 1
             }),
             stroke: new ol.style.Stroke({
                 color: [20, 200, 200, 1],
                 width: 2
             })
-        }),
-        wrong: new ol.style.Style({
+        }); }; },
+        wrong: function (quizlet) { return function (feature, res) { return new ol.style.Style({
             fill: new ol.style.Fill({
                 color: [255, 0, 0, 0.5]
             }),
             text: new ol.style.Text({
-                text: "☹",
+                text: feature.get(quizlet.props.featureNameFieldName),
                 scale: 5
             }),
             stroke: new ol.style.Stroke({
                 color: [200, 20, 200, 1],
                 width: 2
             })
-        }),
-        indeterminate: new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: [20, 20, 200, 1],
-                width: 2
-            })
-        })
+        }); }; },
+        indeterminate: function (quizlet) { return function (feature, res) {
+            var featureName = feature.get(quizlet.props.featureNameFieldName);
+            var showText = quizlet.state.hint && (1 < quizlet.state.hint);
+            var showOutline = quizlet.state.hint && (2 < quizlet.state.hint) && (quizlet.state.answer === featureName);
+            return new ol.style.Style({
+                text: new ol.style.Text({
+                    text: showText ? featureName : "",
+                    scale: 1,
+                    stroke: new ol.style.Stroke({
+                        color: [200, 200, 200, 1],
+                        width: 2
+                    })
+                }),
+                stroke: new ol.style.Stroke({
+                    color: showOutline ? [200, 20, 200, 1] : [20, 20, 200, 1],
+                    width: showOutline ? quizlet.state.hint : 1
+                })
+            });
+        }; }
     };
     var answers;
-    var QuizletComponent = (function (_super) {
+    var QuizletComponent = /** @class */ (function (_super) {
         __extends(QuizletComponent, _super);
         function QuizletComponent(props) {
             var _this = _super.call(this, props) || this;
@@ -404,7 +441,7 @@ define("components/quizlet", ["require", "exports", "components/openlayers", "re
         QuizletComponent.prototype.render = function () {
             var _this = this;
             return react_4.createElement("div", { className: "quizlet" },
-                react_4.createElement(openlayers_2.OpenLayers, { allowKeyboard: true, orientation: "full", center: this.state.center, zoom: this.state.zoom, controls: {
+                react_4.createElement(openlayers_2.OpenLayers, { trigger: this.state.mapTrigger, allowKeyboard: true, orientation: "full", center: this.state.center, zoom: this.state.zoom, controls: {
                         mousePosition: true
                     }, bingImagerySet: "Aerial", layers: {
                         geoJson: [this.props.geojsonUrl]
@@ -415,7 +452,11 @@ define("components/quizlet", ["require", "exports", "components/openlayers", "re
                         }); });
                     }, onFeatureClick: function (args) {
                         if (!answers || !answers.length) {
-                            _this.init(args.layer);
+                            var featureName = args.feature.get(_this.props.featureNameFieldName);
+                            _this.init(args.layer, {
+                                firstLetter: featureName[0]
+                            });
+                            _this.zoomToFeature(args.feature);
                             _this.next();
                         }
                         else if (_this.test(args.feature)) {
@@ -426,14 +467,25 @@ define("components/quizlet", ["require", "exports", "components/openlayers", "re
                             expectedFeature && _this.state.features.push(expectedFeature);
                         }
                     } },
-                    react_4.createElement(openlayers_2.OpenLayers, { className: "inset", bingImagerySet: "AerialWithLabels", center: this.state.center, allowZoom: true, allowPan: true, orientation: "landscape", onFeatureClick: function () { }, features: this.state.features })),
+                    react_4.createElement(openlayers_2.OpenLayers, { className: "inset", osm: false, center: this.state.center, zoom: Math.max(0, this.state.zoom - 5), allowZoom: true, allowPan: true, orientation: "landscape", onClick: function (args) {
+                            _this.setState(function (prev) { return ({
+                                center: args.coordinate
+                            }); });
+                        }, layers: { geoJson: ["./data/countries.json"] }, features: this.state.features })),
                 react_4.createElement("div", { className: "score" },
                     "Score",
-                    react_4.createElement("label", null, this.state.score)),
+                    react_4.createElement("label", null,
+                        this.state.score,
+                        " ",
+                        answers && answers.length + " remaining")),
+                react_4.createElement("div", { className: "score" },
+                    "Remaining",
+                    react_4.createElement("label", null, answers ? answers.length : "?")),
                 react_4.createElement("div", { className: "score" },
                     "Find",
                     react_4.createElement("label", null, this.state.answer)),
                 react_4.createElement("br", null),
+                " ",
                 react_4.createElement("div", { className: "score" },
                     react_4.createElement("button", { onClick: function () { return _this.skip(); } }, "Skip"),
                     react_4.createElement("button", { onClick: function () { return _this.hint(); } }, "Hint")));
@@ -448,16 +500,19 @@ define("components/quizlet", ["require", "exports", "components/openlayers", "re
                 score: prev.score + value
             }); });
         };
-        QuizletComponent.prototype.init = function (layer) {
+        QuizletComponent.prototype.init = function (layer, args) {
             var _this = this;
             var source = layer.getSource();
             var fieldName = this.props.featureNameFieldName;
             var features = source.getFeatures();
-            features.forEach(function (f) { return f.setStyle(styles.indeterminate); });
-            answers = common_3.shuffle(features.map(function (f) { return f.get(fieldName); }));
+            features.forEach(function (f) { return f.setStyle(styles.indeterminate(_this)); });
+            answers = features.map(function (f) { return f.get(fieldName); });
+            if (args && args.firstLetter)
+                answers = answers.filter(function (v) { return 0 === v.indexOf(args.firstLetter); });
+            common_3.shuffle(answers);
             this.setState(function (prev) { return ({
                 layer: layer,
-                score: 0
+                score: prev.score || 0
             }); });
             document.addEventListener("keypress", function (args) {
                 switch (args.key.toUpperCase()) {
@@ -477,30 +532,38 @@ define("components/quizlet", ["require", "exports", "components/openlayers", "re
             var result = feature.get(fieldName) === this.state.answer;
             if (result) {
                 this.score(20);
-                feature.setStyle(styles.right);
+                feature.setStyle(styles.right(this));
                 this.next();
             }
             else {
                 this.score(-20);
                 var actualFeature = this.find();
                 if (actualFeature) {
-                    actualFeature.setStyle(styles.wrong);
-                    var center_1 = ol.extent.getCenter(actualFeature.getGeometry().getExtent());
-                    this.setState(function (prev) { return ({
-                        center: ol.proj.transform(center_1, "EPSG:3857", "EPSG:4326"),
-                        zoom: 6
-                    }); });
+                    actualFeature.setStyle(styles.wrong(this));
+                    this.zoomToFeature(actualFeature);
                     this.state.answer && answers.unshift(this.state.answer);
                     setTimeout(function () { return _this.next(); }, 2500);
                 }
             }
             return result;
         };
+        QuizletComponent.prototype.zoomToFeature = function (feature) {
+            var extent = feature.getGeometry().getExtent();
+            this.setState(function (prev) { return ({
+                mapTrigger: {
+                    message: "extent",
+                    args: {
+                        extent: extent
+                    }
+                }
+            }); });
+        };
         QuizletComponent.prototype.next = function () {
             if (!answers.length)
                 return;
             this.setState(function (prev) { return ({
-                answer: answers.pop()
+                answer: answers.pop(),
+                hint: 0
             }); });
         };
         QuizletComponent.prototype.find = function () {
@@ -521,11 +584,13 @@ define("components/quizlet", ["require", "exports", "components/openlayers", "re
             var feature = this.find();
             if (!feature)
                 return;
-            this.score(-5);
             var center = ol.extent.getCenter(feature.getGeometry().getExtent());
             this.setState(function (prev) { return ({
-                center: ol.proj.transform(center, "EPSG:3857", "EPSG:4326"),
-                zoom: prev.zoom + 0.25
+                score: prev.score - 5,
+                hint: (prev.hint || 0) + 1,
+                center: center,
+                zoom: Math.min(Math.max(5, prev.zoom + 1), 6),
+                mapTrigger: { message: "refresh" }
             }); });
         };
         return QuizletComponent;
@@ -535,7 +600,7 @@ define("components/quizlet", ["require", "exports", "components/openlayers", "re
 define("app", ["require", "exports", "react", "components/quizlet"], function (require, exports, react_5, quizlet_1) {
     "use strict";
     exports.__esModule = true;
-    var App = (function (_super) {
+    var App = /** @class */ (function (_super) {
         __extends(App, _super);
         function App(props) {
             var _this = _super.call(this, props) || this;
@@ -564,7 +629,7 @@ define("index", ["require", "exports", "react", "react-dom", "app"], function (r
 define("components/index", ["require", "exports", "react"], function (require, exports, react_7) {
     "use strict";
     exports.__esModule = true;
-    var IndexComponent = (function (_super) {
+    var IndexComponent = /** @class */ (function (_super) {
         __extends(IndexComponent, _super);
         function IndexComponent() {
             return _super !== null && _super.apply(this, arguments) || this;

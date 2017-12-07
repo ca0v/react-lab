@@ -11,25 +11,25 @@ import { shuffle } from "../common/common";
 import * as ol from "openlayers";
 
 const styles = {
-    right: new ol.style.Style({
+    right: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => new ol.style.Style({
         fill: new ol.style.Fill({
             color: [0, 128, 0, 0.5]
         }),
         text: new ol.style.Text({
-            text: "☺",
-            scale: 5,
+            text: `✔ ${feature.get(quizlet.props.featureNameFieldName)}`,
+            scale: 1,
         }),
         stroke: new ol.style.Stroke({
             color: [20, 200, 200, 1],
             width: 2
         }),
     }),
-    wrong: new ol.style.Style({
+    wrong: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => new ol.style.Style({
         fill: new ol.style.Fill({
             color: [255, 0, 0, 0.5]
         }),
         text: new ol.style.Text({
-            text: "☹",
+            text: feature.get(quizlet.props.featureNameFieldName),
             scale: 5,
         }),
         stroke: new ol.style.Stroke({
@@ -37,12 +37,27 @@ const styles = {
             width: 2
         }),
     }),
-    indeterminate: new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: [20, 20, 200, 1],
-            width: 2
-        }),
-    })
+    indeterminate: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => {
+        let featureName = feature.get(quizlet.props.featureNameFieldName);
+
+        let showText = quizlet.state.hint && (1 < quizlet.state.hint);
+        let showOutline = quizlet.state.hint && (2 < quizlet.state.hint) && (quizlet.state.answer === featureName);
+
+        return new ol.style.Style({
+            text: new ol.style.Text({
+                text: showText ? featureName : "",
+                scale: 1,
+                stroke: new ol.style.Stroke({
+                    color: [200, 200, 200, 1],
+                    width: 2
+                }),
+            }),
+            stroke: new ol.style.Stroke({
+                color: showOutline ? [200, 20, 200, 1] : [20, 20, 200, 1],
+                width: showOutline ? quizlet.state.hint : 1
+            }),
+        });
+    }
 };
 
 export interface QuizletStates {
@@ -52,6 +67,8 @@ export interface QuizletStates {
     zoom: number;
     score: number;
     features: ol.Collection<ol.Feature>;
+    mapTrigger?: { message: string, args: any[] };
+    hint?: number;
 }
 
 export interface QuizletProps {
@@ -77,6 +94,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     render() {
         return <div className="quizlet">
             <OpenLayers
+                trigger={this.state.mapTrigger}
                 allowKeyboard={true}
                 orientation="full"
                 center={this.state.center}
@@ -96,7 +114,11 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                 }}
                 onFeatureClick={(args: { layer: ol.layer.Vector, feature: ol.Feature }) => {
                     if (!answers || !answers.length) {
-                        this.init(args.layer);
+                        let featureName = args.feature.get(this.props.featureNameFieldName);
+                        this.init(args.layer, {
+                            firstLetter: featureName[0]
+                        });
+                        this.zoomToFeature(args.feature);
                         this.next();
                     }
                     else if (this.test(args.feature)) {
@@ -109,22 +131,29 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             >
                 <OpenLayers
                     className="inset"
-                    bingImagerySet="AerialWithLabels"
+                    osm={false}
                     center={this.state.center}
+                    zoom={Math.max(0, this.state.zoom - 5)}
                     allowZoom={true}
                     allowPan={true}
                     orientation="landscape"
-                    onFeatureClick={() => { }}
+                    onClick={(args: { coordinate: ol.Coordinate }) => {
+                        this.setState(prev => ({
+                            center: args.coordinate
+                        }))
+                    }}
+                    layers={{ geoJson: ["./data/countries.json"] }}
                     features={this.state.features}>
                 </OpenLayers>
             </OpenLayers>
-            <div className="score">Score<label>{this.state.score}</label></div>
+            <div className="score">Score<label>{this.state.score} {answers && `${answers.length} remaining`}</label></div>
+            <div className="score">Remaining<label>{answers ? answers.length : "?"}</label></div>
             <div className="score">Find<label>{this.state.answer}</label></div>
-            <br /><div className="score">
+            <br /> <div className="score">
                 <button onClick={() => this.skip()}>Skip</button>
                 <button onClick={() => this.hint()}>Hint</button>
             </div>
-        </div>;
+        </div >;
     }
 
     skip() {
@@ -139,15 +168,18 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         }));
     }
 
-    init(layer: ol.layer.Vector) {
+    init(layer: ol.layer.Vector, args?: { firstLetter: string }) {
         let source = layer.getSource();
         let fieldName = this.props.featureNameFieldName;
         let features = source.getFeatures();
-        features.forEach(f => f.setStyle(styles.indeterminate));
-        answers = shuffle(features.map(f => f.get(fieldName)));
+        features.forEach(f => f.setStyle(styles.indeterminate(this)));
+        answers = features.map(f => f.get(fieldName));
+        if (args && args.firstLetter) answers = answers.filter(v => 0 === v.indexOf(args.firstLetter));
+        shuffle(answers);
+
         this.setState(prev => ({
             layer: layer,
-            score: 0
+            score: prev.score || 0
         }));
 
         document.addEventListener("keypress", (args) => {
@@ -164,18 +196,14 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         let result = feature.get(fieldName) === this.state.answer;
         if (result) {
             this.score(20);
-            feature.setStyle(styles.right);
+            feature.setStyle(styles.right(this));
             this.next();
         } else {
             this.score(-20);
             let actualFeature = this.find();
             if (actualFeature) {
-                actualFeature.setStyle(styles.wrong);
-                let center = ol.extent.getCenter(actualFeature.getGeometry().getExtent());
-                this.setState(prev => ({
-                    center: ol.proj.transform(center, "EPSG:3857", "EPSG:4326"),
-                    zoom: 6
-                }));
+                actualFeature.setStyle(styles.wrong(this));
+                this.zoomToFeature(actualFeature);
                 this.state.answer && answers.unshift(this.state.answer);
                 setTimeout(() => this.next(), 2500);
             }
@@ -183,10 +211,23 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         return result;
     }
 
+    zoomToFeature(feature: ol.Feature) {
+        let extent = feature.getGeometry().getExtent();
+        this.setState(prev => ({
+            mapTrigger: {
+                message: "extent",
+                args: {
+                    extent: extent
+                }
+            }
+        }));
+    }
+
     next() {
         if (!answers.length) return;
         this.setState(prev => ({
             answer: answers.pop(),
+            hint: 0,
         }));
     }
 
@@ -205,11 +246,13 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     hint() {
         let feature = this.find();
         if (!feature) return;
-        this.score(-5);
         let center = ol.extent.getCenter(feature.getGeometry().getExtent());
         this.setState(prev => ({
-            center: ol.proj.transform(center, "EPSG:3857", "EPSG:4326"),
-            zoom: prev.zoom + 0.25
+            score: prev.score - 5,
+            hint: (prev.hint || 0) + 1,
+            center: center,
+            zoom: Math.min(Math.max(5, prev.zoom + 1), 6),
+            mapTrigger: { message: "refresh" }
         }));
     }
 }

@@ -29,7 +29,7 @@ interface OpenLayersProps {
     className?: string;
     setCenter?: (v: [number, number], z: number) => void;
     title?: string;
-    bingImagerySet?: "Aerial"|"AerialWithLabels"|"Birdseye"|"CanvasDark"|"CanvasLight"|"CanvasGray"|"Road"|"RoadOnDemand"|"BirdseyeV2WithLabels";
+    bingImagerySet?: "Aerial" | "AerialWithLabels" | "Birdseye" | "CanvasDark" | "CanvasLight" | "CanvasGray" | "Road" | "RoadOnDemand" | "BirdseyeV2WithLabels";
     osm?: boolean;
     center?: [number, number];
     zoom?: number;
@@ -57,7 +57,9 @@ interface OpenLayersProps {
         geoJson?: string[]
     };
     onFeatureClick?: (args: { layer: ol.layer.Vector, feature: ol.Feature }) => void;
+    onClick?: (args: { coordinate: ol.Coordinate }) => void;
     onLayerAdd?: (args: { layer: ol.layer.Vector }) => void;
+    trigger?: { message: string, args: any[] };
 }
 
 interface OpenLayersState {
@@ -79,6 +81,26 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         this.state = {
             target: null,
         };
+    }
+
+    trigger(message: string, args: any): void;
+    trigger(message: "refresh", args: {}): void;
+    trigger(message: "extent", args: { extent: ol.Extent }): void;
+    trigger(message: string, args: any) {
+        let map = this.state.map;
+        if (!map) return;
+
+        switch (message) {
+            case "refresh":
+                map.getLayers().getArray()
+                    .filter(l => l instanceof ol.layer.Vector)
+                    .map((l: any) => l.getSource().changed())
+                break;
+            case "extent":
+                let p: { extent: ol.Extent } = args;
+                map.getView().fit(p.extent);
+                break;
+        }
     }
 
     render() {
@@ -123,7 +145,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
     componentDidMount() {
         let map = new ol.Map({
             view: new ol.View({
-                center: ol.proj.fromLonLat(this.props.center || [0, 0]),
+                center: this.props.center || ol.proj.fromLonLat([0, 0]),
                 zoom: this.props.zoom || 0
             }),
             controls: [],
@@ -142,10 +164,12 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             map.addInteraction(new ol.interaction.KeyboardZoom());
         }
 
+        map.on("singleclick", (args: ol.MapBrowserEvent) => {
+            this.props.onClick && this.props.onClick({ coordinate: args.coordinate });
+        });
+
         map.on("moveend", debounce(() => {
-            this.props.setCenter && this.props.setCenter(
-                ol.proj.toLonLat(map.getView().getCenter()),
-                map.getView().getZoom());
+            this.props.setCenter && this.props.setCenter(map.getView().getCenter(), map.getView().getZoom());
         }, 50));
 
         if (this.props.bingImagerySet) {
@@ -175,9 +199,9 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         if (this.props.layers) {
             if (this.props.layers.geoJson) {
                 this.props.layers.geoJson.forEach(url => {
-                    let vector = addGeoJsonLayer(map, url);                    
+                    let vector = addGeoJsonLayer(map, url);
                     if (this.props.onLayerAdd) {
-                        this.props.onLayerAdd({layer: vector});
+                        this.props.onLayerAdd({ layer: vector });
                     }
                     if (this.props.onFeatureClick) {
                         map.on("click", (args: ol.MapBrowserEvent) => {
@@ -288,11 +312,17 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         if (map) {
             map.setTarget(target);
             map.getView().animate({
-                center: ol.proj.fromLonLat(this.props.center || [0,0]),
+                center: this.props.center || ol.proj.fromLonLat([0, 0]),
                 zoom: this.props.zoom,
                 duration: 250
             });
             this.activateDrawTool(map);
+
+            if (this.props.trigger) {
+                if (this.props.trigger !== prevProp.trigger) {
+                    this.trigger(this.props.trigger.message, this.props.trigger.args);
+                }
+            }
         }
     }
 

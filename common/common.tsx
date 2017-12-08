@@ -1,4 +1,4 @@
-import {PureComponent as Component, createElement as create} from 'react';
+import { PureComponent as Component, createElement as create } from 'react';
 
 export function dump(o: any) {
     return Object.keys(o).map(k => <li key={k}>{k}: {o[k]}</li>);
@@ -35,6 +35,30 @@ export function shuffle(array: any[]) {
 
     return array;
 }
+
+class LocalStorage<T> {
+
+    localStorage = window.localStorage || {
+        setItem: (value: string) => { },
+        getItem: () => "",
+    };
+
+    setItem(value: T) {
+        this.localStorage.setItem("globals", JSON.stringify(value));
+    }
+
+    getItem(): T {
+        let value = this.localStorage.getItem("globals") || "{}";
+        return JSON.parse(value);
+    }
+
+}
+
+interface Dictionary<T> {
+    [Key: string]: T;
+}
+
+export let storage = new LocalStorage<Dictionary<number>>();
 
 export function input(c: React.PureComponent) {
     let o: any = c.state;

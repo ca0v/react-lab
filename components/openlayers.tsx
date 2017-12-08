@@ -98,7 +98,14 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                 break;
             case "extent":
                 let p: { extent: ol.Extent } = args;
-                map.getView().fit(p.extent);
+                let view: any = map.getView();
+                let resolution = view.getResolutionForExtent(p.extent);
+                let zoom = view.getZoomForResolution(resolution);
+                //map.getView().fit(p.extent);
+                view.animate({
+                    center: ol.extent.getCenter(p.extent),
+                    zoom: zoom,
+                })
                 break;
         }
     }

@@ -7,7 +7,7 @@
 import { OpenLayers } from './openlayers';
 import { PureComponent as Component, createElement as create } from 'react';
 import { render } from "react-dom";
-import { shuffle } from "../common/common";
+import { shuffle, storage } from "../common/common";
 import * as ol from "openlayers";
 
 const styles = {
@@ -46,7 +46,7 @@ const styles = {
         return new ol.style.Style({
             text: new ol.style.Text({
                 text: showText ? featureName : "",
-                scale: 1,
+                scale: 2,
                 stroke: new ol.style.Stroke({
                     color: [200, 200, 200, 1],
                     width: 2
@@ -69,14 +69,13 @@ export interface QuizletStates {
     features: ol.Collection<ol.Feature>;
     mapTrigger?: { message: string, args: any[] };
     hint?: number;
+    answers: string[];
 }
 
 export interface QuizletProps {
     geojsonUrl: string;
     featureNameFieldName: string;
 }
-
-let answers: string[];
 
 export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
@@ -86,8 +85,9 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             answer: "Click the map to Begin!",
             center: [0, 0],
             zoom: 1,
-            score: 0,
+            score: storage.getItem().score || 0,
             features: new ol.Collection<ol.Feature>(),
+            answers: [],
         }
     }
 
@@ -113,6 +113,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     }))
                 }}
                 onFeatureClick={(args: { layer: ol.layer.Vector, feature: ol.Feature }) => {
+                    let answers = this.state.answers;
                     if (!answers || !answers.length) {
                         let featureName = args.feature.get(this.props.featureNameFieldName);
                         this.init(args.layer, {
@@ -146,9 +147,9 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     features={this.state.features}>
                 </OpenLayers>
             </OpenLayers>
-            <div className="score">Score<label>{this.state.score} {answers && `${answers.length} remaining`}</label></div>
-            <div className="score">Remaining<label>{answers ? answers.length : "?"}</label></div>
+            <div className="score">Score<label>{this.state.score}</label></div>
             <div className="score">Find<label>{this.state.answer}</label></div>
+            {this.state.answers.length && <div className="score">Remaining<label>{this.state.answers.length}</label></div>}
             <br /> <div className="score">
                 <button onClick={() => this.skip()}>Skip</button>
                 <button onClick={() => this.hint()}>Hint</button>
@@ -157,8 +158,10 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     }
 
     skip() {
+        if (!this.state.answer) return;
         this.score(-1);
-        this.state.answer && answers.unshift(this.state.answer);
+        let answers = this.state.answers;
+        answers && answers.unshift(this.state.answer);
         this.next();
     }
 
@@ -168,18 +171,34 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         }));
     }
 
+    generate(features: ol.Feature[]) {
+        // remove anything that have been answered correctly
+        let fieldName = this.props.featureNameFieldName;
+        let correctAnswers = storage.getItem();
+        let answers = features
+            .map(f => f.get(fieldName))
+            .filter(f => !correctAnswers[f] || correctAnswers[f] < 1);
+
+        if (answers.length < 1) {
+            answers = features
+                .map(f => f.get(fieldName))
+                .filter(f => !correctAnswers[f] || correctAnswers[f] < 10);
+        }
+        if (answers.length > 10) {
+            //if (args && args.firstLetter) answers = answers.filter(v => 0 === v.indexOf(args.firstLetter));
+        }
+        shuffle(answers);
+        return answers;
+    }
+
     init(layer: ol.layer.Vector, args?: { firstLetter: string }) {
         let source = layer.getSource();
-        let fieldName = this.props.featureNameFieldName;
         let features = source.getFeatures();
         features.forEach(f => f.setStyle(styles.indeterminate(this)));
-        answers = features.map(f => f.get(fieldName));
-        if (args && args.firstLetter) answers = answers.filter(v => 0 === v.indexOf(args.firstLetter));
-        shuffle(answers);
-
         this.setState(prev => ({
             layer: layer,
-            score: prev.score || 0
+            score: prev.score || 0,
+            answers: this.generate(features)
         }));
 
         document.addEventListener("keypress", (args) => {
@@ -197,6 +216,12 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         if (result) {
             this.score(20);
             feature.setStyle(styles.right(this));
+            if (this.state.answer && 0 === this.state.hint) {
+                let correctAnswers = storage.getItem();
+                correctAnswers[this.state.answer] = (correctAnswers[this.state.answer] || 0) + 1;
+                correctAnswers.score = this.state.score;
+                storage.setItem(correctAnswers);
+            }
             this.next();
         } else {
             this.score(-20);
@@ -204,8 +229,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             if (actualFeature) {
                 actualFeature.setStyle(styles.wrong(this));
                 this.zoomToFeature(actualFeature);
-                this.state.answer && answers.unshift(this.state.answer);
-                setTimeout(() => this.next(), 2500);
+                this.skip();
             }
         }
         return result;
@@ -224,6 +248,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     }
 
     next() {
+        let answers = this.state.answers;
         if (!answers.length) return;
         this.setState(prev => ({
             answer: answers.pop(),

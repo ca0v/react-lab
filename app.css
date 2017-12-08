@@ -8,7 +8,7 @@ html, body, .app, .quizlet {
 
 .score {
     font-size: 48px;
-    color: rgb(20, 20, 200);
+    color: rgb(200, 100, 20);
     position: relative;
     font-family: "tahoma";
     display:inline;
@@ -18,7 +18,7 @@ html, body, .app, .quizlet {
 div.score > label {
     padding: 20px;
     padding-right: 20px;
-    -webkit-text-fill-color: rgb(20, 20, 200); /* Will override color (regardless of order) */
+    -webkit-text-fill-color: rgb(200, 100, 20); /* Will override color (regardless of order) */
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: rgb(200, 200, 200);
     pointer-events: none;
@@ -27,12 +27,14 @@ div.score > label {
 div.score > button {
     font-size: 20px;
     background-color: rgba(200, 200, 200, 0.2);
-    border: none;
-    color: rgb(20, 20, 200); /* Will override color (regardless of order) */    
+    border: 1px rgb(200, 200, 200);
+    border-style: solid;
+    color: rgb(200, 100, 20); /* Will override color (regardless of order) */    
     border-radius: 10px;
     border-radius: 24px;
     height: 48px;
     width: 48px;
+    margin: 2px;
     pointer-events: visibleFill;
 }
 
@@ -75,8 +77,13 @@ button.active {
     position:absolute;
     bottom:0;
     right:0;
-    opacity: 0.9;
     background: rgb(20, 20, 20);
+}
+
+@media (max-width: 960px) {
+    .maplet.inset {
+        display: none;
+    }
 }
 
 .maplet.portrait {

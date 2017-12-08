@@ -58,6 +58,12 @@ interface Dictionary<T> {
     [Key: string]: T;
 }
 
+export function distinct<T>(d: Dictionary<T>): string[] {
+    let map: any = {};
+    Object.keys(d).forEach(k => map[d[k]] = true);
+    return Object.keys(map);
+}
+
 export let storage = new LocalStorage<Dictionary<number>>();
 
 export function input(c: React.PureComponent) {

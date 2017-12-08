@@ -7,36 +7,74 @@
 import { OpenLayers } from './openlayers';
 import { PureComponent as Component, createElement as create } from 'react';
 import { render } from "react-dom";
-import { shuffle, storage } from "../common/common";
+import { distinct, shuffle, storage } from "../common/common";
 import * as ol from "openlayers";
 
+const theme = {
+    textFillColor: [200, 200, 200, 1],
+    textBorderColor: [200, 100, 20, 1],
+    correctFillColor: [20, 100, 20, 0.3],
+    correctBorderColor: [20, 100, 20, 1],
+    incorrectFillColor: [200, 20, 20, 0.3],
+    incorrectBorderColor: [200, 20, 20, 1],
+    borderColor: [200, 100, 20, 1],
+    hintBorderColor: [200, 20, 200, 1],
+};
+
+function color(color: any) {
+    let result: [number, number, number, number] = color;
+    return result;
+}
+
 const styles = {
-    right: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: [0, 128, 0, 0.5]
+    correct: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => [
+        new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: color(theme.correctFillColor),
+            }),
+            stroke: new ol.style.Stroke({
+                color: color(theme.correctBorderColor),
+                width: 2
+            }),
         }),
-        text: new ol.style.Text({
-            text: `✔ ${feature.get(quizlet.props.featureNameFieldName)}`,
-            scale: 1,
+        new ol.style.Style({
+            text: new ol.style.Text({
+                text: `${feature.get(quizlet.props.featureNameFieldName)}`,
+                scale: 2,
+                fill: new ol.style.Fill({
+                    color: color(theme.textFillColor),
+                }),
+                stroke: new ol.style.Stroke({
+                    color: color(theme.correctBorderColor),
+                    width: 2,
+                }),
+            }),
+        })
+    ],
+    wrong: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => [
+        new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: color(theme.incorrectFillColor),
+            }),
+            stroke: new ol.style.Stroke({
+                color: color(theme.incorrectBorderColor),
+                width: 2,
+            }),
         }),
-        stroke: new ol.style.Stroke({
-            color: [20, 200, 200, 1],
-            width: 2
+        new ol.style.Style({
+            text: new ol.style.Text({
+                text: feature.get(quizlet.props.featureNameFieldName),
+                scale: 2,
+                fill: new ol.style.Fill({
+                    color: color(theme.textFillColor),
+                }),
+                stroke: new ol.style.Stroke({
+                    color: color(theme.incorrectBorderColor),
+                    width: 2,
+                }),
+            }),
         }),
-    }),
-    wrong: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: [255, 0, 0, 0.5]
-        }),
-        text: new ol.style.Text({
-            text: feature.get(quizlet.props.featureNameFieldName),
-            scale: 5,
-        }),
-        stroke: new ol.style.Stroke({
-            color: [200, 20, 200, 1],
-            width: 2
-        }),
-    }),
+    ],
     indeterminate: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => {
         let featureName = feature.get(quizlet.props.featureNameFieldName);
 
@@ -48,13 +86,16 @@ const styles = {
                 text: showText ? featureName : "",
                 scale: 2,
                 stroke: new ol.style.Stroke({
-                    color: [200, 200, 200, 1],
+                    color: color(theme.textBorderColor),
                     width: 2
+                }),
+                fill: new ol.style.Fill({
+                    color: color(theme.textFillColor),
                 }),
             }),
             stroke: new ol.style.Stroke({
-                color: showOutline ? [200, 20, 200, 1] : [20, 20, 200, 1],
-                width: showOutline ? quizlet.state.hint : 1
+                color: color(showOutline ? theme.hintBorderColor : theme.borderColor),
+                width: 2
             }),
         });
     }
@@ -113,20 +154,42 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     }))
                 }}
                 onFeatureClick={(args: { layer: ol.layer.Vector, feature: ol.Feature }) => {
+                    {
+                        // bring-to-front
+                        let source = args.layer.getSource();
+                        source.removeFeature(args.feature);
+                        args.feature = args.feature.clone();
+                        source.addFeature(args.feature);
+                        source.changed();
+                    }
                     let answers = this.state.answers;
                     if (!answers || !answers.length) {
-                        let featureName = args.feature.get(this.props.featureNameFieldName);
-                        this.init(args.layer, {
-                            firstLetter: featureName[0]
-                        });
                         this.zoomToFeature(args.feature);
+                        let featureName = args.feature.get(this.props.featureNameFieldName);
+                        this.init(args.layer);
+                        this.state.answers.push(featureName);
                         this.next();
                     }
                     else if (this.test(args.feature)) {
+                        this.score(20);
+                        args.feature.setStyle(styles.correct(this));
+                        if (this.state.answer && 0 === this.state.hint) {
+                            let correctAnswers = storage.getItem();
+                            correctAnswers[this.state.answer] = (correctAnswers[this.state.answer] || 0) + 1;
+                            correctAnswers.score = this.state.score;
+                            storage.setItem(correctAnswers);
+                        }
+                        this.next();
                         this.state.features.push(args.feature);
                     } else {
-                        let expectedFeature = this.find();
-                        expectedFeature && this.state.features.push(expectedFeature);
+                        this.score(-20);
+                        let actualFeature = this.find();
+                        if (actualFeature) {
+                            actualFeature.setStyle(styles.wrong(this));
+                            this.zoomToFeature(actualFeature);
+                            this.state.features.push(actualFeature);
+                            this.skip();
+                        }
                     }
                 }}
             >
@@ -149,7 +212,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             </OpenLayers>
             <div className="score">Score<label>{this.state.score}</label></div>
             <div className="score">Find<label>{this.state.answer}</label></div>
-            {this.state.answers.length && <div className="score">Remaining<label>{this.state.answers.length}</label></div>}
+            {!!this.state.answers.length && <div className="score">Remaining<label>{(1 + this.state.answers.length) || "?"}</label></div>}
             <br /> <div className="score">
                 <button onClick={() => this.skip()}>Skip</button>
                 <button onClick={() => this.hint()}>Hint</button>
@@ -172,22 +235,33 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     }
 
     generate(features: ol.Feature[]) {
-        // remove anything that have been answered correctly
+        // remove answers that have been answered correctly
         let fieldName = this.props.featureNameFieldName;
         let correctAnswers = storage.getItem();
-        let answers = features
-            .map(f => f.get(fieldName))
-            .filter(f => !correctAnswers[f] || correctAnswers[f] < 1);
+        this.setState(prev => ({
+            score: correctAnswers.score || 0
+        }));
+        delete correctAnswers.score;
 
-        if (answers.length < 1) {
-            answers = features
-                .map(f => f.get(fieldName))
-                .filter(f => !correctAnswers[f] || correctAnswers[f] < 10);
+        let counts = {};
+        let answers = features.map(f => f.get(fieldName));
+
+        let values = distinct(correctAnswers).map(v => parseInt(v)).sort().reverse();
+        // remove most correct answers until less than 10 remain
+        {
+            let nextAnswers = answers;
+            while (values.length && nextAnswers.length > 10) {
+                answers = nextAnswers;
+                let maxCount = values.pop() || 0;
+                console.log(`removing where count >= ${maxCount}`);
+                nextAnswers = nextAnswers.filter(f => !correctAnswers[f] || (correctAnswers[f] < maxCount));
+            }
         }
-        if (answers.length > 10) {
-            //if (args && args.firstLetter) answers = answers.filter(v => 0 === v.indexOf(args.firstLetter));
-        }
+
         shuffle(answers);
+        if (answers.length > 10) {
+            answers = answers.splice(0, 10);
+        }
         return answers;
     }
 
@@ -213,25 +287,6 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     test(feature: ol.Feature) {
         let fieldName = this.props.featureNameFieldName;
         let result = feature.get(fieldName) === this.state.answer;
-        if (result) {
-            this.score(20);
-            feature.setStyle(styles.right(this));
-            if (this.state.answer && 0 === this.state.hint) {
-                let correctAnswers = storage.getItem();
-                correctAnswers[this.state.answer] = (correctAnswers[this.state.answer] || 0) + 1;
-                correctAnswers.score = this.state.score;
-                storage.setItem(correctAnswers);
-            }
-            this.next();
-        } else {
-            this.score(-20);
-            let actualFeature = this.find();
-            if (actualFeature) {
-                actualFeature.setStyle(styles.wrong(this));
-                this.zoomToFeature(actualFeature);
-                this.skip();
-            }
-        }
         return result;
     }
 

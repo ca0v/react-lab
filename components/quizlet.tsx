@@ -7,7 +7,7 @@
 import { OpenLayers } from './openlayers';
 import { PureComponent as Component, createElement as create } from 'react';
 import { render } from "react-dom";
-import { distinct, shuffle, storage } from "../common/common";
+import { debounce, distinct, shuffle, storage } from "../common/common";
 import * as ol from "openlayers";
 
 const theme = {
@@ -19,7 +19,15 @@ const theme = {
     incorrectBorderColor: [200, 20, 20, 1],
     borderColor: [200, 100, 20, 1],
     hintBorderColor: [200, 20, 200, 1],
+    noColor: [0, 0, 0, 0],
 };
+
+// to be pushed to the game level (population, size, etc., smaller is 'better')
+// roughly correlates to radius size for point features
+function rank(feature: ol.Feature) {
+    let n = (20 - Math.log(feature.get("population")));
+    return Math.round(n);
+}
 
 function color(color: any) {
     let result: [number, number, number, number] = color;
@@ -51,53 +59,118 @@ const styles = {
             }),
         })
     ],
-    wrong: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => [
-        new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: color(theme.incorrectFillColor),
-            }),
-            stroke: new ol.style.Stroke({
-                color: color(theme.incorrectBorderColor),
-                width: 2,
-            }),
-        }),
-        new ol.style.Style({
-            text: new ol.style.Text({
-                text: feature.get(quizlet.props.featureNameFieldName),
-                scale: 2,
-                fill: new ol.style.Fill({
-                    color: color(theme.textFillColor),
-                }),
-                stroke: new ol.style.Stroke({
-                    color: color(theme.incorrectBorderColor),
-                    width: 2,
-                }),
-            }),
-        }),
-    ],
-    indeterminate: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => {
+    wrong: (quizlet: QuizletComponent) => (feature: ol.Feature, res: number) => {
+
         let featureName = feature.get(quizlet.props.featureNameFieldName);
 
-        let showText = quizlet.state.hint && (1 < quizlet.state.hint);
-        let showOutline = quizlet.state.hint && (2 < quizlet.state.hint) && (quizlet.state.answer === featureName);
+        switch (feature.getGeometry().getType()) {
+            case "Point":
+                return new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 10,
+                        stroke: new ol.style.Stroke({
+                            color: color(theme.incorrectBorderColor),
+                            width: 1
+                        }),
+                        fill: new ol.style.Fill({
+                            color: color(theme.incorrectFillColor),
+                        }),
+                    }),
+                    text: new ol.style.Text({
+                        text: res < 50 ? featureName : "",
+                        scale: 1.5,
+                        stroke: new ol.style.Stroke({
+                            color: color(theme.textBorderColor),
+                            width: 1
+                        }),
+                        fill: new ol.style.Fill({
+                            color: color(theme.textFillColor),
+                        }),
+                    }),
+                });
 
-        return new ol.style.Style({
-            text: new ol.style.Text({
-                text: showText ? featureName : "",
-                scale: 2,
-                stroke: new ol.style.Stroke({
-                    color: color(theme.textBorderColor),
-                    width: 2
-                }),
-                fill: new ol.style.Fill({
-                    color: color(theme.textFillColor),
-                }),
-            }),
-            stroke: new ol.style.Stroke({
-                color: color(showOutline ? theme.hintBorderColor : theme.borderColor),
-                width: 2
-            }),
-        });
+            default:
+                return [
+
+                    new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: color(theme.incorrectFillColor),
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: color(theme.incorrectBorderColor),
+                            width: 2,
+                        }),
+                    }),
+                    new ol.style.Style({
+                        text: new ol.style.Text({
+                            text: feature.get(quizlet.props.featureNameFieldName),
+                            scale: 2,
+                            fill: new ol.style.Fill({
+                                color: color(theme.textFillColor),
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: color(theme.incorrectBorderColor),
+                                width: 2,
+                            }),
+                        }),
+                    }),
+                ];
+        }
+    },
+
+    indeterminate: (quizlet: QuizletComponent) => (feature: ol.Feature, res: number) => {
+        let featureName = feature.get(quizlet.props.featureNameFieldName);
+
+        let hint = quizlet.state.hint || 0;
+        let showText = 1 < hint;
+        let isCurrentFeature = (quizlet.state.answer === featureName);
+        let showOutline = (1 < hint) && isCurrentFeature;
+
+        switch (feature.getGeometry().getType()) {
+            case "Point":
+                return new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 18 + 2 * ((isCurrentFeature ? (quizlet.state.hint || 1) : 0) - rank(feature)),
+                        stroke: new ol.style.Stroke({
+                            color: color(theme.borderColor),
+                            width: 1 + hint / 2
+                        }),
+                        fill: new ol.style.Fill({
+                            color: color(theme.textFillColor),
+                        }),
+                    }),
+                    text: new ol.style.Text({
+                        text: res < (50 + 10 * hint) ? featureName : "",
+                        scale: 1.5,
+                        stroke: new ol.style.Stroke({
+                            color: color(theme.textBorderColor),
+                            width: 1
+                        }),
+                        fill: new ol.style.Fill({
+                            color: color(theme.textFillColor),
+                        }),
+                    }),
+                });
+
+            default:
+                return new ol.style.Style({
+                    text: new ol.style.Text({
+                        text: showText ? featureName : "",
+                        scale: 2,
+                        stroke: new ol.style.Stroke({
+                            color: color(theme.textBorderColor),
+                            width: 2
+                        }),
+                        fill: new ol.style.Fill({
+                            color: color(theme.textFillColor),
+                        }),
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: color(showOutline ? theme.hintBorderColor : theme.borderColor),
+                        width: 2
+                    }),
+                });
+        }
     }
 };
 
@@ -116,6 +189,7 @@ export interface QuizletStates {
 export interface QuizletProps {
     geojsonUrl: string;
     featureNameFieldName: string;
+    styler?: (feature: ol.Feature, res: number) => ol.style.Style;
 }
 
 export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
@@ -153,21 +227,27 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                         zoom: zoom
                     }))
                 }}
-                onFeatureClick={(args: { layer: ol.layer.Vector, feature: ol.Feature }) => {
+                onLayerAdd={(args: { layer: ol.layer.Vector }) => {
+                    let source = args.layer.getSource();
+                    source.once("addfeature", debounce(() => {
+                    }, 500));
+                }}
+                onFeatureClick={(args: {
+                    layer: ol.layer.Vector,
+                    feature: ol.Feature
+                }) => {
                     {
                         // bring-to-front
                         let source = args.layer.getSource();
                         source.removeFeature(args.feature);
-                        args.feature = args.feature.clone();
+                        args.feature.setId(Math.random() * 10000);
                         source.addFeature(args.feature);
                         source.changed();
                     }
                     let answers = this.state.answers;
                     if (!answers || !answers.length) {
-                        this.zoomToFeature(args.feature);
                         let featureName = args.feature.get(this.props.featureNameFieldName);
                         this.init(args.layer);
-                        this.state.answers.push(featureName);
                         this.next();
                     }
                     else if (this.test(args.feature)) {
@@ -232,6 +312,9 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         this.setState(prev => ({
             score: prev.score + value
         }));
+        let g = storage.getItem();
+        g.score = this.state.score;
+        storage.setItem(g);
     }
 
     generate(features: ol.Feature[]) {
@@ -244,7 +327,12 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         delete correctAnswers.score;
 
         let counts = {};
-        let answers = features.map(f => f.get(fieldName));
+        let answers = features
+            .filter(f => {
+                let r = rank(f);
+                return r < 5;
+            })
+            .map(f => f.get(fieldName));
 
         let values = distinct(correctAnswers).map(v => parseInt(v)).sort().reverse();
         // remove most correct answers until less than 10 remain
@@ -265,13 +353,12 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         return answers;
     }
 
-    init(layer: ol.layer.Vector, args?: { firstLetter: string }) {
+    init(layer: ol.layer.Vector) {
         let source = layer.getSource();
         let features = source.getFeatures();
         features.forEach(f => f.setStyle(styles.indeterminate(this)));
         this.setState(prev => ({
             layer: layer,
-            score: prev.score || 0,
             answers: this.generate(features)
         }));
 
@@ -290,13 +377,19 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         return result;
     }
 
-    zoomToFeature(feature: ol.Feature) {
-        let extent = feature.getGeometry().getExtent();
+    zoomToFeature(feature: ol.Feature, grow = 1) {
+
+        let scale = (extent: ol.Extent, scale: number) => {
+            let center = ol.extent.getCenter(extent);
+            let width = Math.max(1000, ol.extent.getWidth(extent), ol.extent.getHeight(extent)) * scale;
+            return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
+        }
+
         this.setState(prev => ({
             mapTrigger: {
                 message: "extent",
                 args: {
-                    extent: extent
+                    extent: scale(feature.getGeometry().getExtent(), grow)
                 }
             }
         }));
@@ -326,13 +419,13 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     hint() {
         let feature = this.find();
         if (!feature) return;
+        this.score(-5);
         let center = ol.extent.getCenter(feature.getGeometry().getExtent());
         this.setState(prev => ({
-            score: prev.score - 5,
             hint: (prev.hint || 0) + 1,
+            mapTrigger: { message: "refresh" },
             center: center,
-            zoom: Math.min(Math.max(5, prev.zoom + 1), 6),
-            mapTrigger: { message: "refresh" }
+            zoom: Math.min(12, 5 + (prev.hint || 0) + 1)
         }));
     }
 }

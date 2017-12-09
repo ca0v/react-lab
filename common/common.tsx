@@ -54,7 +54,7 @@ class LocalStorage<T> {
 
 }
 
-interface Dictionary<T> {
+export interface Dictionary<T> {
     [Key: string]: T;
 }
 

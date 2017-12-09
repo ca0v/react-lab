@@ -54,6 +54,19 @@ div.score > button:hover {
     display: block;
 }
 
+.toolbar > label {
+    display: inline-block;
+    padding-right: 4px;    
+}
+
+.toolbar > button {
+    font-size:24px;
+    border: none;
+    margin: 4px;
+    padding-right:4px;
+    border-radius:8px;
+}
+    
 button.active {
     border: 1px solid rgb(200, 255, 200);
     color: rgb(200, 255, 200);

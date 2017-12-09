@@ -5,6 +5,7 @@ import {
     ReactElement
 } from 'react';
 
+import { Toolbar } from "./index";
 import { debounce } from "../common/common";
 import * as ol from "openlayers";
 
@@ -14,7 +15,7 @@ function addSourceLayer(map: ol.Map, source: ol.source.Vector) {
     });
     map.addLayer(vector);
 
-    return vector;    
+    return vector;
 }
 
 function addGeoJsonLayer(map: ol.Map, url: string) {
@@ -76,12 +77,6 @@ interface OpenLayersState {
     map?: ol.Map;
     target: Element | null;
     activeDrawingTool?: ol.geom.GeometryType;
-}
-
-class Toolbar extends Component<{}, {}> {
-    render() {
-        return <span className="toolbar">{this.props.children}</span>;
-    }
 }
 
 export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
@@ -234,7 +229,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                         });
                     }
                 })
-                
+
             }
             if (this.props.layers.geoJson) {
                 this.props.layers.geoJson.forEach(url => {

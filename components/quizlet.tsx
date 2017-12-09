@@ -12,6 +12,7 @@ import * as ol from "openlayers";
 
 const theme = {
     textFillColor: [200, 200, 200, 1],
+    pointFillColor: [200, 200, 200, 0.5],
     textBorderColor: [200, 100, 20, 1],
     correctFillColor: [20, 100, 20, 0.3],
     correctBorderColor: [20, 100, 20, 1],
@@ -22,11 +23,10 @@ const theme = {
     noColor: [0, 0, 0, 0],
 };
 
-// to be pushed to the game level (population, size, etc., smaller is 'better')
-// roughly correlates to radius size for point features
+// converts [0..1] into 10..1
 function rank(feature: ol.Feature) {
-    let n = (20 - Math.log(feature.get("population")));
-    return Math.round(n);
+    let weight = feature.get("weight") || 0;
+    return Math.max(1, Math.min(10, 10 - Math.round(10 * weight)));
 }
 
 function color(color: any) {
@@ -78,9 +78,9 @@ const styles = {
                     }),
                     text: new ol.style.Text({
                         text: res < 50 ? featureName : "",
-                        scale: 1.5,
+                        scale: 2,
                         stroke: new ol.style.Stroke({
-                            color: color(theme.textBorderColor),
+                            color: color(theme.incorrectBorderColor),
                             width: 1
                         }),
                         fill: new ol.style.Fill({
@@ -125,22 +125,27 @@ const styles = {
         let showText = 1 < hint;
         let isCurrentFeature = (quizlet.state.answer === featureName);
         let showOutline = (1 < hint) && isCurrentFeature;
+        let weight = feature.get("weight") || 1;
+        let radius = 10 + Math.round(weight * 20);
+        if (isCurrentFeature && hint) radius += 2 * hint;
+
+        if ((weight / res) < (0.5 / 8196)) return;
 
         switch (feature.getGeometry().getType()) {
             case "Point":
-                return new ol.style.Style({
+                return (radius > 0) && new ol.style.Style({
                     image: new ol.style.Circle({
-                        radius: 18 + 2 * ((isCurrentFeature ? (quizlet.state.hint || 1) : 0) - rank(feature)),
+                        radius: radius,
                         stroke: new ol.style.Stroke({
                             color: color(theme.borderColor),
                             width: 1 + hint / 2
                         }),
                         fill: new ol.style.Fill({
-                            color: color(theme.textFillColor),
+                            color: color(theme.pointFillColor),
                         }),
                     }),
                     text: new ol.style.Text({
-                        text: res < (50 + 10 * hint) ? featureName : "",
+                        text: (res < (50 + 10 * hint) ? featureName : ""),
                         scale: 1.5,
                         stroke: new ol.style.Stroke({
                             color: color(theme.textBorderColor),
@@ -196,9 +201,9 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     constructor(props: QuizletProps) {
         super(props);
         this.state = {
-            answer: "Click the map to Begin!",
+            answer: "Click a Feature to Begin!",
             center: [0, 0],
-            zoom: 1,
+            zoom: 3,
             score: storage.getItem().score || 0,
             features: new ol.Collection<ol.Feature>(),
             answers: [],
@@ -326,12 +331,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         delete correctAnswers.score;
 
         let counts = {};
-        let answers = features
-            .filter(f => {
-                let r = rank(f);
-                return r < 5;
-            })
-            .map(f => f.get(fieldName));
+        let answers = features.map(f => f.get(fieldName));
 
         let values = distinct(correctAnswers).map(v => parseInt(v)).sort().reverse();
         // remove most correct answers until less than 10 remain

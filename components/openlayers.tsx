@@ -8,6 +8,15 @@ import {
 import { debounce } from "../common/common";
 import * as ol from "openlayers";
 
+function addSourceLayer(map: ol.Map, source: ol.source.Vector) {
+    let vector = new ol.layer.Vector({
+        source: source
+    });
+    map.addLayer(vector);
+
+    return vector;    
+}
+
 function addGeoJsonLayer(map: ol.Map, url: string) {
     // how to access parent map to add layer...should be a inferred "props" of sorts
     let vector = new ol.layer.Vector({
@@ -54,7 +63,8 @@ interface OpenLayersProps {
         scaleLine?: boolean;
     };
     layers?: {
-        geoJson?: string[]
+        geoJson?: string[];
+        source?: ol.source.Vector[];
     };
     onFeatureClick?: (args: { layer: ol.layer.Vector, feature: ol.Feature }) => void;
     onClick?: (args: { coordinate: ol.Coordinate }) => void;
@@ -204,6 +214,28 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         }));
 
         if (this.props.layers) {
+            if (this.props.layers.source) {
+                this.props.layers.source.forEach(source => {
+                    let vector = addSourceLayer(map, source);
+                    if (this.props.onLayerAdd) {
+                        this.props.onLayerAdd({ layer: vector });
+                    }
+                    if (this.props.onFeatureClick) {
+                        map.on("click", (args: ol.MapBrowserEvent) => {
+                            if (this.props.onFeatureClick) {
+                                let features = map.getFeaturesAtPixel(args.pixel);
+                                if (!features) return;
+                                if (features.length !== 1) return;
+                                let feature = features[0];
+                                if (feature instanceof ol.Feature) {
+                                    this.props.onFeatureClick({ layer: vector, feature: feature });
+                                }
+                            }
+                        });
+                    }
+                })
+                
+            }
             if (this.props.layers.geoJson) {
                 this.props.layers.geoJson.forEach(url => {
                     let vector = addGeoJsonLayer(map, url);

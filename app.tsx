@@ -15,6 +15,59 @@ if (0) {
     client.send();
 }
 
+interface IPacket<T> {
+    type: string;
+    url: string;
+    name: string; // primaryFieldName
+    radius: (d: T) => number;
+    filter: (d: T) => boolean;
+}
+
+interface IGeoJson<T> {
+    type: "FeatureCollection";
+    features: Array<{
+        type: string;
+        properties: T;
+        geometry: {
+            type: string;
+            coordinates: any;
+        }
+    }>;
+}
+
+class GeoJsonLoader<T> {
+
+    load(packet: IPacket<T>, cb: (data: IGeoJson<T>) => void) {
+        let client = new XMLHttpRequest();
+        client.open("GET", packet.url, true);
+        client.onloadend = () => {
+            let geoJson: IGeoJson<T> = JSON.parse(client.responseText);
+            geoJson.features = geoJson.features.filter(f => packet.filter(f.properties));
+            cb(geoJson);
+        };
+        client.send();
+    }
+
+}
+
+function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
+    switch (packet.type) {
+        case "geojson":
+            let loader = new GeoJsonLoader<any>();
+            loader.load(packet, geojson => {
+                let features = geojson.features.map(f => {
+                    let feature = new ol.Feature();
+                    let geom = new ol.geom.Point(f.geometry.coordinates, "XY");
+                    geom.transform("EPSG:4326", "EPSG:3857");
+                    feature.setGeometry(geom);
+                    feature.setProperties(f.properties);
+                    return feature;
+                });
+                source.addFeatures(features);
+            });
+    }
+}
+
 const packets = {
     "usa great lakes": {
         url: "https://gist.githubusercontent.com/tristanwietsma/6046119/raw/f5e8654b5a811199d2f2190b3090d1c1e3488436/greatlakes.geojson",
@@ -29,9 +82,12 @@ const packets = {
         name: "name",
     },
     "world city centers": {
+        type: "geojson",
         url: "./data/cities.json",
+        loader: GeoJsonLoader,
         name: "city",
         radius: (d: { population: number }) => Math.log(d.population),
+        filter: (d: { population: number }) => d.population > 10000000,
     },
     "usa states": {
         url: "./data/us-states.json",
@@ -41,9 +97,8 @@ const packets = {
 
 export interface AppState {
     orientation: "portrait" | "landscape";
-    url: string;
+    source: ol.source.Vector;
     featureNameFieldName: string;
-    styler?: (feature: ol.Feature, res: number) => ol.style.Style;
 }
 
 export interface AppProps {
@@ -57,21 +112,24 @@ export class App extends Component<AppProps, AppState> {
 
     constructor(props: AppProps) {
         super(props);
-        let source = packets["world city centers"];
+        let packet = packets["world city centers"];
+        let vectorSource = new ol.source.Vector();
         this.state = {
             orientation: "landscape",
-            url: source.url,
-            featureNameFieldName: source.name,
+            source: vectorSource,
+            featureNameFieldName: packet.name,
         };
+
+        populateLayerSource(vectorSource, packet);
     }
+    
 
     render(): any {
         return <div className="app">
             <title>React + Openlayers Lab</title>
             <QuizletComponent
-                geojsonUrl={this.state.url}
+                source={this.state.source}
                 featureNameFieldName={this.state.featureNameFieldName}
-                styler={this.state.styler}
             />
         </div>;
     }

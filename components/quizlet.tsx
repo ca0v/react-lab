@@ -187,9 +187,8 @@ export interface QuizletStates {
 }
 
 export interface QuizletProps {
-    geojsonUrl: string;
+    source: ol.source.Vector;
     featureNameFieldName: string;
-    styler?: (feature: ol.Feature, res: number) => ol.style.Style;
 }
 
 export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
@@ -219,7 +218,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                 }}
                 bingImagerySet="Aerial"
                 layers={{
-                    geoJson: [this.props.geojsonUrl]
+                    source: [this.props.source]
                 }}
                 setCenter={(center, zoom) => {
                     this.setState(() => ({

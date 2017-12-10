@@ -7,8 +7,19 @@
 import { OpenLayers } from './openlayers';
 import { PureComponent as Component, createElement as create } from 'react';
 import { render } from "react-dom";
-import { debounce, distinct, shuffle, storage } from "../common/common";
+import { Dictionary, debounce, distinct, EventDispatcher, shuffle, LocalStorage } from "../common/common";
 import * as ol from "openlayers";
+
+interface IStorage {
+    score: number;
+    stats: Dictionary<{
+        correct: number;
+        incorrect: number;
+        hint: number;
+    }>
+};
+
+const questionsPerQuiz = 3;
 
 const theme = {
     textFillColor: [200, 200, 200, 1],
@@ -23,17 +34,20 @@ const theme = {
     noColor: [0, 0, 0, 0],
 };
 
-// converts [0..1] into 10..1
-function rank(feature: ol.Feature) {
-    let weight = feature.get("weight") || 0;
-    return Math.max(1, Math.min(10, 10 - Math.round(10 * weight)));
-}
-
 function color(color: any) {
     let result: [number, number, number, number] = color;
     return result;
 }
 
+function scaleExtent(extent: ol.Extent, scale = 1) {
+    let center = ol.extent.getCenter(extent);
+    let width = 0.5 * Math.max(1000, ol.extent.getWidth(extent), ol.extent.getHeight(extent)) * scale;
+    return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
+}
+
+/**
+ * Styles for the various question states and geometries...any react goodies we can use here?
+ */
 const styles = {
     correct: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => [
         new ol.style.Style({
@@ -59,7 +73,8 @@ const styles = {
             }),
         })
     ],
-    wrong: (quizlet: QuizletComponent) => (feature: ol.Feature, res: number) => {
+
+    incorrect: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => {
 
         let featureName = feature.get(quizlet.props.featureNameFieldName);
 
@@ -118,7 +133,7 @@ const styles = {
         }
     },
 
-    indeterminate: (quizlet: QuizletComponent) => (feature: ol.Feature, res: number) => {
+    indeterminate: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => {
         let featureName = feature.get(quizlet.props.featureNameFieldName);
 
         let hint = quizlet.state.hint || 0;
@@ -129,11 +144,12 @@ const styles = {
         let radius = 10 + Math.round(weight * 20);
         if (isCurrentFeature && hint) radius += 2 * hint;
 
-        if ((weight / res) < (0.5 / 8196)) return;
+        if ((weight / res) < (0.5 / 8196)) return new ol.style.Style();
 
         switch (feature.getGeometry().getType()) {
             case "Point":
-                return (radius > 0) && new ol.style.Style({
+                if (radius <= 0) return new ol.style.Style();
+                return new ol.style.Style({
                     image: new ol.style.Circle({
                         radius: radius,
                         stroke: new ol.style.Stroke({
@@ -181,33 +197,164 @@ const styles = {
 
 export interface QuizletStates {
     answer?: string;
-    layer?: ol.layer.Vector;
     center: [number, number];
     zoom: number;
-    score: number;
     features: ol.Collection<ol.Feature>;
     mapTrigger?: { message: string, args: any[] };
     hint?: number;
     answers: string[];
+    score: number;
 }
 
 export interface QuizletProps {
+    quizletName: string;
     source: ol.source.Vector;
     featureNameFieldName: string;
 }
 
 export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
+    private dispatcher = new EventDispatcher<any>();
+
     constructor(props: QuizletProps) {
         super(props);
+
+        let storage = new LocalStorage<Dictionary<IStorage>>();
+        let data = storage.getItem();
+        let statInfo = data[props.quizletName] = (data[props.quizletName] || {
+            stats: {}
+        });
+
         this.state = {
-            answer: "Click a Feature to Begin!",
             center: [0, 0],
             zoom: 3,
-            score: storage.getItem().score || 0,
             features: new ol.Collection<ol.Feature>(),
             answers: [],
+            score: statInfo.score || 0
         }
+
+        document.addEventListener("keypress", (args) => {
+            switch (args.key.toUpperCase()) {
+                case "H": this.dispatcher.trigger("hint"); break;
+                case "S": this.skip(); break;
+            }
+        });
+
+        this.dispatcher.on("adjust-answers", (args: { answers: string[] }) => {
+            // remove most correct answers until less than questionsPerQuiz remain
+            let counts: any = {};
+
+            Object.keys(statInfo.stats).forEach(k => counts[statInfo.stats[k].correct] = true);
+            let values = Object.keys(counts).map(v => parseInt(v)).sort().reverse();
+
+            let nextAnswers = args.answers;
+
+            while (values.length && nextAnswers.length > questionsPerQuiz) {
+                args.answers = nextAnswers;
+                let maxCount = values.pop() || 0;
+                console.log(`removing where count >= ${maxCount}`);
+                nextAnswers = nextAnswers.filter(f => !statInfo.stats[f] || (statInfo.stats[f].correct < maxCount));
+            }
+
+            console.log(args.answers);
+
+        });
+
+        this.dispatcher.on("correct", () => {
+            console.log("correct");
+            this.score(20);
+
+            let stats = this.getStat(data);
+            if (stats) {
+                stats.correct++;
+                statInfo.score = this.state.score;
+                storage.setItem(data);
+            }
+
+            let feature = this.find();
+            if (feature) {
+                feature.setStyle(styles.correct(this));
+                this.state.features.remove(feature);
+                this.state.features.push(feature);
+
+                if (!this.next()) {
+                    setTimeout(() => {
+                        this.setState(prev => ({
+                            mapTrigger: {
+                                message: "extent",
+                                args: {
+                                    extent: scaleExtent(this.props.source.getExtent())
+                                }
+                            }
+                        }));
+                        this.init();
+                    }, 1000);
+                }
+            }
+        });
+
+        this.dispatcher.on("incorrect", () => {
+            console.log("incorrect");
+            this.score(-20);
+
+            let stats = this.getStat(data);
+            if (stats) {
+                stats.incorrect++;
+                statInfo.score = this.state.score;
+                storage.setItem(data);
+            }
+
+
+            let feature = this.find();
+            if (feature) {
+                feature.setStyle(styles.incorrect(this));
+                this.zoomToFeature(feature);
+                this.state.features.remove(feature);
+                this.state.features.push(feature);
+                this.skip();
+            }
+        });
+
+        this.dispatcher.on("hint", () => {
+            console.log("hint");
+
+            let stats = this.getStat(data);
+            if (stats) {
+                stats.hint++;
+                data[this.props.quizletName].score = this.state.score;
+                storage.setItem(data);
+            }
+
+            let feature = this.find();
+            if (!feature) return;
+
+            this.score(-5);
+
+            let center = ol.extent.getCenter(feature.getGeometry().getExtent());
+            this.setState(prev => ({
+                hint: (prev.hint || 0) + 1,
+                mapTrigger: { message: "refresh" },
+                center: center,
+                zoom: Math.min(12, 5 + (prev.hint || 0) + 1)
+            }));
+        });
+    }
+
+    private getStat(data: Dictionary<IStorage>) {
+        if (this.state.answer) {
+            let storage = data[this.props.quizletName] = (data[this.props.quizletName] || {});
+            let stats = storage.stats = (storage.stats || {});
+            let stat = stats[this.state.answer] = (stats[this.state.answer] || {
+                correct: 0,
+                incorrect: 0,
+                hint: 0
+            });
+            return stat;
+        }
+        return null;
+    }
+
+    componentDidUpdate(prevProp: QuizletProps, prevState: QuizletStates) {
     }
 
     render() {
@@ -234,46 +381,27 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                 onLayerAdd={(args: { layer: ol.layer.Vector }) => {
                     let source = args.layer.getSource();
                     source.once("addfeature", debounce(() => {
+                        let extent = source.getExtent();
+                        this.setState(prev => ({
+                            mapTrigger: {
+                                message: "extent",
+                                args: {
+                                    extent: scaleExtent(extent)
+                                }
+                            }
+                        }));
                     }, 500));
                 }}
                 onFeatureClick={(args: {
                     layer: ol.layer.Vector,
                     feature: ol.Feature
                 }) => {
-                    {
-                        // bring-to-front
-                        let source = args.layer.getSource();
-                        source.removeFeature(args.feature);
-                        args.feature.setId(Math.random() * 10000);
-                        source.addFeature(args.feature);
-                        source.changed();
-                    }
-                    let answers = this.state.answers;
-                    if (!answers || !answers.length) {
-                        let featureName = args.feature.get(this.props.featureNameFieldName);
-                        this.init(args.layer);
-                        this.next();
-                    }
-                    else if (this.test(args.feature)) {
-                        this.score(20);
-                        args.feature.setStyle(styles.correct(this));
-                        if (this.state.answer && 0 === this.state.hint) {
-                            let correctAnswers = storage.getItem();
-                            correctAnswers[this.state.answer] = (correctAnswers[this.state.answer] || 0) + 1;
-                            correctAnswers.score = this.state.score;
-                            storage.setItem(correctAnswers);
-                        }
-                        this.next();
-                        this.state.features.push(args.feature);
+                    if (!this.state.answer) {
+                        this.init();
+                    } else if (this.test(args.feature)) {
+                        this.dispatcher.trigger("correct");
                     } else {
-                        this.score(-20);
-                        let actualFeature = this.find();
-                        if (actualFeature) {
-                            actualFeature.setStyle(styles.wrong(this));
-                            this.zoomToFeature(actualFeature);
-                            this.state.features.push(actualFeature);
-                            this.skip();
-                        }
+                        this.dispatcher.trigger("incorrect");
                     }
                 }}
             >
@@ -285,9 +413,10 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     allowZoom={true}
                     allowPan={true}
                     orientation="landscape"
-                    onClick={(args: { coordinate: ol.Coordinate }) => {
+                    onClick={(args: { coordinate: ol.Coordinate, map: ol.Map }) => {
                         this.setState(prev => ({
-                            center: args.coordinate
+                            center: args.coordinate,
+                            zoom: Math.max(prev.zoom, 5 + args.map.getView().getZoom()),
                         }))
                     }}
                     layers={{ geoJson: ["./data/countries.json"] }}
@@ -299,7 +428,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             {!!this.state.answers.length && <div className="score">Remaining<label>{(1 + this.state.answers.length) || "?"}</label></div>}
             <br /> <div className="score">
                 <button onClick={() => this.skip()}>Skip</button>
-                <button onClick={() => this.hint()}>Hint</button>
+                <button onClick={() => this.dispatcher.trigger("hint")}>Hint</button>
             </div>
         </div >;
     }
@@ -316,57 +445,37 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         this.setState(prev => ({
             score: prev.score + value
         }));
-        let g = storage.getItem();
-        g.score = this.state.score;
-        storage.setItem(g);
     }
 
     generate(features: ol.Feature[]) {
-        // remove answers that have been answered correctly
         let fieldName = this.props.featureNameFieldName;
-        let correctAnswers = storage.getItem();
-        this.setState(prev => ({
-            score: correctAnswers.score || 0
-        }));
-        delete correctAnswers.score;
-
-        let counts = {};
         let answers = features.map(f => f.get(fieldName));
-
-        let values = distinct(correctAnswers).map(v => parseInt(v)).sort().reverse();
-        // remove most correct answers until less than 10 remain
         {
-            let nextAnswers = answers;
-            while (values.length && nextAnswers.length > 10) {
-                answers = nextAnswers;
-                let maxCount = values.pop() || 0;
-                console.log(`removing where count >= ${maxCount}`);
-                nextAnswers = nextAnswers.filter(f => !correctAnswers[f] || (correctAnswers[f] < maxCount));
-            }
+            let byref = { answers: answers };
+            this.dispatcher.trigger("adjust-answers", byref);
+            answers = byref.answers;
         }
-
+        console.log(answers);
         shuffle(answers);
-        if (answers.length > 10) {
-            answers = answers.splice(0, 10);
+        console.log(answers);
+        if (answers.length > questionsPerQuiz) {
+            answers = answers.splice(0, questionsPerQuiz);
         }
+        console.log(answers);
         return answers;
     }
 
-    init(layer: ol.layer.Vector) {
-        let source = layer.getSource();
+    init() {
+        let source = this.props.source;
         let features = source.getFeatures();
         features.forEach(f => f.setStyle(styles.indeterminate(this)));
+        let answers = this.generate(features);
+        let answer = answers.pop();
+        this.state.features.clear();
         this.setState(prev => ({
-            layer: layer,
-            answers: this.generate(features)
+            answer: answer,
+            answers: answers,
         }));
-
-        document.addEventListener("keypress", (args) => {
-            switch (args.key.toUpperCase()) {
-                case "H": this.hint(); break;
-                case "S": this.skip(); break;
-            }
-        });
     }
 
     // return true if the feature matches the correct answer
@@ -376,19 +485,13 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         return result;
     }
 
-    zoomToFeature(feature: ol.Feature, grow = 1) {
-
-        let scale = (extent: ol.Extent, scale: number) => {
-            let center = ol.extent.getCenter(extent);
-            let width = Math.max(1000, ol.extent.getWidth(extent), ol.extent.getHeight(extent)) * scale;
-            return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
-        }
+    zoomToFeature(feature: ol.Feature, grow = 2) {
 
         this.setState(prev => ({
             mapTrigger: {
                 message: "extent",
                 args: {
-                    extent: scale(feature.getGeometry().getExtent(), grow)
+                    extent: scaleExtent(feature.getGeometry().getExtent(), grow)
                 }
             }
         }));
@@ -396,16 +499,16 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
     next() {
         let answers = this.state.answers;
-        if (!answers.length) return;
+        if (!answers.length) return false;
         this.setState(prev => ({
             answer: answers.pop(),
             hint: 0,
         }));
+        return true;
     }
 
     find() {
-        if (!this.state.layer) return;
-        let source = this.state.layer.getSource();
+        let source = this.props.source;
         if (!source) return;
         let features = source.getFeatures().filter(f => f.get(this.props.featureNameFieldName) === this.state.answer);
         if (features && features.length === 1) {
@@ -415,16 +518,4 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         return null;
     }
 
-    hint() {
-        let feature = this.find();
-        if (!feature) return;
-        this.score(-5);
-        let center = ol.extent.getCenter(feature.getGeometry().getExtent());
-        this.setState(prev => ({
-            hint: (prev.hint || 0) + 1,
-            mapTrigger: { message: "refresh" },
-            center: center,
-            zoom: Math.min(12, 5 + (prev.hint || 0) + 1)
-        }));
-    }
 }

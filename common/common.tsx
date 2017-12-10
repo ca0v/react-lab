@@ -36,7 +36,7 @@ export function shuffle(array: any[]) {
     return array;
 }
 
-class LocalStorage<T> {
+export class LocalStorage<T> {
 
     localStorage = window.localStorage || {
         setItem: (value: string) => { },
@@ -64,8 +64,6 @@ export function distinct<T>(d: Dictionary<T>): string[] {
     return Object.keys(map);
 }
 
-export let storage = new LocalStorage<Dictionary<number>>();
-
 export function input(c: React.PureComponent) {
     let o: any = c.state;
     let inputs = Object.keys(o).map(k => {
@@ -92,3 +90,22 @@ export function input(c: React.PureComponent) {
     });
     return <div>{inputs}</div>;
 }
+
+export class EventDispatcher<T> {
+
+    events: Dictionary<Array<(data: T | null) => void>>;
+
+    on(event: string, callback: (data: T | null) => void) {
+        this.events = this.events || [];
+        this.events[event] = this.events[event] || [];
+        this.events[event].push(callback);
+    }
+
+    trigger(event: string, data?: T) {
+        if (!this.events) return;
+        var handlers = this.events[event];
+        if (!handlers) return;
+        handlers.forEach(h => h(data || null));
+    };
+}
+

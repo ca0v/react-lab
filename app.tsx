@@ -105,6 +105,7 @@ export interface AppState {
     orientation: "portrait" | "landscape";
     source: ol.source.Vector;
     featureNameFieldName: string;
+    packetName?: string;
 }
 
 export interface AppProps {
@@ -129,9 +130,12 @@ export class App extends Component<AppProps, AppState> {
 
     private pickPacket(packetName: string) {
         let packet = packets[packetName];
+
         this.setState(prev => ({
+            packetName: packetName,
             featureNameFieldName: packet.name,
         }));
+
         populateLayerSource(this.state.source, packet);
     }
 
@@ -143,6 +147,7 @@ export class App extends Component<AppProps, AppState> {
                 {Object.keys(packets).map(p => <button onClick={() => this.pickPacket(p)}>{p}</button>)}
             </Toolbar>}
             {!!this.state.featureNameFieldName && <QuizletComponent
+                quizletName={this.state.packetName || ""}
                 source={this.state.source}
                 featureNameFieldName={this.state.featureNameFieldName}
             />}

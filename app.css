@@ -82,15 +82,18 @@ button.active {
 
 .maplet {
     display: inline-grid;
-    border: 8px solid rgb(97, 112, 106);
-    margin: 4px;
+    border: 2px solid rgb(20,20,20);
 }
 
 .maplet.inset {
     position:absolute;
-    bottom:0;
-    right:0;
+    bottom:4px;
+    right:4px;
     background: rgb(20, 20, 20);
+}
+
+.maplet.inset .toolbar {
+    display: none;
 }
 
 @media (max-width: 960px) {

@@ -68,7 +68,7 @@ interface OpenLayersProps {
         source?: ol.source.Vector[];
     };
     onFeatureClick?: (args: { layer: ol.layer.Vector, feature: ol.Feature }) => void;
-    onClick?: (args: { coordinate: ol.Coordinate }) => void;
+    onClick?: (args: { coordinate: ol.Coordinate, map: ol.Map }) => void;
     onLayerAdd?: (args: { layer: ol.layer.Vector }) => void;
     trigger?: { message: string, args: any[] };
 }
@@ -177,7 +177,10 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         }
 
         map.on("singleclick", (args: ol.MapBrowserEvent) => {
-            this.props.onClick && this.props.onClick({ coordinate: args.coordinate });
+            this.props.onClick && this.props.onClick({
+                coordinate: args.coordinate,
+                map: map,
+            });
         });
 
         map.on("moveend", debounce(() => {

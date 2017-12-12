@@ -86,6 +86,7 @@ const packets: Dictionary<IPacket<any>> = {
         type: "geojson",
         url: "./data/us-states.json",
         name: "name",
+        filter: (d: { name: string }) => (d.name !== "Alaska" && d.name !== "Hawaii" && d.name !== "Puerto Rico") || 0.5 < Math.random(),
     },
     "US Great Lakes": {
         type: "geojson",

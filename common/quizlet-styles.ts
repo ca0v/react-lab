@@ -6,6 +6,7 @@ function color(color: any) {
 }
 
 const theme = {
+    reddotColor: [255, 0, 0, 1],
     textFillColor: [200, 200, 200, 1],
     pointFillColor: [200, 200, 200, 0.5],
     textBorderColor: [200, 100, 20, 1],
@@ -130,23 +131,24 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
     let isCurrentFeature = (quizlet.state.answer === featureName);
     let showOutline = (1 < hint) && isCurrentFeature;
     let weight = feature.get("weight") || 1;
-    let radius = 10 + Math.round(weight * 20);
-    if (isCurrentFeature && hint) radius += 2 * hint;
+    let radius = Math.max(1, 10 + Math.round(weight * 20));
 
-    if ((weight / res) < (0.5 / 8196)) return new ol.style.Style();
+    radius = Math.min(25, Math.max(1, (weight / res) / (0.5 / 8196)));
 
+    if (isCurrentFeature && hint) radius += 1 * hint;
+    let reddot = radius === 1;
+    
     switch (feature.getGeometry().getType()) {
         case "Point":
-            if (radius <= 0) return new ol.style.Style();
             return new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: radius,
                     stroke: new ol.style.Stroke({
-                        color: color(theme.borderColor),
+                        color: color(!reddot ? theme.borderColor: theme.reddotColor),
                         width: 1 + hint / 2
                     }),
                     fill: new ol.style.Fill({
-                        color: color(theme.pointFillColor),
+                        color: color(!reddot ? theme.pointFillColor : theme.reddotColor),
                     }),
                 }),
                 text: new ol.style.Text({

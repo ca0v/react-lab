@@ -8,192 +8,16 @@ import { OpenLayers } from './openlayers';
 import { PureComponent as Component, createElement as create } from 'react';
 import { render } from "react-dom";
 import { Dictionary, debounce, distinct, EventDispatcher, shuffle, LocalStorage } from "../common/common";
+import { styles } from "../common/quizlet-styles";
+import { storage } from "../common/storage";
+
 import * as ol from "openlayers";
-
-interface IStorage {
-    score: number;
-    stats: Dictionary<{
-        correct: number;
-        incorrect: number;
-        hint: number;
-    }>
-};
-
-const questionsPerQuiz = 3;
-
-const theme = {
-    textFillColor: [200, 200, 200, 1],
-    pointFillColor: [200, 200, 200, 0.5],
-    textBorderColor: [200, 100, 20, 1],
-    correctFillColor: [20, 100, 20, 0.3],
-    correctBorderColor: [20, 100, 20, 1],
-    incorrectFillColor: [200, 20, 20, 0.3],
-    incorrectBorderColor: [200, 20, 20, 1],
-    borderColor: [200, 100, 20, 1],
-    hintBorderColor: [200, 20, 200, 1],
-    noColor: [0, 0, 0, 0],
-};
-
-function color(color: any) {
-    let result: [number, number, number, number] = color;
-    return result;
-}
 
 function scaleExtent(extent: ol.Extent, scale = 1) {
     let center = ol.extent.getCenter(extent);
     let width = 0.5 * Math.max(1000, ol.extent.getWidth(extent), ol.extent.getHeight(extent)) * scale;
     return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
 }
-
-/**
- * Styles for the various question states and geometries...any react goodies we can use here?
- */
-const styles = {
-    correct: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => [
-        new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: color(theme.correctFillColor),
-            }),
-            stroke: new ol.style.Stroke({
-                color: color(theme.correctBorderColor),
-                width: 2
-            }),
-        }),
-        new ol.style.Style({
-            text: new ol.style.Text({
-                text: `${feature.get(quizlet.props.featureNameFieldName)}`,
-                scale: 2,
-                fill: new ol.style.Fill({
-                    color: color(theme.textFillColor),
-                }),
-                stroke: new ol.style.Stroke({
-                    color: color(theme.correctBorderColor),
-                    width: 2,
-                }),
-            }),
-        })
-    ],
-
-    incorrect: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => {
-
-        let featureName = feature.get(quizlet.props.featureNameFieldName);
-
-        switch (feature.getGeometry().getType()) {
-            case "Point":
-                return new ol.style.Style({
-                    image: new ol.style.Circle({
-                        radius: 10,
-                        stroke: new ol.style.Stroke({
-                            color: color(theme.incorrectBorderColor),
-                            width: 1
-                        }),
-                        fill: new ol.style.Fill({
-                            color: color(theme.incorrectFillColor),
-                        }),
-                    }),
-                    text: new ol.style.Text({
-                        text: res < 50 ? featureName : "",
-                        scale: 2,
-                        stroke: new ol.style.Stroke({
-                            color: color(theme.incorrectBorderColor),
-                            width: 1
-                        }),
-                        fill: new ol.style.Fill({
-                            color: color(theme.textFillColor),
-                        }),
-                    }),
-                });
-
-            default:
-                return [
-
-                    new ol.style.Style({
-                        fill: new ol.style.Fill({
-                            color: color(theme.incorrectFillColor),
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: color(theme.incorrectBorderColor),
-                            width: 2,
-                        }),
-                    }),
-                    new ol.style.Style({
-                        text: new ol.style.Text({
-                            text: feature.get(quizlet.props.featureNameFieldName),
-                            scale: 2,
-                            fill: new ol.style.Fill({
-                                color: color(theme.textFillColor),
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: color(theme.incorrectBorderColor),
-                                width: 2,
-                            }),
-                        }),
-                    }),
-                ];
-        }
-    },
-
-    indeterminate: (quizlet: QuizletComponent) => (feature: ol.Feature | ol.render.Feature, res: number) => {
-        let featureName = feature.get(quizlet.props.featureNameFieldName);
-
-        let hint = quizlet.state.hint || 0;
-        let showText = 1 < hint;
-        let isCurrentFeature = (quizlet.state.answer === featureName);
-        let showOutline = (1 < hint) && isCurrentFeature;
-        let weight = feature.get("weight") || 1;
-        let radius = 10 + Math.round(weight * 20);
-        if (isCurrentFeature && hint) radius += 2 * hint;
-
-        if ((weight / res) < (0.5 / 8196)) return new ol.style.Style();
-
-        switch (feature.getGeometry().getType()) {
-            case "Point":
-                if (radius <= 0) return new ol.style.Style();
-                return new ol.style.Style({
-                    image: new ol.style.Circle({
-                        radius: radius,
-                        stroke: new ol.style.Stroke({
-                            color: color(theme.borderColor),
-                            width: 1 + hint / 2
-                        }),
-                        fill: new ol.style.Fill({
-                            color: color(theme.pointFillColor),
-                        }),
-                    }),
-                    text: new ol.style.Text({
-                        text: (res < (50 + 10 * hint) ? featureName : ""),
-                        scale: 1.5,
-                        stroke: new ol.style.Stroke({
-                            color: color(theme.textBorderColor),
-                            width: 1
-                        }),
-                        fill: new ol.style.Fill({
-                            color: color(theme.textFillColor),
-                        }),
-                    }),
-                });
-
-            default:
-                return new ol.style.Style({
-                    text: new ol.style.Text({
-                        text: showText ? featureName : "",
-                        scale: 2,
-                        stroke: new ol.style.Stroke({
-                            color: color(theme.textBorderColor),
-                            width: 2
-                        }),
-                        fill: new ol.style.Fill({
-                            color: color(theme.textFillColor),
-                        }),
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: color(showOutline ? theme.hintBorderColor : theme.borderColor),
-                        width: 2
-                    }),
-                });
-        }
-    }
-};
 
 export interface QuizletStates {
     answer?: string;
@@ -210,6 +34,7 @@ export interface QuizletProps {
     quizletName: string;
     source: ol.source.Vector;
     featureNameFieldName: string;
+    questionsPerQuiz: number;
 }
 
 export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
@@ -219,18 +44,12 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     constructor(props: QuizletProps) {
         super(props);
 
-        let storage = new LocalStorage<Dictionary<IStorage>>();
-        let data = storage.getItem();
-        let statInfo = data[props.quizletName] = (data[props.quizletName] || {
-            stats: {}
-        });
-
         this.state = {
             center: [0, 0],
             zoom: 3,
             features: new ol.Collection<ol.Feature>(),
             answers: [],
-            score: statInfo.score || 0
+            score: storage.force(props.quizletName).score
         }
 
         document.addEventListener("keypress", (args) => {
@@ -244,34 +63,39 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             // remove most correct answers until less than questionsPerQuiz remain
             let counts: any = {};
 
-            Object.keys(statInfo.stats).forEach(k => counts[statInfo.stats[k].correct] = true);
+            let gameStorage = this.getStat();
+            let correct = (v: { correct: number; incorrect: number; hint: number }) => v.correct - v.incorrect - v.hint;
+
+            Object.keys(gameStorage.stats).forEach(k => counts[correct(gameStorage.stats[k])] = true);
             let values = Object.keys(counts).map(v => parseInt(v)).sort().reverse();
 
             let nextAnswers = args.answers;
 
-            while (values.length && nextAnswers.length > questionsPerQuiz) {
+            while (values.length && nextAnswers.length > this.props.questionsPerQuiz) {
                 args.answers = nextAnswers;
                 let maxCount = values.pop() || 0;
                 console.log(`removing where count >= ${maxCount}`);
-                nextAnswers = nextAnswers.filter(f => !statInfo.stats[f] || (statInfo.stats[f].correct < maxCount));
+                nextAnswers = nextAnswers.filter(f => !gameStorage.stats[f] || (correct(gameStorage.stats[f]) < maxCount));
             }
-
             console.log(args.answers);
 
         });
 
-        this.dispatcher.on("correct", () => {
+        this.dispatcher.on("correct", (args: { feature: ol.Feature }) => {
+            let answer = this.state.answer || "";
+            if (!answer) return;
+
             console.log("correct");
             this.score(20);
 
-            let stats = this.getStat(data);
-            if (stats) {
-                stats.correct++;
-                statInfo.score = this.state.score;
-                storage.setItem(data);
+            let gameStorage = this.getStat();
+            if (gameStorage && gameStorage.stats) {
+                gameStorage.stats[answer].correct++;
+                gameStorage.score = this.state.score;
+                storage.save();
             }
 
-            let feature = this.find();
+            let feature = args.feature;
             if (feature) {
                 feature.setStyle(styles.correct(this));
                 this.state.features.remove(feature);
@@ -293,37 +117,37 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             }
         });
 
-        this.dispatcher.on("incorrect", () => {
+        this.dispatcher.on("incorrect", (args: { feature: ol.Feature }) => {
+            let answer = this.state.answer || "";
+            if (!answer) return;
+
             console.log("incorrect");
             this.score(-20);
 
-            let stats = this.getStat(data);
-            if (stats) {
-                stats.incorrect++;
-                statInfo.score = this.state.score;
-                storage.setItem(data);
-            }
+            let gameStorage = this.getStat();
+            gameStorage.stats[answer].incorrect++;
+            gameStorage.score = this.state.score;
+            storage.save();
 
-
-            let feature = this.find();
+            let feature = args.feature;
             if (feature) {
                 feature.setStyle(styles.incorrect(this));
                 this.zoomToFeature(feature);
                 this.state.features.remove(feature);
                 this.state.features.push(feature);
-                this.skip();
             }
         });
 
         this.dispatcher.on("hint", () => {
+            let answer = this.state.answer || "";
+            if (!answer) return;
+
             console.log("hint");
 
-            let stats = this.getStat(data);
-            if (stats) {
-                stats.hint++;
-                data[this.props.quizletName].score = this.state.score;
-                storage.setItem(data);
-            }
+            let gameStorage = this.getStat();
+            gameStorage.stats[answer].hint++;
+            gameStorage.score = this.state.score;
+            storage.save();
 
             let feature = this.find();
             if (!feature) return;
@@ -340,21 +164,22 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         });
     }
 
-    private getStat(data: Dictionary<IStorage>) {
-        if (this.state.answer) {
-            let storage = data[this.props.quizletName] = (data[this.props.quizletName] || {});
-            let stats = storage.stats = (storage.stats || {});
-            let stat = stats[this.state.answer] = (stats[this.state.answer] || {
+    private getStat() {
+        let answer = this.state.answer || "";
+        let key = this.props.quizletName || "";
+
+        return storage.update(key, data => {
+            let stat = data.stats[answer] = (data.stats[answer] || {
                 correct: 0,
                 incorrect: 0,
                 hint: 0
             });
-            return stat;
-        }
-        return null;
+            return data;
+        });
     }
 
     componentDidUpdate(prevProp: QuizletProps, prevState: QuizletStates) {
+        this.dispatcher.trigger("update");
     }
 
     render() {
@@ -390,6 +215,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                                 }
                             }
                         }));
+                        this.init();
                     }, 500));
                 }}
                 onFeatureClick={(args: {
@@ -399,9 +225,9 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     if (!this.state.answer) {
                         this.init();
                     } else if (this.test(args.feature)) {
-                        this.dispatcher.trigger("correct");
+                        this.dispatcher.trigger("correct", { feature: args.feature });
                     } else {
-                        this.dispatcher.trigger("incorrect");
+                        this.dispatcher.trigger("incorrect", { feature: args.feature });
                     }
                 }}
             >
@@ -458,8 +284,8 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         console.log(answers);
         shuffle(answers);
         console.log(answers);
-        if (answers.length > questionsPerQuiz) {
-            answers = answers.splice(0, questionsPerQuiz);
+        if (answers.length > this.props.questionsPerQuiz) {
+            answers = answers.splice(0, this.props.questionsPerQuiz);
         }
         console.log(answers);
         return answers;

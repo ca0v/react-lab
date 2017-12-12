@@ -4,28 +4,49 @@ import { Maplet } from './components/maplet';
 import { QuizletComponent } from "./components/quizlet";
 import { input, Dictionary } from "./common/common";
 import { Toolbar } from "./components/index";
+import continents = require("./data/continents");
 
 import { Transform } from "./common/csv-importer";
 import * as ol from "openlayers";
+
+function asGeom(geometry: { type: string; coordinates: any }) {
+    let hack: any = ol.geom;
+    let geom = new hack[geometry.type](geometry.coordinates, "XY");
+    return geom;
+}
+
+function filterByContinent(name: string) {
+    let europe = continents.features.filter(f => f.properties.CONTINENT === name)[0];
+    if (!europe) return null;
+    let geom:ol.geom.Polygon = asGeom(europe.geometry);
+    let bbox = geom.getExtent();
+    return (f: IGeoJsonFeature<any>) => {
+        let countryGeom: ol.geom.Polygon = asGeom(f.geometry);
+        let country = countryGeom.getExtent();
+        return ol.extent.intersects(bbox, country) && geom.intersectsExtent(country);
+    };
+}
 
 interface IPacket<T> {
     type: string;
     url: string;
     name: string; // primaryFieldName
-    weight?: (d: T) => number;
-    filter?: (d: T) => boolean;
+    weight?: (d: IGeoJsonFeature<T>) => number;
+    filter?: (d: IGeoJsonFeature<T>) => boolean;
 }
 
 interface IGeoJson<T> {
     type: "FeatureCollection";
-    features: Array<{
+    features: Array<IGeoJsonFeature<T>>;
+}
+
+interface IGeoJsonFeature<T> {
+    type: string;
+    properties: T;
+    geometry: {
         type: string;
-        properties: T;
-        geometry: {
-            type: string;
-            coordinates: any;
-        }
-    }>;
+        coordinates: any;
+    }
 }
 
 class GeoJsonLoader<T extends { weight: number }> {
@@ -36,10 +57,10 @@ class GeoJsonLoader<T extends { weight: number }> {
         client.onloadend = () => {
             let geoJson: IGeoJson<T> = JSON.parse(client.responseText);
             if (packet.filter) {
-                geoJson.features = geoJson.features.filter(f => packet.filter(f.properties));
+                geoJson.features = geoJson.features.filter(f => packet.filter(f));
             }
             if (packet.weight) {
-                geoJson.features.forEach(f => f.properties.weight = packet.weight(f.properties));
+                geoJson.features.forEach(f => f.properties.weight = packet.weight(f));
             }
             cb(geoJson);
         };
@@ -75,18 +96,41 @@ const packets: Dictionary<IPacket<any>> = {
         url: "./data/countries.json",
         name: "name"
     },
+    "European Countries": {
+        type: "geojson",
+        url: "./data/countries.json",
+        name: "name",
+        filter: filterByContinent("Europe")
+    },
+    "African Countries": {
+        type: "geojson",
+        url: "./data/countries.json",
+        name: "name",
+        filter: filterByContinent("Africa")
+    },
+    "South American Countries": {
+        type: "geojson",
+        url: "./data/countries.json",
+        name: "name",
+        filter: filterByContinent("South America")
+    },
+    "Continents": {
+        type: "geojson",
+        url: "./data/continents.json",
+        name: "CONTINENT",
+    },
     "World Cities": {
         type: "geojson",
         url: "./data/cities.json",
         name: "city",
-        weight: (d: { population: number }) => Math.log(d.population) / 20,
-        filter: (d: { population: number }) => d.population > 10000000,
+        weight: f => f.properties.population / 20,
+        filter: f => f.properties.population > 10000000,
     },
     "US States": {
         type: "geojson",
         url: "./data/us-states.json",
         name: "name",
-        filter: (d: { name: string }) => (d.name !== "Alaska" && d.name !== "Hawaii" && d.name !== "Puerto Rico") || 0.5 < Math.random(),
+        filter: f => (0.5 < Math.random()) && (-1 === "AlaskaHawaiiPuerto Rico".indexOf(f.properties.name)),
     },
     "US Great Lakes": {
         type: "geojson",
@@ -97,8 +141,8 @@ const packets: Dictionary<IPacket<any>> = {
         type: "geojson",
         url: "./data/us-cities.json",
         name: "name",
-        weight: (d: { pop: number, name: string }) => (d.pop / 8405837),
-        filter: (d: { pop: number }) => d.pop > 500000,
+        weight: f => (f.properties.pop / 8405837),
+        filter: f => f.properties.pop > 500000,
     },
 }
 

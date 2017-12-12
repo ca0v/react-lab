@@ -1,4 +1,5 @@
 import { Dictionary } from "../common/common";
+import * as ol from "openlayers";
 
 function color(color: any) {
     let result: [number, number, number, number] = color;

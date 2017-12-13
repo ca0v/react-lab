@@ -132,23 +132,21 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
     let isCurrentFeature = (quizlet.state.answer === featureName);
     let showOutline = (1 < hint) && isCurrentFeature;
     let weight = feature.get("weight") || 1;
-    let radius = Math.min(25, Math.max(1, (weight / res) / (0.5 / 8196)));
+    let borderSize = Math.round(weight * 5);
+    let radius = 5;
     if (isCurrentFeature && hint) radius += 1 * hint;
 
-    let reddot = radius < 5;
-    if (reddot) radius = 4;
-    
     switch (feature.getGeometry().getType()) {
         case "Point":
             return new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: radius,
                     stroke: new ol.style.Stroke({
-                        color: color(!reddot ? theme.borderColor: theme.reddotColor),
-                        width: 1 + hint / 2
+                        color: color(theme.borderColor),
+                        width: 1 + borderSize
                     }),
                     fill: new ol.style.Fill({
-                        color: color(!reddot ? theme.pointFillColor : theme.reddotColor),
+                        color: color(theme.pointFillColor),
                     }),
                 }),
                 text: new ol.style.Text({

@@ -123,14 +123,14 @@ const packets: Dictionary<IPacket<any>> = {
         type: "geojson",
         url: "./data/cities.json",
         name: "city",
-        weight: f => f.properties.population / 20,
+        weight: f => f.properties.population / 50000000,
         filter: f => f.properties.population > 10000000,
     },
     "US States": {
         type: "geojson",
         url: "./data/us-states.json",
         name: "name",
-        filter: f => (0.5 < Math.random()) && (-1 === "AlaskaHawaiiPuerto Rico".indexOf(f.properties.name)),
+        filter: f => (0.5 < Math.random()) || (-1 === "AlaskaHawaiiPuerto Rico".indexOf(f.properties.name)),
     },
     "US Great Lakes": {
         type: "geojson",
@@ -192,7 +192,7 @@ export class App extends Component<AppProps, AppState> {
                 {Object.keys(packets).map(p => <button onClick={() => this.pickPacket(p)}>{p}</button>)}
             </Toolbar>}
             {!!this.state.packetName && <QuizletComponent
-                questionsPerQuiz={5}
+                questionsPerQuiz={25}
                 quizletName={this.state.packetName}
                 source={this.state.source}
                 featureNameFieldName={this.state.featureNameFieldName}

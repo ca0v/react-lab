@@ -28,6 +28,7 @@ export interface QuizletStates {
     hint?: number;
     answers: string[];
     score: number;
+    bingImagerySet: "Aerial" | "AerialWithLabels";
 }
 
 export interface QuizletProps {
@@ -44,12 +45,15 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     constructor(props: QuizletProps) {
         super(props);
 
+        let score = storage.force(props.quizletName).score;
+
         this.state = {
             center: [0, 0],
             zoom: 3,
             features: new ol.Collection<ol.Feature>(),
             answers: [],
-            score: storage.force(props.quizletName).score
+            score: score,
+            bingImagerySet: score > 1000 ? "Aerial" : "AerialWithLabels"
         }
 
         document.addEventListener("keypress", (args) => {
@@ -132,7 +136,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             let feature = args.feature;
             if (feature) {
                 feature.setStyle(styles.incorrect(this));
-                this.zoomToFeature(feature);
+                //this.zoomToFeature(feature);
                 this.state.features.remove(feature);
                 this.state.features.push(feature);
             }
@@ -193,7 +197,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                 controls={{
                     mousePosition: true,
                 }}
-                bingImagerySet="Aerial"
+                bingImagerySet={this.state.bingImagerySet}
                 layers={{
                     source: [this.props.source]
                 }}

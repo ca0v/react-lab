@@ -7,7 +7,7 @@ function color(color: any) {
 }
 
 const theme = {
-    reddotColor: [255, 0, 0, 1],
+    reddotColor: [200, 100, 20, 1],
     textFillColor: [200, 200, 200, 1],
     pointFillColor: [200, 200, 200, 0.5],
     textBorderColor: [200, 100, 20, 1],
@@ -132,12 +132,11 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
     let isCurrentFeature = (quizlet.state.answer === featureName);
     let showOutline = (1 < hint) && isCurrentFeature;
     let weight = feature.get("weight") || 1;
-    let radius = Math.max(1, 10 + Math.round(weight * 20));
-
-    radius = Math.min(25, Math.max(1, (weight / res) / (0.5 / 8196)));
-
+    let radius = Math.min(25, Math.max(1, (weight / res) / (0.5 / 8196)));
     if (isCurrentFeature && hint) radius += 1 * hint;
-    let reddot = radius === 1;
+
+    let reddot = radius < 5;
+    if (reddot) radius = 4;
     
     switch (feature.getGeometry().getType()) {
         case "Point":

@@ -4,9 +4,12 @@ import { Maplet } from './components/maplet';
 import { QuizletComponent } from "./components/quizlet";
 import { input, Dictionary } from "./common/common";
 import { Toolbar } from "./components/index";
+import { BingImagerySet } from "./components/openlayers";
 import continents = require("./data/continents");
 
 import { Transform } from "./common/csv-importer";
+import { storage } from "./common/storage";
+
 import * as ol from "openlayers";
 
 declare module AgsJson {
@@ -39,13 +42,9 @@ declare module AgsJson {
         OBJECTID: number;
     }
 
-    export interface Geometry {
-        rings: number[][][];
-    }
-
     export interface Feature {
         attributes: Attributes;
-        geometry: Geometry;
+        geometry: any;
     }
 
     export interface RootObject {
@@ -81,8 +80,10 @@ interface IPacket<T> {
     type: string;
     url: string;
     name: string; // primaryFieldName
+    style?: (score: number) => BingImagerySet;
     weight?: (d: IGeoJsonFeature<T>) => number;
-    filter?: (d: IGeoJsonFeature<T>) => boolean;
+    filter?: (d: IGeoJsonFeature<T>, score: number) => boolean;
+    score: number;
 }
 
 interface IGeoJson<T> {
@@ -119,10 +120,10 @@ class GeoJsonLoader<T extends { weight: number }> {
         client.onloadend = () => {
             let geoJson: IGeoJson<T> = JSON.parse(client.responseText);
             if (packet.filter) {
-                geoJson.features = geoJson.features.filter(f => packet.filter(f));
+                geoJson.features = geoJson.features.filter(f => !packet.filter || packet.filter(f, packet.score || 0));
             }
             if (packet.weight) {
-                geoJson.features.forEach(f => f.properties.weight = packet.weight(f));
+                geoJson.features.forEach(f => f.properties.weight = packet.weight ? packet.weight(f) : 1);
             }
             cb(geoJson);
         };
@@ -137,22 +138,30 @@ function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
             {
                 let loader = new JsonLoader();
                 loader.load(packet.url, agsjson => {
-                    let typeMap: Dictionary<"Polygon"> = {
-                        "esriGeometryPolygon": "Polygon"
+                    let typeMap: Dictionary<"Polygon" | "Point"> = {
+                        "esriGeometryPolygon": "Polygon",
+                        "esriGeometryPoint": "Point",
                     };
                     let geoType = typeMap[agsjson.geometryType];
                     let features = agsjson.features.map(f => {
                         let feature = new ol.Feature();
                         {
-                            let hack: any = ol.geom;
-                            let geom = new ol.geom.Polygon(f.geometry.rings, "XY");
+                            let geom: any;
+                            switch (geoType) {
+                                case "Point":
+                                    geom = new ol.geom.Point([f.geometry.x, f.geometry.y], "XY");
+                                    break;
+                                case "Polygon":
+                                    geom = new ol.geom.Polygon(f.geometry.rings, "XY");
+                                    break;
+                            }
                             geom.transform("EPSG:4326", "EPSG:3857");
                             feature.setGeometry(geom);
                         }
                         feature.setProperties(f.attributes);
                         return feature;
                     });
-                    source.addFeatures(features);                    
+                    source.addFeatures(features);
                 })
                 break;
             }
@@ -179,15 +188,11 @@ function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
 }
 
 const packets: Dictionary<IPacket<any>> = {
-    "Greenville Parks": {
-        type: "agsjson",
-        url: "./data/gsp-parks.json",
-        name: "NAME"
-    },
-    "World Countries": {
+    "Continents": {
         type: "geojson",
-        url: "./data/countries.json",
-        name: "name"
+        url: "./data/continents.json",
+        name: "CONTINENT",
+        style: () => "Black",
     },
     "European Countries": {
         type: "geojson",
@@ -207,10 +212,10 @@ const packets: Dictionary<IPacket<any>> = {
         name: "name",
         filter: filterByContinent("South America")
     },
-    "Continents": {
+    "World Countries": {
         type: "geojson",
-        url: "./data/continents.json",
-        name: "CONTINENT",
+        url: "./data/countries.json",
+        name: "name"
     },
     "World Cities": {
         type: "geojson",
@@ -219,23 +224,44 @@ const packets: Dictionary<IPacket<any>> = {
         weight: f => f.properties.population / 50000000,
         filter: f => f.properties.population > 10000000,
     },
+    "US Great Lakes": {
+        type: "geojson",
+        url: "https://gist.githubusercontent.com/tristanwietsma/6046119/raw/f5e8654b5a811199d2f2190b3090d1c1e3488436/greatlakes.geojson",
+        name: "name",
+        style: () => "Road",
+    },
     "US States": {
         type: "geojson",
         url: "./data/us-states.json",
         name: "name",
-        filter: f => (0.5 < Math.random()) || (-1 === "AlaskaHawaiiPuerto Rico".indexOf(f.properties.name)),
-    },
-    "US Great Lakes": {
-        type: "geojson",
-        url: "https://gist.githubusercontent.com/tristanwietsma/6046119/raw/f5e8654b5a811199d2f2190b3090d1c1e3488436/greatlakes.geojson",
-        name: "name"
+        filter: (f, score) =>
+            (score < 100 && 0 === f.properties.name.indexOf("A")) ||
+            (score < 500 && (-1 === "AlaskaHawaiiPuerto Rico".indexOf(f.properties.name))),
+        style: score =>
+            (score < 500 && "AerialWithLabels") ||
+            (score < 1000 && "CanvasDark") ||
+            (score < 2000 && "Aerial") ||
+            "Black"
     },
     "US Cities": {
         type: "geojson",
         url: "./data/us-cities.json",
         name: "name",
         weight: f => (f.properties.pop / 8405837),
-        filter: f => f.properties.pop > 500000,
+        filter: (f, score) => f.properties.pop > 400000 - score * 10,
+        style: score => score < 1000 ? "AerialWithLabels" : "Aerial"
+    },
+    "Greenville Active Calls": {
+        type: "agsjson",
+        url: "http://www.gcgis.org/arcgis/rest/services/GreenvilleJS/Map_Layers_JS/MapServer/1/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&returnTrueCurves=false&resultOffset=&resultRecordCount=&f=json",
+        name: "ITI_TypeText",
+        style: () => "CanvasDark",
+    },
+    "Greenville Parks": {
+        type: "agsjson",
+        url: "./data/gsp-parks.json",
+        name: "NAME",
+        style: () => "CanvasDark",
     },
 }
 
@@ -244,6 +270,7 @@ export interface AppState {
     source: ol.source.Vector;
     featureNameFieldName: string;
     packetName: string;
+    packetStyle: BingImagerySet;
 }
 
 export interface AppProps {
@@ -263,15 +290,18 @@ export class App extends Component<AppProps, AppState> {
             source: vectorSource,
             packetName: "",
             featureNameFieldName: "",
+            packetStyle: "Aerial",
         };
     }
 
     private pickPacket(packetName: string) {
         let packet = packets[packetName];
+        packet.score = storage.force(this.state.packetName).score;
 
         this.setState(prev => ({
             packetName: packetName,
             featureNameFieldName: packet.name,
+            packetStyle: packet.style || "AerialWithLabels"
         }));
 
         populateLayerSource(this.state.source, packet);
@@ -287,9 +317,16 @@ export class App extends Component<AppProps, AppState> {
             {!!this.state.packetName && <QuizletComponent
                 questionsPerQuiz={20}
                 quizletName={this.state.packetName}
+                getLayerStyle={(score: number) => this.getLayerStyle(score)}
                 source={this.state.source}
                 featureNameFieldName={this.state.featureNameFieldName}
             />}
         </div>;
+    }
+
+    getLayerStyle(score: number) {
+        let packet = packets[this.state.packetName];
+        if (!packet || !packet.style) return "AerialWithLabels";
+        return packet.style(score);
     }
 }

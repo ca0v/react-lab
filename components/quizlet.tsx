@@ -4,7 +4,7 @@
 * If user clicks wrong feature, "incorrect" event is raised
 * If user clicks correct feature, "correct" event is raised
 */
-import { OpenLayers } from './openlayers';
+import { OpenLayers, BingImagerySet } from './openlayers';
 import { PureComponent as Component, createElement as create } from 'react';
 import { render } from "react-dom";
 import { Dictionary, debounce, distinct, EventDispatcher, shuffle, LocalStorage } from "../common/common";
@@ -27,7 +27,7 @@ export interface QuizletStates {
     hint?: number;
     answers: string[];
     score: number;
-    bingImagerySet: "CanvasDark" | "Aerial" | "AerialWithLabels";
+    bingImagerySet: BingImagerySet;
 }
 
 export interface QuizletProps {
@@ -35,6 +35,7 @@ export interface QuizletProps {
     source: ol.source.Vector;
     featureNameFieldName: string;
     questionsPerQuiz: number;
+    getLayerStyle: (score: number) => BingImagerySet;
 }
 
 export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
@@ -52,7 +53,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             features: new ol.Collection<ol.Feature>(),
             answers: [],
             score: score,
-            bingImagerySet: score > 1000 ? "Aerial" : "AerialWithLabels"
+            bingImagerySet: (props.getLayerStyle && props.getLayerStyle(score)) || (score > 1000 ? "Aerial" : "AerialWithLabels")
         }
 
         document.addEventListener("keypress", (args) => {
@@ -108,7 +109,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     setTimeout(() => {
                         let options = ["AerialWithLabels", "Aerial", "CanvasDark", "CanvasLight", "CanvasGray", "Road"];
                         this.setState(prev => ({
-                            bingImagerySet: options[Math.floor(prev.score / 1000) % options.length],
+                            bingImagerySet: (props.getLayerStyle && props.getLayerStyle(score)) || (options[Math.floor(prev.score / 1000) % options.length]),
                             mapTrigger: {
                                 message: "extent",
                                 args: {
@@ -344,8 +345,9 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     find() {
         let source = this.props.source;
         if (!source) return;
-        let features = source.getFeatures().filter(f => f.get(this.props.featureNameFieldName) === this.state.answer);
-        if (features && features.length === 1) {
+        let exclude = this.state.features.getArray();
+        let features = source.getFeatures().filter(f => f.get(this.props.featureNameFieldName) === this.state.answer && -1 === exclude.indexOf(f));
+        if (features && features.length >= 1) {
             let feature = features[0];
             return feature;
         }

@@ -34,12 +34,13 @@ function addGeoJsonLayer(map: ol.Map, url: string) {
 
 
 export type Orientations = "portrait" | "landscape" | "full";
+export type BingImagerySet = "Aerial" | "AerialWithLabels" | "Birdseye" | "CanvasDark" | "CanvasLight" | "CanvasGray" | "Road" | "RoadOnDemand" | "BirdseyeV2WithLabels" | "Black";
 
 interface OpenLayersProps {
     className?: string;
     setCenter?: (v: [number, number], z: number) => void;
     title?: string;
-    bingImagerySet?: "Aerial" | "AerialWithLabels" | "Birdseye" | "CanvasDark" | "CanvasLight" | "CanvasGray" | "Road" | "RoadOnDemand" | "BirdseyeV2WithLabels";
+    bingImagerySet?: BingImagerySet;
     osm?: boolean;
     center?: [number, number];
     zoom?: number;
@@ -100,7 +101,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                 if (!layerType) return;
 
                 let source = bingLayerCache[layerType];
-                if (!source) {
+                if (!source && layerType !== "Black") {
                     source = bingLayerCache[layerType] = new ol.source.BingMaps({
                         key: 'AuPHWkNxvxVAL_8Z4G8Pcq_eOKGm5eITH_cJMNAyYoIC1S_29_HhE893YrUUbIGl',
                         imagerySet: layerType

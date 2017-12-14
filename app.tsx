@@ -9,6 +9,56 @@ import continents = require("./data/continents");
 import { Transform } from "./common/csv-importer";
 import * as ol from "openlayers";
 
+declare module AgsJson {
+
+    export interface FieldAliases {
+        NAME: string;
+        REC_DIST: string;
+        AMENITY: string;
+        KEYWORD: string;
+        OBJECTID: string;
+    }
+
+    export interface SpatialReference {
+        wkid: number;
+        latestWkid: number;
+    }
+
+    export interface Field {
+        name: string;
+        type: string;
+        alias: string;
+        length: number;
+    }
+
+    export interface Attributes {
+        NAME: string;
+        REC_DIST: string;
+        AMENITY: string;
+        KEYWORD: string;
+        OBJECTID: number;
+    }
+
+    export interface Geometry {
+        rings: number[][][];
+    }
+
+    export interface Feature {
+        attributes: Attributes;
+        geometry: Geometry;
+    }
+
+    export interface RootObject {
+        displayFieldName: string;
+        fieldAliases: FieldAliases;
+        geometryType: string;
+        spatialReference: SpatialReference;
+        fields: Field[];
+        features: Feature[];
+    }
+
+}
+
 function asGeom(geometry: { type: string; coordinates: any }) {
     let hack: any = ol.geom;
     let geom = new hack[geometry.type](geometry.coordinates, "XY");
@@ -18,7 +68,7 @@ function asGeom(geometry: { type: string; coordinates: any }) {
 function filterByContinent(name: string) {
     let europe = continents.features.filter(f => f.properties.CONTINENT === name)[0];
     if (!europe) return null;
-    let geom:ol.geom.Polygon = asGeom(europe.geometry);
+    let geom: ol.geom.Polygon = asGeom(europe.geometry);
     let bbox = geom.getExtent();
     return (f: IGeoJsonFeature<any>) => {
         let countryGeom: ol.geom.Polygon = asGeom(f.geometry);
@@ -49,6 +99,18 @@ interface IGeoJsonFeature<T> {
     }
 }
 
+class JsonLoader {
+
+    load(url: string, cb: (data: AgsJson.RootObject) => void) {
+        let client = new XMLHttpRequest();
+        client.open("GET", url, true);
+        client.onloadend = () => {
+            cb(JSON.parse(client.responseText));
+        };
+        client.send();
+    }
+}
+
 class GeoJsonLoader<T extends { weight: number }> {
 
     load(packet: IPacket<T>, cb: (data: IGeoJson<T>) => void) {
@@ -71,26 +133,57 @@ class GeoJsonLoader<T extends { weight: number }> {
 
 function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
     switch (packet.type) {
+        case "agsjson":
+            {
+                let loader = new JsonLoader();
+                loader.load(packet.url, agsjson => {
+                    let typeMap: Dictionary<"Polygon"> = {
+                        "esriGeometryPolygon": "Polygon"
+                    };
+                    let geoType = typeMap[agsjson.geometryType];
+                    let features = agsjson.features.map(f => {
+                        let feature = new ol.Feature();
+                        {
+                            let hack: any = ol.geom;
+                            let geom = new ol.geom.Polygon(f.geometry.rings, "XY");
+                            geom.transform("EPSG:4326", "EPSG:3857");
+                            feature.setGeometry(geom);
+                        }
+                        feature.setProperties(f.attributes);
+                        return feature;
+                    });
+                    source.addFeatures(features);                    
+                })
+                break;
+            }
         case "geojson":
-            let loader = new GeoJsonLoader<any>();
-            loader.load(packet, geojson => {
-                let features = geojson.features.map(f => {
-                    let feature = new ol.Feature();
-                    {
-                        let hack: any = ol.geom;
-                        let geom = new hack[f.geometry.type](f.geometry.coordinates, "XY");
-                        geom.transform("EPSG:4326", "EPSG:3857");
-                        feature.setGeometry(geom);
-                    }
-                    feature.setProperties(f.properties);
-                    return feature;
+            {
+                let loader = new GeoJsonLoader<any>();
+                loader.load(packet, geojson => {
+                    let features = geojson.features.map(f => {
+                        let feature = new ol.Feature();
+                        {
+                            let hack: any = ol.geom;
+                            let geom = new hack[f.geometry.type](f.geometry.coordinates, "XY");
+                            geom.transform("EPSG:4326", "EPSG:3857");
+                            feature.setGeometry(geom);
+                        }
+                        feature.setProperties(f.properties);
+                        return feature;
+                    });
+                    source.addFeatures(features);
                 });
-                source.addFeatures(features);
-            });
+                break;
+            }
     }
 }
 
 const packets: Dictionary<IPacket<any>> = {
+    "Greenville Parks": {
+        type: "agsjson",
+        url: "./data/gsp-parks.json",
+        name: "NAME"
+    },
     "World Countries": {
         type: "geojson",
         url: "./data/countries.json",
@@ -192,7 +285,7 @@ export class App extends Component<AppProps, AppState> {
                 {Object.keys(packets).map(p => <button onClick={() => this.pickPacket(p)}>{p}</button>)}
             </Toolbar>}
             {!!this.state.packetName && <QuizletComponent
-                questionsPerQuiz={25}
+                questionsPerQuiz={20}
                 quizletName={this.state.packetName}
                 source={this.state.source}
                 featureNameFieldName={this.state.featureNameFieldName}

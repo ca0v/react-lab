@@ -6,7 +6,7 @@ import {
 } from 'react';
 
 import { Toolbar } from "./index";
-import { debounce } from "../common/common";
+import { debounce, Dictionary, EventDispatcher } from "../common/common";
 import * as ol from "openlayers";
 
 function addSourceLayer(map: ol.Map, source: ol.source.Vector) {
@@ -81,11 +81,40 @@ interface OpenLayersState {
 
 export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
 
+    private dispatcher = new EventDispatcher<any>();
+
     constructor(props: OpenLayersProps) {
         super(props);
         this.state = {
             target: null,
         };
+
+        {
+            let bingLayerCache: Dictionary<ol.source.BingMaps> = {};
+            let bingLayer: ol.layer.Tile;
+
+            this.dispatcher.on("basemap-toggle", (args: { map: ol.Map }) => {
+                let map = args.map || this.state.map;
+                let layerType = this.props.bingImagerySet;
+                if (!map) return;
+                if (!layerType) return;
+
+                let source = bingLayerCache[layerType];
+                if (!source) {
+                    source = bingLayerCache[layerType] = new ol.source.BingMaps({
+                        key: 'AuPHWkNxvxVAL_8Z4G8Pcq_eOKGm5eITH_cJMNAyYoIC1S_29_HhE893YrUUbIGl',
+                        imagerySet: layerType
+                    });
+                }
+
+                if (!bingLayer) {
+                    bingLayer = new ol.layer.Tile({ source: source });
+                    map.getLayers().insertAt(0, bingLayer);
+                } else {
+                    bingLayer.setSource(source);
+                }
+            });
+        }
     }
 
     trigger(message: string, args: any): void;
@@ -187,13 +216,12 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             this.props.setCenter && this.props.setCenter(map.getView().getCenter(), map.getView().getZoom());
         }, 50));
 
+        this.setState((prev, prop) => ({
+            map: map,
+        }));
+
         if (this.props.bingImagerySet) {
-            map.addLayer(new ol.layer.Tile({
-                source: new ol.source.BingMaps({
-                    key: 'AuPHWkNxvxVAL_8Z4G8Pcq_eOKGm5eITH_cJMNAyYoIC1S_29_HhE893YrUUbIGl',
-                    imagerySet: this.props.bingImagerySet
-                })
-            }));
+            this.dispatcher.trigger("basemap-toggle", { map: map });
         } else if (this.props.osm !== false) {
             map.addLayer(new ol.layer.Tile({ source: new ol.source.OSM() }));
         }
@@ -206,10 +234,6 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             });
             map.addLayer(layer);
         }
-
-        this.setState((prev, prop) => ({
-            map: map,
-        }));
 
         if (this.props.layers) {
             if (this.props.layers.source) {
@@ -359,6 +383,9 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                 if (this.props.trigger !== prevProp.trigger) {
                     this.trigger(this.props.trigger.message, this.props.trigger.args);
                 }
+            }
+            if (prevProp.bingImagerySet !== this.props.bingImagerySet) {
+                this.dispatcher.trigger("basemap-toggle", { map: map });
             }
         }
     }

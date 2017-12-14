@@ -13,9 +13,8 @@ import { storage } from "../common/storage";
 
 import * as ol from "openlayers";
 
-function scaleExtent(extent: ol.Extent, scale = 1) {
-    let center = ol.extent.getCenter(extent);
-    let width = 0.5 * Math.max(1000, ol.extent.getWidth(extent), ol.extent.getHeight(extent)) * scale;
+function scaleExtent(fullExtent: ol.Extent, scale = 1, center = ol.extent.getCenter(fullExtent)) {
+    let width = 0.5 * Math.max(ol.extent.getWidth(fullExtent), ol.extent.getHeight(fullExtent)) * scale;
     return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
 }
 
@@ -28,7 +27,7 @@ export interface QuizletStates {
     hint?: number;
     answers: string[];
     score: number;
-    bingImagerySet: "Aerial" | "AerialWithLabels";
+    bingImagerySet: "CanvasDark" | "Aerial" | "AerialWithLabels";
 }
 
 export interface QuizletProps {
@@ -107,7 +106,9 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
                 if (!this.next()) {
                     setTimeout(() => {
+                        let options = ["AerialWithLabels", "Aerial", "CanvasDark", "CanvasLight", "CanvasGray", "Road"];
                         this.setState(prev => ({
+                            bingImagerySet: options[Math.floor(prev.score / 1000) % options.length],
                             mapTrigger: {
                                 message: "extent",
                                 args: {
@@ -161,9 +162,12 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             let center = ol.extent.getCenter(feature.getGeometry().getExtent());
             this.setState(prev => ({
                 hint: (prev.hint || 0) + 1,
-                mapTrigger: { message: "refresh" },
-                center: center,
-                zoom: Math.min(12, 5 + (prev.hint || 0) + 1)
+                mapTrigger: {
+                    message: "extent",
+                    args: {
+                        extent: scaleExtent(this.props.source.getExtent(), 1 / ((prev.hint || 0) + 3), center)
+                    }
+                }
             }));
         });
     }

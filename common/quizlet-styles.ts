@@ -9,7 +9,8 @@ function color(color: any) {
 const theme = {
     reddotColor: [200, 100, 20, 1],
     textFillColor: [200, 200, 200, 1],
-    pointFillColor: [200, 200, 200, 0.5],
+    pointFillColor: [200, 100, 20, 0.5],
+    pointBorderColor: [200, 200, 200, 1],
     textBorderColor: [200, 100, 20, 1],
     correctFillColor: [20, 100, 20, 0.3],
     correctBorderColor: [20, 100, 20, 1],
@@ -142,7 +143,7 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
                 image: new ol.style.Circle({
                     radius: radius,
                     stroke: new ol.style.Stroke({
-                        color: color(theme.borderColor),
+                        color: color(theme.pointBorderColor),
                         width: 1 + borderSize
                     }),
                     fill: new ol.style.Fill({

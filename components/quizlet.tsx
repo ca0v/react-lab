@@ -45,15 +45,17 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     constructor(props: QuizletProps) {
         super(props);
 
-        let score = storage.force(props.quizletName).score;
+        {
+            let score = storage.force(props.quizletName).score;
 
-        this.state = {
-            center: [0, 0],
-            zoom: 3,
-            features: new ol.Collection<ol.Feature>(),
-            answers: [],
-            score: score,
-            bingImagerySet: (props.getLayerStyle && props.getLayerStyle(score)) || (score > 1000 ? "Aerial" : "AerialWithLabels")
+            this.state = {
+                center: [0, 0],
+                zoom: 3,
+                features: new ol.Collection<ol.Feature>(),
+                answers: [],
+                score: score,
+                bingImagerySet: (props.getLayerStyle && props.getLayerStyle(score)) || (score > 1000 ? "Aerial" : "AerialWithLabels")
+            }
         }
 
         document.addEventListener("keypress", (args) => {
@@ -90,7 +92,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             if (!answer) return;
 
             console.log("correct");
-            this.score(20);
+            let score = this.score(20);
 
             let gameStorage = this.getStat();
             if (gameStorage && gameStorage.stats) {
@@ -105,11 +107,15 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                 this.state.features.remove(feature);
                 this.state.features.push(feature);
 
+                let options = ["AerialWithLabels", "Aerial", "CanvasDark", "CanvasLight", "CanvasGray", "Road"];
+                let bingImagerySet = (props.getLayerStyle && props.getLayerStyle(score)) || (options[Math.floor(this.state.score / 1000) % options.length]);
+                this.setState(prev => ({
+                    bingImagerySet: bingImagerySet
+                }));
+
                 if (!this.next()) {
                     setTimeout(() => {
-                        let options = ["AerialWithLabels", "Aerial", "CanvasDark", "CanvasLight", "CanvasGray", "Road"];
                         this.setState(prev => ({
-                            bingImagerySet: (props.getLayerStyle && props.getLayerStyle(score)) || (options[Math.floor(prev.score / 1000) % options.length]),
                             mapTrigger: {
                                 message: "extent",
                                 args: {
@@ -280,6 +286,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         this.setState(prev => ({
             score: prev.score + value
         }));
+        return this.state.score;
     }
 
     generate(features: ol.Feature[]) {

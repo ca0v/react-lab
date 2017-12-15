@@ -177,6 +177,8 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                 }
             }));
         });
+
+        this.dispatcher.on("reload", () => location.reload());
     }
 
     private getStat() {
@@ -270,7 +272,8 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             <br /> <div className="score">
                 <button onClick={() => this.skip()}>Skip</button>
                 <button onClick={() => this.dispatcher.trigger("hint")}>Hint</button>
-            </div>
+                <button onClick={() => this.dispatcher.trigger("reload")}>🗙</button>
+                </div>
         </div >;
     }
 

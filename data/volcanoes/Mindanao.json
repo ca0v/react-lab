@@ -2,18 +2,18 @@
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
-{ "type": "Feature", "properties": { "fid": "Mindanao.0", "Name": "Parker", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.892, 6.12, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.1", "Name": "Matutum", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 125.108, 6.37, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.2", "Name": "Apo", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 125.27, 7.008, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.3", "Name": "Leonard Range", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 126.047, 7.382, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.4", "Name": "Makaturing", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.32, 7.647, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.5", "Name": "Latukan", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.47, 7.65, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.6", "Name": "Ragang", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.5, 7.7, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.7", "Name": "Kalatungan", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.8, 7.95, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.8", "Name": "Musuan", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 125.068, 7.877, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.9", "Name": "Malindang", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 123.63, 8.22, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.10", "Name": "Balatocan", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.92, 8.8, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.11", "Name": "Camiguin", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.673, 9.203, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mindanao.12", "Name": "Paco", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 125.52, 9.593, 0.0 ] } }
+{ "type": "Feature", "properties": { "fid": "Mindanao.0", "Name": "Parker"}, "geometry": { "type": "Point", "coordinates": [ 124.892, 6.12, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.1", "Name": "Matutum"}, "geometry": { "type": "Point", "coordinates": [ 125.108, 6.37, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.2", "Name": "Apo"}, "geometry": { "type": "Point", "coordinates": [ 125.27, 7.008, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.3", "Name": "Leonard Range"}, "geometry": { "type": "Point", "coordinates": [ 126.047, 7.382, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.4", "Name": "Makaturing"}, "geometry": { "type": "Point", "coordinates": [ 124.32, 7.647, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.5", "Name": "Latukan"}, "geometry": { "type": "Point", "coordinates": [ 124.47, 7.65, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.6", "Name": "Ragang"}, "geometry": { "type": "Point", "coordinates": [ 124.5, 7.7, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.7", "Name": "Kalatungan"}, "geometry": { "type": "Point", "coordinates": [ 124.8, 7.95, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.8", "Name": "Musuan"}, "geometry": { "type": "Point", "coordinates": [ 125.068, 7.877, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.9", "Name": "Malindang"}, "geometry": { "type": "Point", "coordinates": [ 123.63, 8.22, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.10", "Name": "Balatocan"}, "geometry": { "type": "Point", "coordinates": [ 124.92, 8.8, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.11", "Name": "Camiguin"}, "geometry": { "type": "Point", "coordinates": [ 124.673, 9.203, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mindanao.12", "Name": "Paco"}, "geometry": { "type": "Point", "coordinates": [ 125.52, 9.593, 0.0 ] } }
 ]
 }

@@ -2,9 +2,9 @@
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
-{ "type": "Feature", "properties": { "fid": "Mongolia.0", "Name": "Khanuy Gol", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 102.75, 48.67, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mongolia.1", "Name": "Bus-Obo", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 109.08, 47.12, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mongolia.2", "Name": "Dariganga Volcanic Field", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 114.0, 45.33, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Mongolia.3", "Name": "Middle Gobi", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 106.7, 45.28, 0.0 ] } }
+{ "type": "Feature", "properties": { "fid": "Mongolia.0", "Name": "Khanuy Gol" },"geometry": { "type": "Point", "coordinates": [ 102.75, 48.67, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mongolia.1", "Name": "Bus-Obo" },"geometry": { "type": "Point", "coordinates": [ 109.08, 47.12, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mongolia.2", "Name": "Dariganga Volcanic Field" },"geometry": { "type": "Point", "coordinates": [ 114.0, 45.33, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Mongolia.3", "Name": "Middle Gobi" },"geometry": { "type": "Point", "coordinates": [ 106.7, 45.28, 0.0 ] } }
 ]
 }

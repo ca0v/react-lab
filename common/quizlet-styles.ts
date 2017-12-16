@@ -9,16 +9,19 @@ function color(color: any) {
 const theme = {
     reddotColor: [200, 100, 20, 1],
     textFillColor: [200, 200, 200, 1],
-    pointFillColor: [200, 100, 20, 0.5],
+    pointFillColor: [200, 100, 20, 1],
     pointBorderColor: [200, 200, 200, 1],
     textBorderColor: [200, 100, 20, 1],
     correctFillColor: [20, 100, 20, 0.3],
-    correctBorderColor: [20, 100, 20, 1],
+    correctBorderColor: [20, 100, 20, 0.5],
     incorrectFillColor: [200, 20, 20, 0.3],
     incorrectBorderColor: [200, 20, 20, 1],
     borderColor: [200, 100, 20, 1],
     hintBorderColor: [200, 20, 200, 1],
     noColor: [0, 0, 0, 0],
+    textScale: 1,
+    textWidth: 1,
+    borderWidth: 2,
 };
 
 /**
@@ -43,19 +46,19 @@ styles.correct = quizlet => (feature: ol.Feature | ol.render.Feature, res: numbe
             }),
             stroke: new ol.style.Stroke({
                 color: color(theme.correctBorderColor),
-                width: 2
+                width: theme.borderWidth
             }),
         }),
         new ol.style.Style({
             text: new ol.style.Text({
                 text: `${feature.get(quizlet.props.featureNameFieldName)}`,
-                scale: 2,
+                scale: theme.textScale,
                 fill: new ol.style.Fill({
                     color: color(theme.textFillColor),
                 }),
                 stroke: new ol.style.Stroke({
                     color: color(theme.correctBorderColor),
-                    width: 2,
+                    width: theme.textWidth,
                 }),
             }),
         })
@@ -75,7 +78,7 @@ styles.incorrect = quizlet => (feature: ol.Feature | ol.render.Feature, res: num
                     radius: 10,
                     stroke: new ol.style.Stroke({
                         color: color(theme.incorrectBorderColor),
-                        width: 1
+                        width: theme.borderWidth,
                     }),
                     fill: new ol.style.Fill({
                         color: color(theme.incorrectFillColor),
@@ -83,11 +86,11 @@ styles.incorrect = quizlet => (feature: ol.Feature | ol.render.Feature, res: num
                 }),
                 text: new ol.style.Text({
                     text: featureName,
-                    scale: 1.5,
+                    scale: theme.textScale * 1.5,
                     offsetY: 16,
                     stroke: new ol.style.Stroke({
                         color: color(theme.incorrectBorderColor),
-                        width: 1
+                        width: theme.textWidth,
                     }),
                     fill: new ol.style.Fill({
                         color: color(theme.textFillColor),
@@ -104,19 +107,19 @@ styles.incorrect = quizlet => (feature: ol.Feature | ol.render.Feature, res: num
                     }),
                     stroke: new ol.style.Stroke({
                         color: color(theme.incorrectBorderColor),
-                        width: 2,
+                        width: theme.borderWidth,
                     }),
                 }),
                 new ol.style.Style({
                     text: new ol.style.Text({
                         text: feature.get(quizlet.props.featureNameFieldName),
-                        scale: 2,
+                        scale: theme.textScale,
                         fill: new ol.style.Fill({
                             color: color(theme.textFillColor),
                         }),
                         stroke: new ol.style.Stroke({
                             color: color(theme.incorrectBorderColor),
-                            width: 2,
+                            width: theme.textWidth,
                         }),
                     }),
                 }),
@@ -130,12 +133,11 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
     let featureName = feature.get(quizlet.props.featureNameFieldName);
 
     let hint = quizlet.state.hint || 0;
-    let showText = 1 < hint;
     let isCurrentFeature = (quizlet.state.answer === featureName);
     let showOutline = (1 < hint) && isCurrentFeature;
     let weight = feature.get("weight") || 1;
     let borderSize = Math.round(weight * 5);
-    let radius = 5;
+    let radius = 8;
     if (isCurrentFeature && hint) radius += 1 * hint;
 
     switch (feature.getGeometry().getType()) {
@@ -145,19 +147,19 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
                     radius: radius,
                     stroke: new ol.style.Stroke({
                         color: color(theme.pointBorderColor),
-                        width: 1 + borderSize
+                        width: theme.borderWidth + Math.min(1, hint) * borderSize,
                     }),
                     fill: new ol.style.Fill({
                         color: color(theme.pointFillColor),
                     }),
                 }),
-                text: (!hint && res > 50) ? undefined : new ol.style.Text({
+                text: (1 > hint && res > 50) ? undefined : new ol.style.Text({
                     text: featureName,
-                    scale: 1.5,
+                    scale: theme.textScale * 1.5,
                     offsetY: 16,
                     stroke: new ol.style.Stroke({
                         color: color(theme.textBorderColor),
-                        width: 1
+                        width: theme.textWidth,
                     }),
                     fill: new ol.style.Fill({
                         color: color(theme.textFillColor),
@@ -167,12 +169,12 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
 
         default:
             return new ol.style.Style({
-                text: new ol.style.Text({
-                    text: showText ? featureName : "",
-                    scale: 2,
+                text: (1 > hint) ? undefined : new ol.style.Text({
+                    text: featureName,
+                    scale: theme.textScale,
                     stroke: new ol.style.Stroke({
                         color: color(theme.textBorderColor),
-                        width: 2
+                        width: 1 + borderSize,
                     }),
                     fill: new ol.style.Fill({
                         color: color(theme.textFillColor),

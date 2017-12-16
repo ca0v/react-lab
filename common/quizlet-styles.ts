@@ -82,8 +82,9 @@ styles.incorrect = quizlet => (feature: ol.Feature | ol.render.Feature, res: num
                     }),
                 }),
                 text: new ol.style.Text({
-                    text: res < 50 ? featureName : "",
-                    scale: 2,
+                    text: featureName,
+                    scale: 1.5,
+                    offsetY: 16,
                     stroke: new ol.style.Stroke({
                         color: color(theme.incorrectBorderColor),
                         width: 1
@@ -153,6 +154,7 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
                 text: (!hint && res > 50) ? undefined : new ol.style.Text({
                     text: featureName,
                     scale: 1.5,
+                    offsetY: 16,
                     stroke: new ol.style.Stroke({
                         color: color(theme.textBorderColor),
                         width: 1

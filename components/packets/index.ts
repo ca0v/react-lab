@@ -12,7 +12,6 @@ import usaStatesPacket = require("./usstates_usa");
 import usaCitiesPacket = require("./cities_usa");
 import volcanoesDir = require("../../data/volcanoes/dir");
 
-debugger;
 let volcanoes = shuffle(volcanoesDir.split("\n").map(v => v.trim()).filter(v => !!v));
 
 const packets: Dictionary<IPacket<any>> = {

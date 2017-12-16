@@ -2,8 +2,8 @@
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
-{ "type": "Feature", "properties": { "fid": "Korea.0", "Name": "Ch'uga-ryong", "Volcano_types_____   _Unknown___": null }, "geometry": { "type": "Point", "coordinates": [ 127.33, 38.33, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Korea.1", "Name": "Ulreung", "Volcano_types_____   _Unknown___": null }, "geometry": { "type": "Point", "coordinates": [ 130.87, 37.5, 0.0 ] } },
-{ "type": "Feature", "properties": { "fid": "Korea.2", "Name": "Halla", "Volcano_types_____   _Unknown___": null }, "geometry": { "type": "Point", "coordinates": [ 126.53, 33.37, 0.0 ] } }
+{ "type": "Feature", "properties": { "fid": "Korea.0", "Name": "Ch'uga-ryong"}, "geometry": { "type": "Point", "coordinates": [ 127.33, 38.33, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Korea.1", "Name": "Ulreung"}, "geometry": { "type": "Point", "coordinates": [ 130.87, 37.5, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Korea.2", "Name": "Halla"}, "geometry": { "type": "Point", "coordinates": [ 126.53, 33.37, 0.0 ] } }
 ]
 }

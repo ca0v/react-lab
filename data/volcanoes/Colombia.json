@@ -1,0 +1,19 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Colombia.0", "Name": "Nevado del Ruiz", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -75.322, 4.895, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.1", "Name": "Santa Isabel", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -75.37, 4.82, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.2", "Name": "Nevado del Tolima", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -75.33, 4.67, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.3", "Name": "Machín", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -75.4, 4.48, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.4", "Name": "Nevado del Huila", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -76.05, 2.92, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.5", "Name": "Puracé", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -76.4, 2.32, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.6", "Name": "Sotará", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -76.58, 2.12, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.7", "Name": "Petacas", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -76.78, 1.57, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.8", "Name": "Doña Juana", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -76.92, 1.47, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.9", "Name": "Galeras", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -77.37, 1.22, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.10", "Name": "Azufral", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -77.68, 1.08, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.11", "Name": "Cumbal", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -77.88, 0.98, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Colombia.12", "Name": "Cerro Negro de Mayasquer", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -77.964, 0.828, 0.0 ] } }
+]
+}

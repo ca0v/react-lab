@@ -150,8 +150,8 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
                         color: color(theme.pointFillColor),
                     }),
                 }),
-                text: new ol.style.Text({
-                    text: (res < (50 + 10 * hint) ? featureName : ""),
+                text: (!hint && res > 50) ? undefined : new ol.style.Text({
+                    text: featureName,
                     scale: 1.5,
                     stroke: new ol.style.Stroke({
                         color: color(theme.textBorderColor),

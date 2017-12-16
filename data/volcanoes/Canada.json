@@ -1,0 +1,26 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Canada.0", "Name": "Alligator Lake", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -135.42, 60.42, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.1", "Name": "Atlin Volcanic Field", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -133.32, 59.68, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.2", "Name": "Tuya Volcanic Field", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -130.58, 59.37, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.3", "Name": "Heart Peaks", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -131.97, 58.6, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.4", "Name": "Level Mountain", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -131.35, 58.42, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.5", "Name": "Edziza", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -130.63, 57.72, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.6", "Name": "Spectrum Range", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -130.68, 57.43, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.7", "Name": "Hoodoo Mountain", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -131.28, 56.78, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.8", "Name": "Iskut-Unuk River Cones", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -130.55, 56.58, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.9", "Name": "Tseax River Cone", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -128.9, 55.12, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.10", "Name": "Crow Lagoon", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -130.23, 54.7, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.11", "Name": "Milbanke Sound Group", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -128.73, 52.5, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.12", "Name": "Satah Mountain", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -124.7, 52.47, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.13", "Name": "Nazko", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -123.73, 52.9, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.14", "Name": "Wells Gray-Clearwater", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -120.57, 52.33, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.15", "Name": "Silverthrone", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -126.3, 51.43, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.16", "Name": "Bridge River Cones", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -123.4, 50.8, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.17", "Name": "Meager", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -123.5, 50.63, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.18", "Name": "Garibaldi Lake", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -123.03, 49.92, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Canada.19", "Name": "Garibaldi", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -123.0, 49.85, 0.0 ] } }
+]
+}

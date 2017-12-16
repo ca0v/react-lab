@@ -1,0 +1,18 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Azores.0", "Name": "Corvo", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -31.07, 39.67, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.1", "Name": "Fayal", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -28.73, 38.6, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.2", "Name": "Pico", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -28.4, 38.47, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.3", "Name": "San Jorge", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -28.08, 38.65, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.4", "Name": "Graciosa", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -27.97, 39.02, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.5", "Name": "Terceira", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -27.32, 38.73, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.6", "Name": "Don Joao de Castro Bank", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -26.63, 38.23, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.7", "Name": "Sete Cidades", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -25.78, 37.87, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.8", "Name": "Unnamed", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -25.67, 37.78, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.9", "Name": "Agua de Pau", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -25.47, 37.77, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.10", "Name": "Furnas", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -25.32, 37.77, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Azores.11", "Name": "Monaco Bank", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ -25.88, 37.6, 0.0 ] } }
+]
+}

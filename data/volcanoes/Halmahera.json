@@ -1,0 +1,21 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Halmahera.0", "Name": "Dukono", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.88, 1.68, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.1", "Name": "Tobaru", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.675, 1.625, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.2", "Name": "Ibu", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.642, 1.475, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.3", "Name": "Gamkonora", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.52, 1.375, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.4", "Name": "Todoko-Ranu", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.43, 1.22, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.5", "Name": "Jailolo", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.42, 1.08, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.6", "Name": "Hiri", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.32, 0.88, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.7", "Name": "Gamalama", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.325, 0.8, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.8", "Name": "Tidore", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.4, 0.65, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.9", "Name": "Mare", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.4, 0.57, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.10", "Name": "Moti", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.4, 0.45, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.11", "Name": "Makian", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.4, 0.32, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.12", "Name": "Tigalalu", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.42, 0.07, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.13", "Name": "Amasing", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.5, -0.55, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Halmahera.14", "Name": "Bibinoi", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 127.72, -0.78, 0.0 ] } }
+]
+}

@@ -1,0 +1,19 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Italy.0", "Name": "Amiata", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 11.63, 42.9, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.1", "Name": "Vulsini", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 11.93, 42.6, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.2", "Name": "Monte Albano", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 12.7, 41.73, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.3", "Name": "Campi Flegrei", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 14.139, 40.827, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.4", "Name": "Vesuvius", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 14.426, 40.821, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.5", "Name": "Ischia", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 13.897, 40.73, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.6", "Name": "Stromboli", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 15.213, 38.789, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.7", "Name": "Panarea", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 15.07, 38.63, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.8", "Name": "Lipari", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 14.95, 38.48, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.9", "Name": "Vulcano", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 14.962, 38.404, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.10", "Name": "Etna", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 15.004, 37.734, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.11", "Name": "Campi Flegrei Mar Sicilia", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 12.7, 37.1, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Italy.12", "Name": "Pantelleria", "Volcano_types_____   _Explosion_craters___": null }, "geometry": { "type": "Point", "coordinates": [ 12.02, 36.77, 0.0 ] } }
+]
+}

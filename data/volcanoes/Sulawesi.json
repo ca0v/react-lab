@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Sulawesi.0", "Name": "Ambang", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.42, 0.75, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Sulawesi.1", "Name": "Soputan", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.725, 1.108, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Sulawesi.2", "Name": "Sempu", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.73, 1.142, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Sulawesi.3", "Name": "Tondano Caldera", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.83, 1.23, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Sulawesi.4", "Name": "Lokon-Empung", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.792, 1.358, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Sulawesi.5", "Name": "Mahawu", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 124.858, 1.358, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Sulawesi.6", "Name": "Klabat", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 125.03, 1.47, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Sulawesi.7", "Name": "Tongkoko", "Smithsonian_Volcano_Information": null }, "geometry": { "type": "Point", "coordinates": [ 125.2, 1.52, 0.0 ] } }
+]
+}

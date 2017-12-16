@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Taiwan.0", "Name": "Unnamed", "Volcano_types_____   _Submarine_volcano_____": null }, "geometry": { "type": "Point", "coordinates": [ 132.25, 19.17, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Taiwan.1", "Name": "Unnamed", "Volcano_types_____   _Submarine_volcano_____": null }, "geometry": { "type": "Point", "coordinates": [ 121.18, 21.83, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Taiwan.2", "Name": "Unnamed", "Volcano_types_____   _Submarine_volcano_____": null }, "geometry": { "type": "Point", "coordinates": [ 121.83, 24.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Taiwan.3", "Name": "Kueishantao", "Volcano_types_____   _Submarine_volcano_____": null }, "geometry": { "type": "Point", "coordinates": [ 121.92, 24.85, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Taiwan.4", "Name": "Tatun Group", "Volcano_types_____   _Submarine_volcano_____": null }, "geometry": { "type": "Point", "coordinates": [ 121.52, 25.17, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Taiwan.5", "Name": "Unnamed", "Volcano_types_____   _Submarine_volcano_____": null }, "geometry": { "type": "Point", "coordinates": [ 122.33, 25.42, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Taiwan.6", "Name": "Pengchiahsu", "Volcano_types_____   _Submarine_volcano_____": null }, "geometry": { "type": "Point", "coordinates": [ 122.07, 25.63, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Taiwan.7", "Name": "Zengyu", "Volcano_types_____   _Submarine_volcano_____": null }, "geometry": { "type": "Point", "coordinates": [ 122.458, 26.18, 0.0 ] } }
+]
+}

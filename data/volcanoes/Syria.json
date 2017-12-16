@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Syria.0", "Name": "Unnamed", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 37.0, 36.67, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Syria.1", "Name": "Unnamed", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 36.925, 33.308, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Syria.2", "Name": "Unnamed", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 36.258, 33.15, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Syria.3", "Name": "Es Safa", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 37.308, 33.308, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Syria.4", "Name": "Jabal ad Druze", "Volcano_types_____   _Volcanic_field___": null }, "geometry": { "type": "Point", "coordinates": [ 36.425, 32.658, 0.0 ] } }
+]
+}

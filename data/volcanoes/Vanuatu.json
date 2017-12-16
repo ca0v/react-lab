@@ -1,0 +1,19 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": "Vanuatu.0", "Name": "Suretamatai", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 167.47, -13.8, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.1", "Name": "Gaua", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 167.5, -14.27, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.2", "Name": "Mere Lava", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 168.05, -14.45, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.3", "Name": "Aoba", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 167.83, -15.4, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.4", "Name": "Ambrym", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 168.12, -16.25, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.5", "Name": "Lopevi", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 168.346, -16.507, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.6", "Name": "Epi", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 168.37, -16.68, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.7", "Name": "Kuwae", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 168.536, -16.829, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.8", "Name": "Unnamed", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 168.592, -16.992, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.9", "Name": "North Vate", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 168.33, -17.45, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.10", "Name": "Traitor's Head", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 169.23, -18.75, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.11", "Name": "Yasur", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 169.425, -19.52, 0.0 ] } },
+{ "type": "Feature", "properties": { "fid": "Vanuatu.12", "Name": "Aneityum", "Volcano_types_____   _Stratovolcano   _Pyroclastic_cones___": null }, "geometry": { "type": "Point", "coordinates": [ 169.83, -20.2, 0.0 ] } }
+]
+}

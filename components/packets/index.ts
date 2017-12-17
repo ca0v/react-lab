@@ -23,12 +23,36 @@ const packets: Dictionary<IPacket<any>> = {
     "World Cities": worldCitiesPacket,
     "US Great Lakes": usaGreatLakesPacket,
     "US States": usaStatesPacket,
-    "US Cities": usaCitiesPacket,
+    "US North East": {
+        type: "geojson",
+        url: usaStatesPacket.url,
+        name: usaStatesPacket.name,
+        filter: (f,score) => -1 < ["Vermont", "New Hampshire", "Maine", "Massachusetts", "Rhode Island", "Connecticut"].indexOf(f.properties[usaStatesPacket.name]),
+    },
+    "US South East": {
+        type: "geojson",
+        url: usaStatesPacket.url,
+        name: usaStatesPacket.name,
+        filter: (f,score) => -1 < ["North Carlina", "South Carolina", "Georgia", "Florida", "Alabama", "Tennessee", "Kentucky"].indexOf(f.properties[usaStatesPacket.name]),
+    },
+    "US Western States": {
+        type: "geojson",
+        url: usaStatesPacket.url,
+        name: usaStatesPacket.name,
+        filter: (f,score) => -1 < ["California", "Oregon", "Washington", "Nevada", "Idaho", "Montana", "Wyoming", "Utah", "Arizona"].indexOf(f.properties[usaStatesPacket.name]),
+    },
+    "US Cities": usaCitiesPacket,    
     "Volcanoes": {
         type: "geojson",
         url: `./data/volcanoes/${volcanoes.pop()}`,
         name: "Name",
         style: () => "Aerial",
+    },
+    "Holy Sites": {
+        type: "geojson",
+        url: "./data/holysites.json",
+        name: "name",
+        style: () => "EsriAerial",
     },
     "Greenville Active Calls (HTTP only)": {
         type: "agsjson",

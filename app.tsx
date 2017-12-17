@@ -10,8 +10,8 @@ import { Transform } from "./common/csv-importer";
 import { storage } from "./common/storage";
 
 import { IPacket } from "./components/packets/common";
-import {Loader as JsonLoader} from "./components/packets/loaders/agsjsonloader";
-import {Loader as GeoJsonLoader} from "./components/packets/loaders/geojsonloader";
+import { Loader as JsonLoader } from "./components/packets/loaders/agsjsonloader";
+import { Loader as GeoJsonLoader } from "./components/packets/loaders/geojsonloader";
 
 import packets = require("./components/packets/index");
 
@@ -119,7 +119,9 @@ export class App extends Component<AppProps, AppState> {
             <title>React + Openlayers Lab</title>
             {!this.state.featureNameFieldName && <Toolbar>
                 <label>Pick a Quiz</label>
-                {Object.keys(packets).map(p => <button onClick={() => this.pickPacket(p)}>{p}</button>)}
+                {Object.keys(packets)
+                    .sort((a, b) => storage.force(b).score - storage.force(a).score)
+                    .map(p => <button onClick={() => this.pickPacket(p)}>{p} ({storage.force(p).score})</button>)}
             </Toolbar>}
             {!!this.state.packetName && <QuizletComponent
                 questionsPerQuiz={20}

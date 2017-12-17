@@ -19,9 +19,10 @@ const theme = {
     borderColor: [200, 100, 20, 1],
     hintBorderColor: [200, 20, 200, 1],
     noColor: [0, 0, 0, 0],
-    textScale: 1,
-    textWidth: 1,
+    textScale: 1.8,
+    textWidth: 2,
     borderWidth: 2,
+    textOffset: 24,
 };
 
 /**
@@ -86,8 +87,8 @@ styles.incorrect = quizlet => (feature: ol.Feature | ol.render.Feature, res: num
                 }),
                 text: new ol.style.Text({
                     text: featureName,
-                    scale: theme.textScale * 1.5,
-                    offsetY: 16,
+                    scale: theme.textScale,
+                    offsetY: theme.textOffset,
                     stroke: new ol.style.Stroke({
                         color: color(theme.incorrectBorderColor),
                         width: theme.textWidth,
@@ -155,8 +156,8 @@ styles.indeterminate = quizlet => (feature: ol.Feature | ol.render.Feature, res:
                 }),
                 text: (1 > hint && res > 50) ? undefined : new ol.style.Text({
                     text: featureName,
-                    scale: theme.textScale * 1.5,
-                    offsetY: 16,
+                    scale: theme.textScale,
+                    offsetY: theme.textOffset,
                     stroke: new ol.style.Stroke({
                         color: color(theme.textBorderColor),
                         width: theme.textWidth,

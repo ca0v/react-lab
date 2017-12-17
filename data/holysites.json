@@ -1,0 +1,1586 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.589523,
+                    32.819018,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Lake Kinneret",
+                "styleUrl": "#icon-127",
+                "styleHash": "7cf1e33f",
+                "styleMapHash": {
+                    "normal": "#icon-127-normal",
+                    "highlight": "#icon-127-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/K_VsLCFdrGVyQ7MMaD1pjHsdxTu2c0ECs_EB63JwY1GxjS0nms7Yjf_eUEPOPNk7roQ_CZbkenvNIg7tlyZSFMSE5zW-gAr2exrPFKbPxpqSRYrv65OKT0Tb_gfBk7XAMg\" height=\"200\" width=\"auto\" /><br><br>Luke 5: 1And it came to pass that, as the people pressed upon Him to hear the Word of God, He stood by the Lake of Gennesaret.<br><br><img src=\"https://lh3.googleusercontent.com/o2LvfR_2qu8WJZwl4n1iPuXsJpDLU2HdWiDALlAdmeYWREc5N9aFimM1JlVrkRs0YdoMB2H6dKNPBQKntkIKGwXhGnQm9IVbfa9Q1TUAlpXkyaBOnqI17lk0-Dcn2RIPXw\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/K_VsLCFdrGVyQ7MMaD1pjHsdxTu2c0ECs_EB63JwY1GxjS0nms7Yjf_eUEPOPNk7roQ_CZbkenvNIg7tlyZSFMSE5zW-gAr2exrPFKbPxpqSRYrv65OKT0Tb_gfBk7XAMg https://lh3.googleusercontent.com/o2LvfR_2qu8WJZwl4n1iPuXsJpDLU2HdWiDALlAdmeYWREc5N9aFimM1JlVrkRs0YdoMB2H6dKNPBQKntkIKGwXhGnQm9IVbfa9Q1TUAlpXkyaBOnqI17lk0-Dcn2RIPXw"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.553131,
+                    32.909568,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Chorazim",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/IVOYRAowMlnX6KRX_5nDfXlog5qE6axAPBSiC6vFoj_Y4VtkZLsTuLVPwxrQCVV2y6FyVDJeGQkWGfNe5IvJko0GnSnuvrazxS4G2y96ODtS3FFrIpNbmuE\" height=\"200\" width=\"auto\" /><br><br>Matthew 11: 21\"Woe unto thee, Chorazin! Woe unto thee, Bethsaida! For if the mighty works which were done in you had been done in Tyre and Sidon, they would have repented long ago in sackcloth and ashes.",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/IVOYRAowMlnX6KRX_5nDfXlog5qE6axAPBSiC6vFoj_Y4VtkZLsTuLVPwxrQCVV2y6FyVDJeGQkWGfNe5IvJko0GnSnuvrazxS4G2y96ODtS3FFrIpNbmuE"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.562744,
+                    32.874397,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Capernaum",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/GKrWSdLNE9jZAvaUgCwg4uFcTLOCNZlIJZgEji1IX1n4QlrgwiP_q8ikNPlXWxPsCg2EoXWtjOkF-DKSeicXNnff2U-0oJeZXgbpJ6AqwlZtj0NcMzwxTcTnMQyP0xluk9ZUSQE0Hg\" height=\"200\" width=\"auto\" /><br><br>Mark 1: 21And they went into Capernaum, and straightway on the Sabbath day He entered into the synagogue and taught.<br><br> Josephus Flavius (Wars of the Jews Book 3, 10, 8)<br>Thepeople of the country call it Capharnaum. Some have thought it tobe a vein of the Nile, because it produces the Corazin fish as well as thatlake does which is near to Alexandria.<br><br><img src=\"https://lh5.googleusercontent.com/YIUtapjfhBl5X469RiNV-irsYtx-vbYj7YeA2TH1_sAeG2kA6Pl1FGwurJqWSmrQwGNRDjvk10vRdgUsJXN6NF-Y0UKue9LN0_L0SHsGqxY1qRcdTquHqyv9f0nxRMk\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/GKrWSdLNE9jZAvaUgCwg4uFcTLOCNZlIJZgEji1IX1n4QlrgwiP_q8ikNPlXWxPsCg2EoXWtjOkF-DKSeicXNnff2U-0oJeZXgbpJ6AqwlZtj0NcMzwxTcTnMQyP0xluk9ZUSQE0Hg https://lh5.googleusercontent.com/YIUtapjfhBl5X469RiNV-irsYtx-vbYj7YeA2TH1_sAeG2kA6Pl1FGwurJqWSmrQwGNRDjvk10vRdgUsJXN6NF-Y0UKue9LN0_L0SHsGqxY1qRcdTquHqyv9f0nxRMk"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.549011,
+                    32.871514,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Tabgha",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/UzH3DFYuYjHsS6kCmq9PTI-wbSu-9YEdL5gwRyo5s64xfqFftPzTqDvCLxaRSfA0EB2mVQXp1Zbl64_5VrRQmovv57q-myZSQTsSEmI5TJGYra_PiRVSjg\" height=\"200\" width=\"auto\" /><br><br>Mark 6: 41And when He had taken the five loaves and the two fishes, He looked up to Heaven, and blessed and broke the loaves, and gave them to His disciples to set before them; and He divided the two fishes among them all.<br><br><img src=\"https://lh3.googleusercontent.com/9f_qQdwr4-4fJB0mEhttdyxsJ6G745Nhq6D9jzoKioMhNU55sPQxBt1tfiSY4fq_DG53qPIOQGgY8UIiUqhFlSb7956iwL_cuVhnEnmBPUeDjDZuMcjLelq-C6i0MPRR\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/UzH3DFYuYjHsS6kCmq9PTI-wbSu-9YEdL5gwRyo5s64xfqFftPzTqDvCLxaRSfA0EB2mVQXp1Zbl64_5VrRQmovv57q-myZSQTsSEmI5TJGYra_PiRVSjg https://lh3.googleusercontent.com/9f_qQdwr4-4fJB0mEhttdyxsJ6G745Nhq6D9jzoKioMhNU55sPQxBt1tfiSY4fq_DG53qPIOQGgY8UIiUqhFlSb7956iwL_cuVhnEnmBPUeDjDZuMcjLelq-C6i0MPRR"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.622482,
+                    32.907262,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Bethsaida",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/zFyrhu8lJjcdrDvQutQbca9Jlgv6yK75TUdnCNXz5dpRcgJPY2CPGhjHfFWfTFUYai0zDBZSGcRph2rnyOTcUgeuUEMce_9Y5_qK5LQuQ4IoQMSgZvWnwGDRNA\" height=\"200\" width=\"auto\" /><br><br>Matthew 11: 21\"Woe unto thee, Chorazin! Woe unto thee, Bethsaida! For if the mighty works which were done in you had been done in Tyre and Sidon, they would have repented long ago in sackcloth and ashes.<br><br>Antiquities of theJews, Book 18, 2:1<br><br>\"He also advanced the village Bethsaida, situates atthe lake of Gennesareth, unto the dignity of a city, both by the number ofinhabitants it contained, and its other grandeur, and called it by the name ofJulias, the same name with Caesar's daughter\".<br><br><img src=\"https://lh5.googleusercontent.com/qyIHVnvBvxhUR01AGb19MGhUw63cV5K-mnhf9nOr9OmF45Bidnsjk5nk0LPetlIOHO4w4F8zQahFVxanA0vU2jNoXU4i_9Y4mx4RE9XPlJlDJTe6_QrPqqw_sItcyrc\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/zFyrhu8lJjcdrDvQutQbca9Jlgv6yK75TUdnCNXz5dpRcgJPY2CPGhjHfFWfTFUYai0zDBZSGcRph2rnyOTcUgeuUEMce_9Y5_qK5LQuQ4IoQMSgZvWnwGDRNA https://lh5.googleusercontent.com/qyIHVnvBvxhUR01AGb19MGhUw63cV5K-mnhf9nOr9OmF45Bidnsjk5nk0LPetlIOHO4w4F8zQahFVxanA0vU2jNoXU4i_9Y4mx4RE9XPlJlDJTe6_QrPqqw_sItcyrc"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.544205,
+                    32.890543,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mt. Beatitude",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/Q4vWUFqXaetUBEFnSxctiVSMmH2ZlzPxdWjwz-3-kR7NgdVeuL5EB6Upff8YbrwjYrGGKkJybiHzoFL5eaGBQkS4g9Wh56tknQjOJFfXfgTyJBXLsALEc4YxqzU3ruqyCw\" height=\"200\" width=\"auto\" /><br><br>Matthew 5: 1 And seeing the multitudes, He went up onto a mountain; and when He was set, His disciples came unto Him. <br> 2 And He opened His mouth and taught them, saying, <br> 3 \"Blessed are the poor in spirit, for theirs is the Kingdom of Heaven.<br><br><img src=\"https://lh4.googleusercontent.com/Re34TVyrgp6KIIPlEuo-D_84s_SbBPyBtqJw8mYpM97TUWnlQN-y2qz422JU4ZUf9CsMH_t4Ya_cN2FymzvyDrwT4EcvQFJArfi3liO5cgKeJmIWXAaDrKZGZe8KiVL3\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/Q4vWUFqXaetUBEFnSxctiVSMmH2ZlzPxdWjwz-3-kR7NgdVeuL5EB6Upff8YbrwjYrGGKkJybiHzoFL5eaGBQkS4g9Wh56tknQjOJFfXfgTyJBXLsALEc4YxqzU3ruqyCw https://lh4.googleusercontent.com/Re34TVyrgp6KIIPlEuo-D_84s_SbBPyBtqJw8mYpM97TUWnlQN-y2qz422JU4ZUf9CsMH_t4Ya_cN2FymzvyDrwT4EcvQFJArfi3liO5cgKeJmIWXAaDrKZGZe8KiVL3"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.654755,
+                    32.819595,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Kursi",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/zqWoB8CnmPNFHmzzTN_AHgQhwaOqoBGviVqfcvtyobDozQwbH-Tn_BfPzSf7BjEu-6_aqOG3C0yzZoD7BawkbthfT0QBM1Jot4SQi43L38cMgXi_Yg0L\" height=\"200\" width=\"auto\" /><br><br>Matthew 8: 28 And when He had come to the other side into the country of the Gergesenes, there met Him two possessed with devils, coming out of the tombs, exceedingly fierce, so that no man might pass by that way.<br><br><img src=\"https://lh5.googleusercontent.com/teUrfDceDAaYeDFTnwFzwtxNZeNTWhJZqwx8nifFiwmYbgnsiLuTzVmV_gZ3-xQLkpBWx5xAfyjvHfKwA-MYMy8KsNQuFt2PCvEHeAdE8_ve5ZnwSaRcXQclPqjx08g\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/zqWoB8CnmPNFHmzzTN_AHgQhwaOqoBGviVqfcvtyobDozQwbH-Tn_BfPzSf7BjEu-6_aqOG3C0yzZoD7BawkbthfT0QBM1Jot4SQi43L38cMgXi_Yg0L https://lh5.googleusercontent.com/teUrfDceDAaYeDFTnwFzwtxNZeNTWhJZqwx8nifFiwmYbgnsiLuTzVmV_gZ3-xQLkpBWx5xAfyjvHfKwA-MYMy8KsNQuFt2PCvEHeAdE8_ve5ZnwSaRcXQclPqjx08g"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.527039,
+                    32.845558,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Ginosar - Jesus' boat",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/m6Y4AjzaOoFBcpstdRAagF_cIdJlZzR227fiK17dOrU0pakt-qq_7CDseP8X4-5SB6hw_gpeM0iFVZ83prGx7QJ-CuVVR2mzpv3ObTd8BOqNNotvlKMyoHEvGIzh_A\" height=\"200\" width=\"auto\" /><br><br>A few miles north of Tiberias on the Sea of Galilee is the \"Jesus Boat, \" a recently-discovered fishing boat dating to the 1st century CE.<br><br><img src=\"https://lh4.googleusercontent.com/eJJH2xljf17uoZVMofihWoNp1z-1VcQtQr8cZ8xaXbpkqlCbcsqUq25w50ds8f3crpkMKtSNfpANYg_r5Xbu3Q-Tj0T2Q9Ld2x2twe17pUe8B50KegnGb1aMVy1KJJM\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/m6Y4AjzaOoFBcpstdRAagF_cIdJlZzR227fiK17dOrU0pakt-qq_7CDseP8X4-5SB6hw_gpeM0iFVZ83prGx7QJ-CuVVR2mzpv3ObTd8BOqNNotvlKMyoHEvGIzh_A https://lh4.googleusercontent.com/eJJH2xljf17uoZVMofihWoNp1z-1VcQtQr8cZ8xaXbpkqlCbcsqUq25w50ds8f3crpkMKtSNfpANYg_r5Xbu3Q-Tj0T2Q9Ld2x2twe17pUe8B50KegnGb1aMVy1KJJM"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.516739,
+                    32.829981,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Magdala - Taricheae",
+                "styleUrl": "#icon-168",
+                "styleHash": "-2e82063e",
+                "styleMapHash": {
+                    "normal": "#icon-168-normal",
+                    "highlight": "#icon-168-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/W_qScYg5byBA7m9E2euHxuVZgXJr-AMguCBp5zwofBZocaW4-cvwX8wmmoD8HI4zjQPmiuud8Rhet4D_CPyN0QYRT7-YnXcryGLz0jQGmhoTCvb7GJNrtTQl\" height=\"200\" width=\"auto\" /><br><br>Matthew 15: 39And He sent away the multitude, and took the boat and went into the coasts of Magdala.<br><br> <br>Josephus Flavius (http://astore.amazon.com/hollanisrtou-20) (Wars of the Jews 3, Chapter 10) - the naval battle of Taricheae - Magdala<br>1. ANDnow Vespasian pitched his camp between this city and Taricheae, but fortifiedhis camp more strongly, as suspecting that he should be forced to stay there,and have a long war; for all the innovators had gotten together at Taricheae,as relying upon the strength of the city, and on the lake that lay by it. Thislake is called by the people of the country the Lake of Gennesareth. Thecity itself is situated like Tiberias, at the bottom of a mountain, and onthose sides which are not washed by the sea, had been strongly fortified byJosephus, though not so strongly as Tiberias;<br><br><img src=\"https://lh6.googleusercontent.com/Yy9l1bIKHihDn5urdNtUYryfgBc32GPu3tCg3P95on3hRHN5KDl-41at7qEZspayXS0JBF8yiP48GomtW84tepPgAJ7oht2OSEUuhfs_kXc4vCA9CQBzZYMpwpa6uyEhyA\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/W_qScYg5byBA7m9E2euHxuVZgXJr-AMguCBp5zwofBZocaW4-cvwX8wmmoD8HI4zjQPmiuud8Rhet4D_CPyN0QYRT7-YnXcryGLz0jQGmhoTCvb7GJNrtTQl https://lh6.googleusercontent.com/Yy9l1bIKHihDn5urdNtUYryfgBc32GPu3tCg3P95on3hRHN5KDl-41at7qEZspayXS0JBF8yiP48GomtW84tepPgAJ7oht2OSEUuhfs_kXc4vCA9CQBzZYMpwpa6uyEhyA"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.530472,
+                    32.789584,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Tiberias",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/D10mKodpktyEUKL8pRAjuYj34OdGuIwVtJ6RG70BuBzsBySqGnScSGGVhD7Yudd5sevfSJQR1Oh1lSppKjKZkM5sUlXSBe5sUEoGGfAsFNAW3NMXTPPSf-Ol9RVC7PC1xz6qeX1WJIA\" height=\"200\" width=\"auto\" /><br><br>Tiberias was established circa 20 CE by Herod Antipas, son of Herod the Great.<br><br> <br>Josephus Flavius (http://astore.amazon.com/hollanisrtou-20) - Antiquities of the Jews 18.2.3<br>3. Andnow Herod the tetrarch, who was in great favor with Tiberius, built a city of thesame name with him, and called it Tiberias. He built it in the best part ofGalilee, at the lake of Gennesareth. <br><br><br>The Wars of the Jews - 2.20.6<br>6.Josephus also, when he had settled these rules for determining causes by thelaw, with regard to the people's dealings one with another, betook himself tomake provisions for their safety against external violence; and as he knew theRomans would fall upon Galilee, he built walls in proper places about Jotapata,and Bersabee, and Selamis; and besides these, about Caphareccho, and Japha, andSigo, and what they call Mount Tabor, and Tarichee, and Tiberias. <br><br><br>The Wars of the Jews - 3.9.8<br>Sowhen Vespasian and Agrippa had accepted of their right hands by way ofsecurity, Jesus and his party thought it not safe for them to continue atTiberias, so they ran away to Tarichete. The next day Vespasian sent Trajanbefore with some horsemen to the citadel, to make trial of the multitude,whether they were all disposed for peace; and as soon as he knew that thepeople were of the same mind with the petitioner, he took his army, and went tothe city; upon which the citizens opened to him their gates, and met him withacclamations of joy, and called him their savior and benefactor.<br><br><img src=\"https://lh3.googleusercontent.com/hH3Nf-PrIr4ie2af-AIz5p2r7GmAg2Cx0cy0AbcpjWWtRg0KMNom9jYiIGMQG8OPV7FbTaHJH2DPuK8zu_nEXjT7Tt6miNv_H5iAni7i77Or-N3d9MVYwx9nQtijgESl\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/D10mKodpktyEUKL8pRAjuYj34OdGuIwVtJ6RG70BuBzsBySqGnScSGGVhD7Yudd5sevfSJQR1Oh1lSppKjKZkM5sUlXSBe5sUEoGGfAsFNAW3NMXTPPSf-Ol9RVC7PC1xz6qeX1WJIA https://lh3.googleusercontent.com/hH3Nf-PrIr4ie2af-AIz5p2r7GmAg2Cx0cy0AbcpjWWtRg0KMNom9jYiIGMQG8OPV7FbTaHJH2DPuK8zu_nEXjT7Tt6miNv_H5iAni7i77Or-N3d9MVYwx9nQtijgESl"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.566864,
+                    32.708156,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Yardenit",
+                "styleUrl": "#icon-1701-1A237E",
+                "styleHash": "-19b44e74",
+                "styleMapHash": {
+                    "normal": "#icon-1701-1A237E-normal",
+                    "highlight": "#icon-1701-1A237E-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/b3qAJVwdr9jPJLEYzfb7gLriOzJs2tG2VJO9OnlCAZsyyGMWUA33E1_ckXe7dpD4H5GX0ezI3D9aAh_ctCwCU9IHD_qxUP1egeasynYlsawRXE3fOnsreyxH\" height=\"200\" width=\"auto\" /><br><br>Mattew 3: 13Then came Jesus from Galilee to the Jordan unto John to be baptized by him.<br><br><img src=\"https://lh6.googleusercontent.com/Z__riQdSfzUbP6qTKu9H_bn6sx7DIdt4NfF0iCGktB2FPUOjFEAZ8X1sXqg484xrMU5t3SJodOjdOYq5Zgo2D0s14P2rf3fhHDChlsPwvBkJskZPPsIPUZVF-hcrUVX8\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/b3qAJVwdr9jPJLEYzfb7gLriOzJs2tG2VJO9OnlCAZsyyGMWUA33E1_ckXe7dpD4H5GX0ezI3D9aAh_ctCwCU9IHD_qxUP1egeasynYlsawRXE3fOnsreyxH https://lh6.googleusercontent.com/Z__riQdSfzUbP6qTKu9H_bn6sx7DIdt4NfF0iCGktB2FPUOjFEAZ8X1sXqg484xrMU5t3SJodOjdOYq5Zgo2D0s14P2rf3fhHDChlsPwvBkJskZPPsIPUZVF-hcrUVX8"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.660248,
+                    32.683886,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Hamat Gader - Gadara",
+                "styleUrl": "#icon-139",
+                "styleHash": "29010971",
+                "styleMapHash": {
+                    "normal": "#icon-139-normal",
+                    "highlight": "#icon-139-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/Z098SB_uTiZ_Ajfc7FyuIrx322xkNM6_uAL-gDxLCI5-AKpYbo-ZF_rVhEUfy93qz7p55KzQOznc_YndY8XtUKqXON7zvnGlqn0ErzFSoHJlpH78UAPZZQ2PvAzKTnmU\" height=\"200\" width=\"auto\" /><br><br>Joshua 19: 35 And the fortified cities were Ziddim-zer, and Hammath, and Rakkath, and Chinnereth; <br><br> <br><br>Josephus Flavius (Antiquities of the Jews 13.15.4) refers severaltimes to the city of Gadara, but not to Hammat-Gader.<br><br><br>4. Now at this time the Jews were in possession of the following cities thathad belonged to the Syrians, and Idumeans, and Phoenicians: At the sea-side,Strato's Tower, Apollonia, Joppa, Jamhis, Ashdod, Gaza, Anthedon, Raphia, andRhinocolura; in the middle of the country, near to Idumea, Adorn, and Marissa;near the country of Samaria, Mount Carmel, and Mount Tabor, Scythopolis, andGadara; of the country of Gaulonitis, Seleucia and Gabala; in the country ofMoab, Heshbon, and Medaba, Lemba, and Oronas, Gelithon, Zorn, the valley of theCilices, and Pollo; which last they utterly destroyed, because its inhabitantswould not bear to change their religious rites for those peculiar to the Jews. (43) (http://sacred-texts.com/jud/josephus/ant-13.htm#EndNote Ant 13.43b)The Jews also possessed others of the principal cities of Syria, which had beendestroyed.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/Z098SB_uTiZ_Ajfc7FyuIrx322xkNM6_uAL-gDxLCI5-AKpYbo-ZF_rVhEUfy93qz7p55KzQOznc_YndY8XtUKqXON7zvnGlqn0ErzFSoHJlpH78UAPZZQ2PvAzKTnmU"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.688744,
+                    33.245579,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Paneas-Caesarea Philippi - Neronias",
+                "styleUrl": "#icon-1261",
+                "styleHash": "-74e0fa93",
+                "styleMapHash": {
+                    "normal": "#icon-1261-normal",
+                    "highlight": "#icon-1261-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/R3LxogAY_6F8DcfbRN5J23PXrYKSX8xGmKvSSRVBJJicLBMTDBy-SPs62p6LNGPN5JggJJaxnYlMuB1x8Yj25qZq7Qyf-oGPmwFYG3X_R5_zKq_ILhFX4xC273lXV1wVrk2-FhwSc4u6h1nWBVFNl1Iiuf4QKzM8tF4DZYXS1uxYoa0\" height=\"200\" width=\"auto\" /><br><br>Matthew 16: 17 And Jesus answered and said unto him, \"Blessed art thou, Simon Bar-Jonah, for flesh and blood hath not revealed it unto thee, but My Father who is in Heaven. <br> 18 And I say also unto thee, that thou art Peter, and upon this rock I will build My church; and the gates of hell shall not prevail against it.<br><br> <br>Josephus Flavius (http://astore.amazon.com/hollanisrtou-20) (War of the Jews 2.9.1)<br>bothHerod and Philip continued in their tetrarchies; and the latter of them builtthe city Cesarea, at the fountains of Jordan, and in the region of Paneas;<br>Josephus Flavius (War of the Jews 3.9.7)<br>7. ButVespasian, in order to see the kingdom of Agrippa, while the king persuadedhimself so to do, (partly in order to his treating the general and his army inthe best and most splendid manner his private affairs would enable him to do,and partly that he might, by their means, correct such things as were amiss inhis government,) he removed from that Cesarea which was by the sea-side, andwent to that which is called Cesarea Philippi (7) (http://sacred-texts.com/jud/josephus/war-3.htm#EndNote War 3.7b) and there he refreshed his army for twentydays, and was himself feasted by king Agrippa,<br><br><img src=\"https://lh4.googleusercontent.com/FL71pCvXwG8885o0LjmRcB9nd49xjddKiYgOV-e6Y50LJTc2uqzNpMiDzXLQA-_8r2oKG-Om5C66JTmwP6Q-dOx1Z1Z7PZss302oBbCHkC53MFxDOLJ1JtXnWorp7s2R\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/R3LxogAY_6F8DcfbRN5J23PXrYKSX8xGmKvSSRVBJJicLBMTDBy-SPs62p6LNGPN5JggJJaxnYlMuB1x8Yj25qZq7Qyf-oGPmwFYG3X_R5_zKq_ILhFX4xC273lXV1wVrk2-FhwSc4u6h1nWBVFNl1Iiuf4QKzM8tF4DZYXS1uxYoa0 https://lh4.googleusercontent.com/FL71pCvXwG8885o0LjmRcB9nd49xjddKiYgOV-e6Y50LJTc2uqzNpMiDzXLQA-_8r2oKG-Om5C66JTmwP6Q-dOx1Z1Z7PZss302oBbCHkC53MFxDOLJ1JtXnWorp7s2R"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.338898,
+                    32.75321,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Kfar Kana/Cana - wine miracle",
+                "styleUrl": "#icon-1317",
+                "styleHash": "2cf2942a",
+                "styleMapHash": {
+                    "normal": "#icon-1317-normal",
+                    "highlight": "#icon-1317-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/ZozkNoM8nU9RiEL5M2yMGJhjP4Y3hFtOwqwreDzbaw4627PwZSz44AthfZXe6bHTzg_HUYI9rTr37eQSHgnIHXP_BzHvHjHKMtH8eo1nd0MFcYeIGh3NRw1J7g\" height=\"200\" width=\"auto\" /><br><br>John 2: 9 When the ruler of the feast had tasted the water that was made wine, not knowing from whence it had come (but the servants who drew the water knew), the governor of the feast called the bridegroom <br> 10 and said unto him, \"Every man at the beginning doth set forth good wine, and when men have drunk well, then that which is worse; but thou hast kept the good wine until now.\"<br><br> <br>JosephusFlavius (Warof the Jews 1.17.5) Herod’s HQ in Cana.<br>5. Now as Antigonus had a mind to appear to exceed Herod, not only in thecourage, but in the number of his men, he sent Pappus, one of his companions,with an army against Samaria, whose fortune it was to oppose Macheras; butHerod overran the enemy's country, and demolished five little cities, anddestroyed two thousand men that were in them, and burned their houses, and thenreturned to his camp; but his head-quarters were at the village called Cana.<br><br><img src=\"https://lh4.googleusercontent.com/kiWuu9OS6nQBDvmiufFqDWBJS8DKl5oHm0Xnd4WHlUD6_FL69hBo7WGN62VvMz3IDFcbVSsExd17lcBpY3D2b_oDBP2bx2hYIYVrZf1tF1FIF9T6VNdRVqFbyWd2o7N4fw\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/ZozkNoM8nU9RiEL5M2yMGJhjP4Y3hFtOwqwreDzbaw4627PwZSz44AthfZXe6bHTzg_HUYI9rTr37eQSHgnIHXP_BzHvHjHKMtH8eo1nd0MFcYeIGh3NRw1J7g https://lh4.googleusercontent.com/kiWuu9OS6nQBDvmiufFqDWBJS8DKl5oHm0Xnd4WHlUD6_FL69hBo7WGN62VvMz3IDFcbVSsExd17lcBpY3D2b_oDBP2bx2hYIYVrZf1tF1FIF9T6VNdRVqFbyWd2o7N4fw"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.323792,
+                    32.704689,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Nazareth",
+                "styleUrl": "#icon-1467",
+                "styleHash": "492cd823",
+                "styleMapHash": {
+                    "normal": "#icon-1467-normal",
+                    "highlight": "#icon-1467-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/4Yb0bF8hH8FXrs4800mCYAQVtW9cfFB8rZwtrPwCaMN1T6feCtMUUOiQHOop87dHQasBptPHN3uP6Phsc4T76wbxOUFhPus0ppua0RaHdxJu0kitx_PpcbZE-HgoAHu5BnPjLswFPc38sgvsjU4\" height=\"200\" width=\"auto\" /><br><br>Matthew 1: 18 Now the birth of Jesus Christ was in this way: When His mother Mary was espoused to Joseph, before they came together, she was found with child of the Holy Ghost.<br><br><img src=\"https://lh5.googleusercontent.com/Wt6mmiOC7z986yQV8zS5cjcalIfqgKH_VOvPvNv5h4Bloj0BOw7ftMlXv4KH-XMCRwp1Jg_p0yko6g6Xvz3TXv2cC3qbw77L9W8LdzRQzxOMru_caM5s9Y30oByQdOoY\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/4Yb0bF8hH8FXrs4800mCYAQVtW9cfFB8rZwtrPwCaMN1T6feCtMUUOiQHOop87dHQasBptPHN3uP6Phsc4T76wbxOUFhPus0ppua0RaHdxJu0kitx_PpcbZE-HgoAHu5BnPjLswFPc38sgvsjU4 https://lh5.googleusercontent.com/Wt6mmiOC7z986yQV8zS5cjcalIfqgKH_VOvPvNv5h4Bloj0BOw7ftMlXv4KH-XMCRwp1Jg_p0yko6g6Xvz3TXv2cC3qbw77L9W8LdzRQzxOMru_caM5s9Y30oByQdOoY"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.392456,
+                    32.681574,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mt. Tavor - Transfiguration",
+                "styleUrl": "#icon-1377",
+                "styleHash": "-2b8b4d3a",
+                "styleMapHash": {
+                    "normal": "#icon-1377-normal",
+                    "highlight": "#icon-1377-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/jla6hjN2G3e1tpLDTnKe4hBtZQwFMV0B6GacIZF-ym1XYvvLnDcx7O6I9jlpSO2QXLvJjN5GrHrex4zeOeHhiTdMZTQY1KbRFtb8P-DIGqA8_ojC9XA5CZbe9sM\" height=\"200\" width=\"auto\" /><br><br>Mark 9: 2 And after six days Jesus took with Him Peter and James and John, and led them up onto a high mountain apart by themselves; and He was transfigured before them.<br><br><img src=\"https://lh6.googleusercontent.com/Kv5489dZfROFWV1n_OQ-fwAAciGgxGZyabUJ1GPL2H1gDHRhPluaqXqBo_74IN8bQJQoeuEdV3Mk8HChZa5POAckTbaFSN7Y4eikg7LD1N22AiCcGMFjplo1hkIONa4\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/jla6hjN2G3e1tpLDTnKe4hBtZQwFMV0B6GacIZF-ym1XYvvLnDcx7O6I9jlpSO2QXLvJjN5GrHrex4zeOeHhiTdMZTQY1KbRFtb8P-DIGqA8_ojC9XA5CZbe9sM https://lh6.googleusercontent.com/Kv5489dZfROFWV1n_OQ-fwAAciGgxGZyabUJ1GPL2H1gDHRhPluaqXqBo_74IN8bQJQoeuEdV3Mk8HChZa5POAckTbaFSN7Y4eikg7LD1N22AiCcGMFjplo1hkIONa4"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.525665,
+                    32.594841,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Belvoir fortress",
+                "styleUrl": "#icon-ci-2",
+                "styleHash": "-666ca2c3",
+                "styleMapHash": {
+                    "normal": "#icon-ci-2-normal",
+                    "highlight": "#icon-ci-2-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/xcg3avoK96MfA_jjPHlv62N9stpCmba29DAAnT9FOKXXn8r02QWUFD7CXC3ZZ5NN-Ccw5SPEq-SIC1QKiKuuNkMYr7Hp1Z9Kw6DpPU2hmp2ghWWVq8L0yYG14yjxnaqPkJo\" height=\"200\" width=\"auto\" /><br><br>Built in 1138 by King Foulque V d'Anjou<br><br><img src=\"https://lh4.googleusercontent.com/TNZg7tIU8wQc3FQ6rYbL_aU7C5ndYHJ0tFZKV3lisPqqa_DR3h1CnA13PwLg6RG65_nDLRsaqiPH48NCtrt2WyfaX9EVawsQb21kOG1TQqUr_fom0eKU0eSdmz4poCca\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/xcg3avoK96MfA_jjPHlv62N9stpCmba29DAAnT9FOKXXn8r02QWUFD7CXC3ZZ5NN-Ccw5SPEq-SIC1QKiKuuNkMYr7Hp1Z9Kw6DpPU2hmp2ghWWVq8L0yYG14yjxnaqPkJo https://lh4.googleusercontent.com/TNZg7tIU8wQc3FQ6rYbL_aU7C5ndYHJ0tFZKV3lisPqqa_DR3h1CnA13PwLg6RG65_nDLRsaqiPH48NCtrt2WyfaX9EVawsQb21kOG1TQqUr_fom0eKU0eSdmz4poCca"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.501633,
+                    32.501655,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Beit Shean-Scythopolis",
+                "styleUrl": "#icon-143",
+                "styleHash": "-2513e80a",
+                "styleMapHash": {
+                    "normal": "#icon-143-normal",
+                    "highlight": "#icon-143-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/pOlE-tcOrcZ5mIWC_3TQCEkYtGfIq-Lh2sFCvsCFebqbo6-lh5FaB0_9qpru995Jdeq6edsNue40cOG--rT5E5qaFWZuQTpVZw-VYXrpgILbA7eRRfnAfiLkM61M\" height=\"200\" width=\"auto\" /><br><br>Tell Beit She'an: During the Hellenistic period it had a Hellenised population and was called Scythopolis, the Capital of the Decapolis.<br><br><img src=\"https://lh5.googleusercontent.com/GlyMd5Hpu8AfNoSgVHurrx4kGK8vwLjRfUqN59tBhiwdLojUW4QNEqwZ0oXaWFdDC9UXbTcvcn9_edaQ-6ohbMInJYD4kzPmbRgE_TT7-W6HjuuML7tNnSx_hjEOadvK\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/pOlE-tcOrcZ5mIWC_3TQCEkYtGfIq-Lh2sFCvsCFebqbo6-lh5FaB0_9qpru995Jdeq6edsNue40cOG--rT5E5qaFWZuQTpVZw-VYXrpgILbA7eRRfnAfiLkM61M https://lh5.googleusercontent.com/GlyMd5Hpu8AfNoSgVHurrx4kGK8vwLjRfUqN59tBhiwdLojUW4QNEqwZ0oXaWFdDC9UXbTcvcn9_edaQ-6ohbMInJYD4kzPmbRgE_TT7-W6HjuuML7tNnSx_hjEOadvK"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.185089,
+                    32.585006,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Tel Megiddo",
+                "styleUrl": "#icon-1261",
+                "styleHash": "-74e0fa93",
+                "styleMapHash": {
+                    "normal": "#icon-1261-normal",
+                    "highlight": "#icon-1261-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/2uRmhD-O1QeHF94C9qDcvWA5iNKfUqjy_6J0fkxgE99DG6YBwhqQygmxhI94oivNM96iilKt5rgqeBEkBAwT-Up5XZysUWzwAXnCPXCcl1iELjtDE4Ekqb5whF7Dw6jM\" height=\"200\" width=\"auto\" /><br><br>Revelation 16: 16 Then they gathered the kings together to the place that in Hebrew is called Armageddon.<br><br><img src=\"https://lh5.googleusercontent.com/g1HOD7uq1IwCsYxly_hntJWmJrEwBFgwb8sYSwYHWqgEtyErl4S1inezZAQbT7HLAchZ4saOpszQs5nfwcCrjde1anC5D-Qa_wVznuW2Sg8qKdZXm1Rx3zL8YcEmmkqkfQ\" height=\"200\" width=\"auto\" />",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/2uRmhD-O1QeHF94C9qDcvWA5iNKfUqjy_6J0fkxgE99DG6YBwhqQygmxhI94oivNM96iilKt5rgqeBEkBAwT-Up5XZysUWzwAXnCPXCcl1iELjtDE4Ekqb5whF7Dw6jM https://lh5.googleusercontent.com/g1HOD7uq1IwCsYxly_hntJWmJrEwBFgwb8sYSwYHWqgEtyErl4S1inezZAQbT7HLAchZ4saOpszQs5nfwcCrjde1anC5D-Qa_wVznuW2Sg8qKdZXm1Rx3zL8YcEmmkqkfQ"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.088272,
+                    32.670593,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Elajah Carmelite Church ",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/AXj4c3ELd2izf2LqdWpkYlvyYplfqY9Xr1H8X4X2dE0akIHcnB1xGxItTEIq2s0tbIwN4hiMImpT_nfPkvEP0MSCH_SLGtuMs7JRKbDZUBe2N-b0iTTi4nXB1T7DuV0MHtN3oC7Mh3PJK1Bg\" height=\"200\" width=\"auto\" /><br><br>1 Kings 18: 40 And Elijah said unto them: 'Take the prophets of Baal; let not one of them escape.' And they took them; and Elijah brought them down to the brook Kishon, and slew them there.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/AXj4c3ELd2izf2LqdWpkYlvyYplfqY9Xr1H8X4X2dE0akIHcnB1xGxItTEIq2s0tbIwN4hiMImpT_nfPkvEP0MSCH_SLGtuMs7JRKbDZUBe2N-b0iTTi4nXB1T7DuV0MHtN3oC7Mh3PJK1Bg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.224228,
+                    32.62781,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Jezreel Valley",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/f2f-0S9ehqq4p7INEQZ46pWrVEuYgbrFRfN_x9TV1r-NHht1xzTfCG9XIVxKoZTXiQHo3O18i54uxMywGOXIz-ouD7yT4YOdVOHbKmoZ9euLfkbzwCQTtzhcQYM\" height=\"200\" width=\"auto\" /><br><br>",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/f2f-0S9ehqq4p7INEQZ46pWrVEuYgbrFRfN_x9TV1r-NHht1xzTfCG9XIVxKoZTXiQHo3O18i54uxMywGOXIz-ouD7yT4YOdVOHbKmoZ9euLfkbzwCQTtzhcQYM"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.068359,
+                    32.921097,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Akko-Antiochia Ptolemais",
+                "styleUrl": "#icon-ci-3",
+                "styleHash": "-2d5056c5",
+                "styleMapHash": {
+                    "normal": "#icon-ci-3-normal",
+                    "highlight": "#icon-ci-3-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/A0DqnkI-Stb2kRUON9cAwgdXvvfF5GbzkXJQVVocyiCjBVt1VzMdVsTJrdthRgLyIhNZmAy1YuYwpjEVjNKXeunsxjakL357z0dfzSLhmoEvJnx0OQw\" height=\"200\" width=\"auto\" /><br><br>Judges 1:31 Asher drove not out the inhabitants of Acco, nor the inhabitants of Zidon, nor of Ahlab, nor of Achzib, nor of Helbah, nor of Aphik, nor of Rehob;<br><br> <br>Josephus Flavius (http://astore.amazon.com/hollanisrtou-20) Antiquities of the Jews 12.8.6 But as to Joseph, the son of Zacharias, and Azarias, whom Judas leftgenerals [of the rest of his forces] at the same time when Simon was inGalilee, fighting against the people of Ptolemais, and Judas himself, and hisbrother Jonathan, were in the land of Gilead, did these men also affect theglory of being courageous generals in war, in order whereto they took the armythat was under their command, and came to Jamnia. <br><br>Acre was nominated the Capital of the Kingdom of Jerusalem 1191CE by King Richard the Lion heart after failing to conquer Jerusalem from Sal ah A-Din.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/A0DqnkI-Stb2kRUON9cAwgdXvvfF5GbzkXJQVVocyiCjBVt1VzMdVsTJrdthRgLyIhNZmAy1YuYwpjEVjNKXeunsxjakL357z0dfzSLhmoEvJnx0OQw"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.16449,
+                    33.060471,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Judyn",
+                "styleUrl": "#icon-ci-4",
+                "styleHash": "-d87a411",
+                "styleMapHash": {
+                    "normal": "#icon-ci-4-normal",
+                    "highlight": "#icon-ci-4-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/KMxzsTxjT9_4LOk63pHvcVe6i2dtrFD5M05KrD9RkyldMajk7ksMkdmXiKDL4CISACoyxRcCVVucxoQcXNdl04raB1V7VNSWcn-Pku1yd1M\" height=\"200\" width=\"auto\" /><br><br>Crusader fortress in Yehi'am.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/KMxzsTxjT9_4LOk63pHvcVe6i2dtrFD5M05KrD9RkyldMajk7ksMkdmXiKDL4CISACoyxRcCVVucxoQcXNdl04raB1V7VNSWcn-Pku1yd1M"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.909058,
+                    32.514394,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Stratton’s Tower - Caesarea Maritima",
+                "styleUrl": "#icon-49",
+                "styleHash": "-ccc1fce",
+                "styleMapHash": {
+                    "normal": "#icon-49-normal",
+                    "highlight": "#icon-49-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/AsvQZRl_7LoT0A9bDCcnJRtNig1_YYE-ApGqfELCc68Y28-al3-s_Uo6kMVuVaE6dgmpGuDXUnouIASU_MFITjY2BM_iIlWgIhOaAevh2_ff2yjxWsUSD-fP\" height=\"200\" width=\"auto\" /><br><br>Built by King Herod the Great in 22 BCE.<br><br> <br>Josephus Flavius (http://astore.amazon.com/hollanisrtou-20) Antiquities of the Jews 15.8.5 He also built another fortress for the whole nation; it was of old calledStrato's Tower, but was by him named Cesarea.<br><br><br>Josephus Flavius War of the Jews 1:21.8 So he dedicated the city to the province, and the haven to the sailorsthere; but the honor of the building he ascribed to Caesar, and named it Cesarea accordingly.<br><br>Acts 10: 1 There was a certain man in Caesarea called Cornelius, a centurion of the band called the Italian Band,<br>    <br> 2 a devout man and one who feared God with all his house, who gave many alms to the people and prayed to God always.<br> <br>In 1251, LouisIX, the Crusader fortifiedthe city against the Mamluks.",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/AsvQZRl_7LoT0A9bDCcnJRtNig1_YYE-ApGqfELCc68Y28-al3-s_Uo6kMVuVaE6dgmpGuDXUnouIASU_MFITjY2BM_iIlWgIhOaAevh2_ff2yjxWsUSD-fP"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.749756,
+                    32.037184,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Joppa - Jaffa - St. Peter's Church",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/YjTEOr1h66yiRcuB3YLBUKCImvQMXTCzFWRCOzcLQsWJDQjNyXRfhTAP5EdikX8Yr-5mr8NnccjJi5FE-vtpoFMOQFzEzIc8tNdxykfn_Nl2_Pkgouyaegkn5KgxF8tLU6O4m_Tsf5m6Aa8xl5gerwo\" height=\"200\" width=\"auto\" /><br><br>Joshua19:46, 2Chronicles 2:16, Book ofEzra 3:7 Book ofJonah 1:3, all mention Joppa.<br><br><br>Acts 10:12 wherein were all kinds of four footed beasts of the earth, and wild beasts and creeping things and fowls of the air.   <br>13 And there came a voice to him, \"Rise, Peter; kill and eat.\"",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/YjTEOr1h66yiRcuB3YLBUKCImvQMXTCzFWRCOzcLQsWJDQjNyXRfhTAP5EdikX8Yr-5mr8NnccjJi5FE-vtpoFMOQFzEzIc8tNdxykfn_Nl2_Pkgouyaegkn5KgxF8tLU6O4m_Tsf5m6Aa8xl5gerwo"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.996948,
+                    31.854815,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Emmaus Nicopolis",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/7mnQG1I2sC1ucjrW4GUHOZV_xLDh1VmtnKzFQK53kCaK-WECYFscY88N8_qpUBJ-cQNHO1bCQKeSuDVFH56onbQapgOVUe_FvhYqbzTBSvwWfAOt_2Y-3g6TDlg_7fNuiH5NONLx\" height=\"200\" width=\"auto\" /><br><br>Luke 24:13 And behold, two of them were going that same day to a village called Emmaus, which was from Jerusalem about seven miles.<br>There he met Cleopas.<br><br><br>Emmaus Nicopolis appears on Roman geographical maps. The Peutinger Table <br>situates it about 31 km west of Jerusalem, while the Ptolemy map shows it at a distance of 32 km) from the city. This location is confirmed by ancient sources and translations of the Gospel of Luke, which give the distance between biblical Emmaus and Jerusalem <br>as 160 stadia.<br>The first mention of Emmaus occurs in the 1st book of Maccabees, chapters 3-4, in the context of Judas the Maccabee’s wars against the Greek military chief Nikanor (2nd century BCE).",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/7mnQG1I2sC1ucjrW4GUHOZV_xLDh1VmtnKzFQK53kCaK-WECYFscY88N8_qpUBJ-cQNHO1bCQKeSuDVFH56onbQapgOVUe_FvhYqbzTBSvwWfAOt_2Y-3g6TDlg_7fNuiH5NONLx"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.105438,
+                    31.814563,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Emmaus Abu Gosh",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/GbRlWeDugaiPT0b9zT4oc3rLfSEboi4eAOOQq6iXGC3egMZbEFZK3ZYi6H0R6GTSf7pQ8l5Ww_gj9SqdJ8jlnfgK-gGkrbNeO_mpNuszTJ3YGxg33zhDYl2ATeGk00F50SHOujYgyfm4\" height=\"200\" width=\"auto\" /><br><br>Luke 24: 13 And behold, two of them were going that same day to a village called Emmaus, which was from Jerusalem about seven miles.<br>18 And one of them, whose name was Cleopas, answering said unto Him, \"Art thou only a stranger in Jerusalem, and hast not known the things which have come to pass there in these days?\"",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/GbRlWeDugaiPT0b9zT4oc3rLfSEboi4eAOOQq6iXGC3egMZbEFZK3ZYi6H0R6GTSf7pQ8l5Ww_gj9SqdJ8jlnfgK-gGkrbNeO_mpNuszTJ3YGxg33zhDYl2ATeGk00F50SHOujYgyfm4"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.175819,
+                    31.766997,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Ein Karem",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/__mVZGi-2FuiJkBPQa-rHwBeCSI25roJu2Uo3hAOYFlgjDIncYmSue9Lf5LfixtQxXHepL1f8vz41LULXZAX1DjToNGCU1IuyrCo2Ysk_nE-NVftsr_2ZN5v33-GklQwYDlTvXDIwrWNU-id3ZuxmqrOucE\" height=\"200\" width=\"auto\" /><br><br>Luke 1: 39 And Mary arose in those days and went into the hill country with haste, into a city of Judah,<br>40 and entered into the house of Zacharias and saluted Elizabeth.    <br>41 And it came to pass, when Elizabeth heard the salutation of Mary, that the babe leaped in her womb, and Elizabeth was filled with the Holy Ghost.<br>42 And she spoke out with a loud voice and said, \"Blessed art thou among women, and blessed is the fruit of thy womb.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/__mVZGi-2FuiJkBPQa-rHwBeCSI25roJu2Uo3hAOYFlgjDIncYmSue9Lf5LfixtQxXHepL1f8vz41LULXZAX1DjToNGCU1IuyrCo2Ysk_nE-NVftsr_2ZN5v33-GklQwYDlTvXDIwrWNU-id3ZuxmqrOucE"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.556564,
+                    32.873244,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "7 Wells - Church of Primacy of Peter",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/qUqKEsHAD1EzhXc5o6uDRw5mQgQB5Abg1JCsxaaxqjCijQHogb5J1qyVa8asDyO9RZMMN7nC1GBPPJQYGm-bru7N5slz1o3Nri9clNbWsmQZS2TVb0m-zh0YVy_w5DFIiU1ZNDvEZA\" height=\"200\" width=\"auto\" /><br><br>John 21: 17 He said unto him the third time, \"Simon, son of Jonah, lovest thou Me?\" Peter was grieved because He said unto him the third time, \"Lovest thou Me?\" And he said unto Him, \"Lord, Thou knowest all things. Thou knowest that I love Thee.\" Jesus said unto him, \"Feed My sheep.",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/qUqKEsHAD1EzhXc5o6uDRw5mQgQB5Abg1JCsxaaxqjCijQHogb5J1qyVa8asDyO9RZMMN7nC1GBPPJQYGm-bru7N5slz1o3Nri9clNbWsmQZS2TVb0m-zh0YVy_w5DFIiU1ZNDvEZA"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.195389,
+                    31.702466,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Bethlehem",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/6853OUlqD_hbwyHbIbJfqsnG5_lpPyF3C61OO2muiTycmIvb9IQcZVWFfAhZ96GJxXg40SWWcBw3_Msqobwp-lY7t0PM2-j5V_8_aTK3uwd5WQAo7VtxH-5HkA\" height=\"200\" width=\"auto\" /><br><br>Luke 2: 4 And Joseph also went up from Galilee out of the city of Nazareth into Judea, unto the City of David which is called Bethlehem (because he was of the house and lineage of David)",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/6853OUlqD_hbwyHbIbJfqsnG5_lpPyF3C61OO2muiTycmIvb9IQcZVWFfAhZ96GJxXg40SWWcBw3_Msqobwp-lY7t0PM2-j5V_8_aTK3uwd5WQAo7VtxH-5HkA"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.226803,
+                    31.655573,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Herodion",
+                "styleUrl": "#icon-619",
+                "styleHash": "-620b995a",
+                "styleMapHash": {
+                    "normal": "#icon-619-normal",
+                    "highlight": "#icon-619-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/WJA0zu9grfV3MHOWAcqEbXMEiCyRdM_Z-fo06d0MxB3Oq0rqo94ev__r1FLc6hLGutITeeLYgROkTJyTnWYR5KIZ3RawTqATbQdOT_ILsmD_f0YwcxUR9YI\" height=\"200\" width=\"auto\" /><br><br>Built by King Herod the Great circa 39 BCE.<br><br><br>Josephus Flavius (http://astore.amazon.com/hollanisrtou-20) (Antiquity of the Jews 14:13-9 359)<br>Nor indeed was he free from the Jews all along as he was in his flight;for by that time he was gotten sixty furlongs out of the city, and was upon theroad, they fell upon him, and fought hand to hand with him, whom he also put toflight, and overcame, not like one that was in distress and in necessity, butlike one that was excellently prepared for war, and had what he wanted in greatplenty. And in this very place where he overcame the Jews it was that he sometime afterward build a most excellent palace, and a city round about it, andcalled it Herodium. <br><br><br>Josephus War of the Jew:  (1:13,8 265)<br>8. Nay, he found by experience that the Jews fell more heavily upon himthan did the Parthians, and created him troubles perpetually, and this eversince he was gotten sixty furlongs from the city; these sometimes brought it toa sort of a regular battle. Now in the place where Herod beat them, and killeda great number of them, there he afterward built a citadel, in memory of thegreat actions he did there, and adorned it with the most costly palaces, anderected very strong fortifications, and called it, from his own name, Herodium.<br> <br>Matthew, 1:13 \"Andwhen they were departed, behold, the angel of the Lord Appeareth to Joseph in adream, saying, Arise, and take the young child and his mother, and flee intoEgypt, and be thou there until I bring thee word: for Herod will seek the youngchild to destroy him\"",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/WJA0zu9grfV3MHOWAcqEbXMEiCyRdM_Z-fo06d0MxB3Oq0rqo94ev__r1FLc6hLGutITeeLYgROkTJyTnWYR5KIZ3RawTqATbQdOT_ILsmD_f0YwcxUR9YI"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.110931,
+                    31.523532,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Hebron-Tomb of the Patriarchs",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/jAu_7xHlgOO-EX0VRYoOBBgM9raoUSJhwgePAQlIz-YYKcqDGJdVFJdSU-6bOGSP7zcoJy8kpH0PphDMHKd34A54bei3pijyWaiy0C1C1TegGJHIuJEbi7pElVUYm7ET-F0jT1jD0lGRWmuphQQv\" height=\"200\" width=\"auto\" /><br><br>Genesis 23: 16 And Abraham hearkened unto Ephron; and Abraham weighed to Ephron the silver, which he had named in the hearing of the children of Heth, four hundred shekels of silver, current money with the merchant. 17 So the field of Ephron, which was in Machpelah, which was before Mamre, the field, and the cave which was therein, and all the trees that were in the field, that were in all the border thereof round about, were made sure 18 unto Abraham for a possession in the presence of the children of Heth, before all that went in at the gate of his city.<br>19 And after this, Abraham buried Sarah his wife in the cave of the field of Machpelah before Mamre--the same is Hebron--in the land of Canaan. 20 And the field, and the cave that is therein, were made sure unto Abraham for a possession of a burying-place by the children of Heth.<br>Genesis 49: 30 in the cave that is in the field of Machpelah, which is before Mamre, in the land of Canaan, which Abraham bought with the field from Ephron the Hittite for a possession of a burying-place.<br>31 There they buried Abraham and Sarah his wife; there they buried Isaac and Rebekah his wife; and there I buried Leah.<br>32 The field and the cave that is therein, which was purchased from the children of Heth.'<br>33 And when Jacob made an end of charging his sons, he gathered up his feet into the bed, and expired, and was gathered unto his people.",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/jAu_7xHlgOO-EX0VRYoOBBgM9raoUSJhwgePAQlIz-YYKcqDGJdVFJdSU-6bOGSP7zcoJy8kpH0PphDMHKd34A54bei3pijyWaiy0C1C1TegGJHIuJEbi7pElVUYm7ET-F0jT1jD0lGRWmuphQQv"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.457687,
+                    31.741599,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Qumran",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/dR3DKxgx-yC4jqtTzg0OAx0mcVuenru82oBohEsmeViMo2fCPbjSIHCZQUZwCdyAxl6f2UVTCHIdWpfvcm_gnneemqDsEVU8zONZ_sWd4D3IZ5IfGwlk\" height=\"200\" width=\"auto\" /><br><br>Qumran was most likely constructed sometime during or before the reign of John Hyrcanus, 134-104 BCE and saw various phases of occupation until, probably after the fall of Jerusalem in 70 CE, Titus and his X Fretensis destroyed it.<br>In 1947 of nearly 900 scrolls in various states of completeness, mostly written on parchment, were discovered. The famous scrolls date back to circa 100 BCE.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/dR3DKxgx-yC4jqtTzg0OAx0mcVuenru82oBohEsmeViMo2fCPbjSIHCZQUZwCdyAxl6f2UVTCHIdWpfvcm_gnneemqDsEVU8zONZ_sWd4D3IZ5IfGwlk"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.459061,
+                    31.710645,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Ein Fashcha",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/or5BZLk9DVFFumFTHbu3L_k3alHj3kPZX0Qoc3TrM8IpB-Nl4-294Qnjil-t0ns1NZ_UWtPOsJ4Eo1LyGwEJdOBLvydmUnl06fOorh7xZvBLqi5bMtxbYCD_QLFZPQ\" height=\"200\" width=\"auto\" /><br><br>This is probably one of the sites where the famous Persimmon incense was produced during the Second Temple.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/or5BZLk9DVFFumFTHbu3L_k3alHj3kPZX0Qoc3TrM8IpB-Nl4-294Qnjil-t0ns1NZ_UWtPOsJ4Eo1LyGwEJdOBLvydmUnl06fOorh7xZvBLqi5bMtxbYCD_QLFZPQ"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.35675,
+                    31.312582,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Masada",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/YT6enaIlvdAHefC9IC745hdJyt4WrJTWDaJwXXmjFcg47JNmiC0ak2oZnuK3G-hY78s6I7Y-LbPOgLnyrTN5JIG6BjnGOl2YJvF-wN2UOrUNg-Nce26C\" height=\"200\" width=\"auto\" /><br><br>Masada is the name for a site of ancient palaces and fortifications in the South District of Israel on top of an isolated rock plateau, or large mesa, on the eastern edge of the Judean Desert overlooking the Dead Sea. <br><br> <br>Josephus Flavius (http://astore.amazon.com/hollanisrtou-20) (Antiquities of the Jews14:11.7 – 296) Masada was thestrongest fortress of them all during Cassius’ time. <br>The fortress was strengthened by King Herod the Great in 15 circa BCE. After the First Jewish-Roman War (also known as the Great Jewish Revolt) a siege of the fortress by troops of the Roman Empire, Lucius Flavius Silva,  led to the mass suicide of the sicarii rebels, who preferred death to surrender.<br><br>Antiquitiesof the Jews 14:13.7 352) Herod escaped to Masada being chased by the Parthians Herodthe Great fortified Masada between 37 and 31 BCE as a refuge forhimself in the event of a revolt.<br>Josephus (War of the Jews 4.7.2-398) In 66 CE, at the beginning of the First Jewish-Roman War againstthe Roman Empire, a group of Jewish extremists calledthe Sicarii overcame the Roman garrison of Masada. Afterthe destruction of the Temple, the Jewish rebels and their families fled Jerusalem andsettled on the mountain top, using it as a base for raiding Roman settlements.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/YT6enaIlvdAHefC9IC745hdJyt4WrJTWDaJwXXmjFcg47JNmiC0ak2oZnuK3G-hY78s6I7Y-LbPOgLnyrTN5JIG6BjnGOl2YJvF-wN2UOrUNg-Nce26C"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.392456,
+                    31.456782,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Ein Gedi",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/DhySOLIaunZQIQvvVQ0i1ZgoYGnrch5XkTNlK2j_jTB9PJ2e7T4uGawNJj4xukWJKm7QMKDjzp4GQPhOt_U1k2U5JSCN_7cOLorfMR7IskEFkr4cQlgW4-IcHg\" height=\"200\" width=\"auto\" /><br><br>Songof Songs; \"My beloved is unto me as a cluster of henna flowers in thevineyards of Ein Gedi\" (1:14). <br>1 Samuel 24: to Jewishtradition, David hidfrom Saul inthe caves here;\"And David went up from thence,and dwelt in the strongholds of Ein Gedi\".<br><br><br>EzekielChapter 47:10 Andit shall come to pass, that fishers shall stand by it from En-gedi even untoEn-eglaim; there shall be a place for the spreading of nets; their fish shallbe after their kinds, as the fish of the Great Sea, exceeding many. shows thatit was also a fisherman's town.<br><br>1 Kings Chapter 22: 1-54 Again, it is in Ein Gedi thatthe Moabites and Ammonites gatherin order to fight against Joshaphat and to advance against Jerusalem.<br> <br>Desert Oasis where nearby a beautiful synagogue and a Persimmon incense factory was excavated. Nearby a town from the Roman era.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/DhySOLIaunZQIQvvVQ0i1ZgoYGnrch5XkTNlK2j_jTB9PJ2e7T4uGawNJj4xukWJKm7QMKDjzp4GQPhOt_U1k2U5JSCN_7cOLorfMR7IskEFkr4cQlgW4-IcHg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.386963,
+                    31.154646,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Dead Sea Resorts",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/POtUL7LOepmQGglEtjbcsm9j0XmKD1Wq7REDKX42bDLiANE1IPSFXK3kWZTLZLKV72Fc6juDsdTyit-0PiQUMHhkCh7A1bqWQTuODmgLrZkz4ZbgWgTHmdzc9A\" height=\"200\" width=\"auto\" /><br><br>Dead Sea in the Bible - Genesis 14,1-3 WWI<br>Genesis 18:16 Abraham pleading for Sodom & Gomorrah<br>Genesis 19:21-22 – Lot Affair<br>Deuteronomy 29:23 – description of Dead Sea<br>Ezekiel 47:8-9 there is a specific prophecy that the sea will \". Behealed and madefresh\", becoming a normal lake capable of supporting marine life. Asimilar prophecy is stated in Zechariah 14:8,which says that \"Living waters will go out from Jerusalem, half of them tothe eastern sea (likely the Dead Sea) and half to the western sea (the Mediterranean)...\"<br><br> <br>The Dead Sea area has become a major center for health research and treatment for several reasons. The mineral content of the water, the very low content of pollens and other allergens in the atmosphere, the reduced ultraviolet component of solar radiation, and the higher atmospheric pressure at this great depth each have specific health effects.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/POtUL7LOepmQGglEtjbcsm9j0XmKD1Wq7REDKX42bDLiANE1IPSFXK3kWZTLZLKV72Fc6juDsdTyit-0PiQUMHhkCh7A1bqWQTuODmgLrZkz4ZbgWgTHmdzc9A"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.62616,
+                    30.889262,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Shivta - Sobota",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/guTGZ02TqBvuu6btpUCoCKAlh-_Kv6fsSpelUGWoF1dm51vVsKwKcziZwNGcw2BnZH7Wu8WrHORjpwCtZZ2q5xpBVxyO8uS40pFhWSa2hmTxRSeuHFvDGWMpU8JHURkLUxApsecWi_de\" height=\"200\" width=\"auto\" /><br><br>One of the 6 Nabatean cities on the Spice & Incense Routes where in the 4th C CE the first churches were built and first Christians to be baptized. <br>The city was declared a world heritage site by UNESCO on June 2005.<br>Appears on the Madaba map from 6th C CE.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/guTGZ02TqBvuu6btpUCoCKAlh-_Kv6fsSpelUGWoF1dm51vVsKwKcziZwNGcw2BnZH7Wu8WrHORjpwCtZZ2q5xpBVxyO8uS40pFhWSa2hmTxRSeuHFvDGWMpU8JHURkLUxApsecWi_de"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.003815,
+                    31.050581,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Memphis - Curnub - Mamshit",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/N9eERcvZt8wwbk74iG8W4nCIdwsLQHvgQIIt9fdo4A4v0-DljKOZdnlL0AdCKFQFuBUit4SL83oVd8qoHrnA8LOr_6-zcNnMMHIcC3hwPoPk6KkXZdNjcAYpmwQg5YOdP2ztF-tDC0Np\" height=\"200\" width=\"auto\" /><br><br>One of the 6 Nabatean cities on the Spice & Incense Routes where in the 4th C CE the first churches were built and first Christians to be baptized. <br>The city was declared a world heritage site by UNESCO on June 2005.<br>Appears on the Madaba map from 6th C CE.",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/N9eERcvZt8wwbk74iG8W4nCIdwsLQHvgQIIt9fdo4A4v0-DljKOZdnlL0AdCKFQFuBUit4SL83oVd8qoHrnA8LOr_6-zcNnMMHIcC3hwPoPk6KkXZdNjcAYpmwQg5YOdP2ztF-tDC0Np"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.779968,
+                    30.781958,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Oboda - Avdat",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/-5Gof0D503j9CbM_nSw6CYJY8PDWL1o-G0jtoOqK-ibcyYhKphLwwUpVT_Epcnd0IfAKTlJX7FO4mLyxBsMltXlJ4AHXfaSiqdjz6XI1jjyAiPAy-tGvbj7HITI\" height=\"200\" width=\"auto\" /><br><br>Josephus Flavius (http://astore.amazon.com/hollanisrtou-20) 12.8.3 Now as for Judas Maccabeus, and his brother Jonathan, they passed over theriver Jordan; and when they had gone three days journey, they lighted upon theNabateans, who came to meet them peaceably, and who told them how the affairsof those in the land of Gilead stood; and how many of them were in distress,and driven into garrisons, and into the cities of Galilee; and exhorted him tomake haste to go against the foreigners, and to endeavor to save his owncountrymen out of their hands. <br><br>One of the 6 Nabatean cities on the Spice & Incense Routes where in the 4th C CE the first churches were built and first Christians to be baptized. <br>The city was declared a world heritage site by UNESCO on June 2005.<br>Appears on the Ptolemy & Peutinger maps from 2th C CE.",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/-5Gof0D503j9CbM_nSw6CYJY8PDWL1o-G0jtoOqK-ibcyYhKphLwwUpVT_Epcnd0IfAKTlJX7FO4mLyxBsMltXlJ4AHXfaSiqdjz6XI1jjyAiPAy-tGvbj7HITI"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.93927,
+                    29.795368,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "King Solomon Mines Timna",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/Pm74QmIYubgt9qk1KxTji8rVWaPTvONIAxMriaNWCCPnjWcTHYn8zID97J4POq6JMiEgN8a4kmbKPxCAjL2DsPLUwJC8rOMoN2vD3WA0Sepj4h-D6RCU54MNEjymTKflAMYCoy6EIOncubapXXGtfiCB\" height=\"200\" width=\"auto\" /><br><br>Archeological evidence reveals that copper mining began as early as the Late Neolithic period, and continued more or less uninterrupted well into the Middle Ages. Mining activities in the Timna Valley reached a peak during the reign of the Pharaohs of the 18th and 19th Egyptian dynasties, spanning the 14th-12th centuries BCE, when Egyptian mining expeditions, in collaboration with Midianites and local Amalekites, turned the Timna Valley into a large-scale copper industry.",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/Pm74QmIYubgt9qk1KxTji8rVWaPTvONIAxMriaNWCCPnjWcTHYn8zID97J4POq6JMiEgN8a4kmbKPxCAjL2DsPLUwJC8rOMoN2vD3WA0Sepj4h-D6RCU54MNEjymTKflAMYCoy6EIOncubapXXGtfiCB"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.903564,
+                    29.590177,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Eilat",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/QOVg9oQDlnHMqz94tFXXHdkDGu_uwtdLP3E5V-9gYRkgWAj1-qXZPlI5157hUnncWOwXG7xJ0IxL9NimPkLxsJHXYsVeKGfPGlUj9tGaoQiMm9XNjY7-pNoGCHUo3mOjCirIZJ9K\" height=\"200\" width=\"auto\" /><br><br>Eilat's economy is based around leisure and tourism. Eilat offers a wide range of accommodations - from hostels to luxury hotels - as well as many unique attractions and recreational options within a 50 kilometer (31 mile) radius.When King David conquered Edom, which up to then had been a common border of Edom and Midian, he took over Eilat, the border city shared by them as well. In Kings 2 14:21-22: \"And all the people of Judah took Azariah, who was sixteen years old, and made him king in the room of his father Amaziah. He built Elath, and restored it to Judah, after that the king slept among his fathers.\" And again in Kings 2 16:6: \"At that time Rezin king of Aram recovered Elath to Aram, and drove the Jews from Elath; and the Edomites came to Elath, and dwelt there, unto this day\".",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/QOVg9oQDlnHMqz94tFXXHdkDGu_uwtdLP3E5V-9gYRkgWAj1-qXZPlI5157hUnncWOwXG7xJ0IxL9NimPkLxsJHXYsVeKGfPGlUj9tGaoQiMm9XNjY7-pNoGCHUo3mOjCirIZJ9K"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.175476,
+                    30.585908,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Noah's Arc",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/h9eki6ukbrwnn155mo_Pr8vifYYgKnuhfi7w_FbkDa7FrR_Bgxf1juHJX-hsgNQNKP-YyqPCVPKnrkWjjlDYNdaWVpDFbhBipHB1vKS0d7jYBBrD1BPfcGQfCRMun6Rg_BP0GbfMXtg\" height=\"200\" width=\"auto\" /><br><br>A sanctuary for many species of wild Biblical animals.",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/h9eki6ukbrwnn155mo_Pr8vifYYgKnuhfi7w_FbkDa7FrR_Bgxf1juHJX-hsgNQNKP-YyqPCVPKnrkWjjlDYNdaWVpDFbhBipHB1vKS0d7jYBBrD1BPfcGQfCRMun6Rg_BP0GbfMXtg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.384216,
+                    31.823898,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Good Samaritan Inn",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/CCikjcRz1abYLdEX8j-0UmyiNIWHo4--GM0WdPo1PjV5IPTEtcLveT70piDPnBSjwlpHGkl3Oy06M_mOQueCpmN06kg1cu3wepKOB6HOsChoYJqxBwqe9JCS\" height=\"200\" width=\"auto\" /><br><br>Luke 10: 33 But a certain Samaritan, as he journeyed, came to where he was. And when he saw him he had compassion on him,<br>37 And he said, \"He that showed mercy on him.\" Then said Jesus unto him, \"Go and do thou likewise.\"",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/CCikjcRz1abYLdEX8j-0UmyiNIWHo4--GM0WdPo1PjV5IPTEtcLveT70piDPnBSjwlpHGkl3Oy06M_mOQueCpmN06kg1cu3wepKOB6HOsChoYJqxBwqe9JCS"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.23015,
+                    31.783378,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "The Garden Tomb",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/5AV2VQJkQlWVfzdQ2gcID1tGQJrOVW3fAMkcofp3MdanDiWm5EcvW3zQDaV-uaIid4mjGeedCmAs0Ou-xVFnSOqyvAvxvjYtsrII6wzOnXm3hXNKajRC4915lB18fRCz\" height=\"200\" width=\"auto\" /><br><br>John 19: 41 Now in the place where He was crucified there was a garden, and in the garden a new sepulcher wherein was never man yet laid.<br><br> <br>Matthew 27:59-60 Joseph took the body, wrappedit in a clean linen cloth, and placed it in his own new tomb that he had cutout of the rock. He rolled a big stone in front of the entrance to the tomb andwent away.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/5AV2VQJkQlWVfzdQ2gcID1tGQJrOVW3fAMkcofp3MdanDiWm5EcvW3zQDaV-uaIid4mjGeedCmAs0Ou-xVFnSOqyvAvxvjYtsrII6wzOnXm3hXNKajRC4915lB18fRCz"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.229163,
+                    31.771156,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Dormizion",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/KKIeeAZcGRXU24oywARjj-CfEiX3uEYm7-lERTZuO650YQWCK62DOeVlLWu3vdzBotYGSPZedMMNhiPdg0h1DppRcy6cocCP0oa2M9qD9oA7Q0EIm3gZUkr6KMCcgdGcKJ8ctYc\" height=\"200\" width=\"auto\" /><br><br>Dormizion/Dormithion Benedict Church founded in 1910 on former Hagia Zion Church.",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/KKIeeAZcGRXU24oywARjj-CfEiX3uEYm7-lERTZuO650YQWCK62DOeVlLWu3vdzBotYGSPZedMMNhiPdg0h1DppRcy6cocCP0oa2M9qD9oA7Q0EIm3gZUkr6KMCcgdGcKJ8ctYc"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.228605,
+                    31.771083,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "King David's Tomb.",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/DyMKiQ1C6-Drut5lTm-MiMIXsXZTMNuAtfOHedMcmHzvRxGMGSRq3--L5fhiXdy204Y4fGSENZ7HTqaqc85_-iSQWw8rnbeD0ZLodmvPFvCGvlPKbzFUp3NmXrVoP4uh92iXTsdw\" height=\"200\" width=\"auto\" /><br><br>King David's Tomb is the name given to a site on Mount Zion in Jerusalem, near the Dormition Church; the site has traditionally been viewed as the burial place of David. It is situated in a ground floor corner of the remains of the former Hagia Zion, a Byzantine church; the upper floor of the same building has traditionally been viewed as the Cenacle of Jesus.<br><br> <br><br>1Kings 2: 9  \"So David slept with his fathers, and was buried in the cityof David\". <br>Nehemiah 2: 16  \"...unto the place over against the sepulchersof David, and to the pool that was made, and unto the house of the mighty\".<br>Acts 2: 29 \"Men and brethren, let me freely speak unto you of thepatriarch David, that he is both dead and buried, and his sepulcheris with us unto this day\".",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/DyMKiQ1C6-Drut5lTm-MiMIXsXZTMNuAtfOHedMcmHzvRxGMGSRq3--L5fhiXdy204Y4fGSENZ7HTqaqc85_-iSQWw8rnbeD0ZLodmvPFvCGvlPKbzFUp3NmXrVoP4uh92iXTsdw"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.228906,
+                    31.770864,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Cenaculum",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/cPZjovr-Q9wwELt8dCcvAC3uyJtkAb5CX7DKWkRozcMqx3zYXbp24ZSVFJ5Dtprp4wu8GqeDLmsqXbWY-3l_9CORiHKhCQA4U1GjFaPdLpdc1mi-tOuP8GTDYNk\" height=\"200\" width=\"auto\" /><br><br>The Cenaculum, is the site of The Last Supper. In Christian tradition, based on Acts 1:13, the Cenaculum was not only the site of the Last Supper, but the usual place where the Apostles stayed.<br>Acts 2: 1 And when the day of Pentecost was fully come, they were all with one accord in one place.   <br>2 And suddenly there came a sound from heaven as of a rushing mighty wind, and it filled all the house where they were sitting.  <br>3 And there appeared unto them cloven tongues as of fire, and it sat upon each of them.   <br> 4 And they were all filled with the Holy Ghost and began to speak in other tongues, as the Spirit gave them utterance.<br><br>1 Corinthians 11:23 For I have received of the Lord that which also I delivered unto you, that the Lord Jesus the same night in which he was betrayed took bread: <br>24 And when he had given thanks, he brake it, and said, Take, eat: this is my body, which is broken for you: this do in remembrance of me. <br>25 After the same manner also he took the cup, when he had supped, saying, this cup is the new testament in my blood: this do ye, as oft as ye drink it, in remembrance of me. <br>26 For as often as ye eat this bread, and drink this cup, ye do shew the Lord's death till he come.",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/cPZjovr-Q9wwELt8dCcvAC3uyJtkAb5CX7DKWkRozcMqx3zYXbp24ZSVFJ5Dtprp4wu8GqeDLmsqXbWY-3l_9CORiHKhCQA4U1GjFaPdLpdc1mi-tOuP8GTDYNk"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.235386,
+                    31.778416,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Temple Mount",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/LIMWI8oqghKKVEvFqF5UyVW-_afrjqMGEeFLyaQKwzIgacY5iY2c6iz7C40r75C8GBb1HwUPAIximvFi1U0yUnB3LZyz1o9PhTjBZBMcPDXrECudOMzuHnwNLp0w2BKIXioLyS7eIMs\" height=\"200\" width=\"auto\" /><br><br>Judaism's holiest site.<br><br>First temple<br><br><br><br>The first temple was built by KingSolomon at about 950 BC, and was located on the highest point above the Kidronvalley - on mount Moriah. As per the Bible (2 Chronicles 3:1: \"Then Solomon began to build the house of the LORD atJerusalem in mount Moriah, where the Lord appeared unto David his father, inthe place that David had prepared in the threshing floor of Ornan theJebusite\".<br><br><br><br><br>The temple was destroyed after theintrusion of Babylonian Nebuchadnezzar II as per Jeremiah 34: 7: \"When the king of Babylon's army fought against Jerusalem\",which destroyed Jerusalem in 586 BCE     2 Kings 24: 10,13: \"At that timethe servants of Nebuchadnezzar king of Babylon came up against Jerusalem, andthe city was besieged....And he carried out thence all the treasures of thehouse of the LORD, and the treasures of the king's house, and cut in pieces allthe vessels of gold which Solomon king of Israel had made in the temple of theLORD, as the LORD had said\" . <br><br><br><br>Second temple <br><br><br><br>The population was transferred toBabylon, but returned after 50 years. After their return, on 536, Zerubbavelbuilt the second temple. (Ezra 3: 8: \"Nowin the second year of their coming unto the house of God at Jerusalem, in thesecond month, began Zerubbavel ...  to set forward the work of the houseof the LORD\". <br><br><br><br>Herod the Great, King of Israel under the Romans (37 BCE – 4 BCE), enlargedand rebuilt the second temple, and made it a magnificent temple. Thedestruction in 70 CE, after the Great Jewish revolt against the Romans, leftmost of Herod's second temple in rubble. Only few remnants of this remarkablestructure remained, such as the Western Wall and excavations in the southernwall.<br>JosephusFlavius (http://astore.amazon.com/hollanisrtou-20)(Antiquities of the Jews; Book 15 Chapter 11-380) \"SoHerod took away the old foundation, and laid others, and erected the templeupon them, being in length a hundred cubits, and in height twenty additionalcubits, of which [twenty], upon the sinking of their foundations fell down;",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/LIMWI8oqghKKVEvFqF5UyVW-_afrjqMGEeFLyaQKwzIgacY5iY2c6iz7C40r75C8GBb1HwUPAIximvFi1U0yUnB3LZyz1o9PhTjBZBMcPDXrECudOMzuHnwNLp0w2BKIXioLyS7eIMs"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.23427,
+                    31.776994,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Western Wall",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/Tj4ivVusGVitwKd4BLz8vYKmpMYigqpFMHugdrWJ057CDh_VvmKNL0ZJ2EnvDz4UFRVBd-7m8H_whY5FjnrHlthfkxWXCogVRxuEy3kgPBSvA9nWT5GQDTGbc9qY3MAsqg\" height=\"200\" width=\"auto\" /><br><br>Judaism's second most holiest site due to its vicinity to Temple Mount.<br><br>Herod the Great, King of Israel under the Romans (37 BCE – 4 BCE),enlarged and rebuilt the second temple, and made it a magnificent temple.<br>Matthew 24: 1 And Jesus went out anddeparted from the temple, and His disciples came to Him to show Him thebuildings of the temple. 2 And Jesus said unto them, \"See ye notall these things? Verily I say unto you, there shall not be left here one stoneupon another that shall not be thrown down.\"<br>After its destruction in 70 CE during the Jewish revolt againstthe Romans, only a few layers of the grand temple were left, and the Jews werenot allowed to rebuild their temple.<br>The worship at the site of the western wall started after thedestruction, and was referred in early texts in the 3rd-5th C. For 2,000 yearsthe Jews came to the site and prayed for the rebuilt of Jerusalem and theJewish Nation, since the fate of both coincided at the same time. For manytimes during the history the Jews were forbidden to approach the site, or wereharassed while doing so, or had to bribe to get into the site.In 1967, after the 6 daywar, the prayers and tears of 2,000 years were answered: the holy site was liberated,returned back again to Jewish control, and was opened to the public.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/Tj4ivVusGVitwKd4BLz8vYKmpMYigqpFMHugdrWJ057CDh_VvmKNL0ZJ2EnvDz4UFRVBd-7m8H_whY5FjnrHlthfkxWXCogVRxuEy3kgPBSvA9nWT5GQDTGbc9qY3MAsqg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.236673,
+                    31.781189,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "St. Anna",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/wY5QBMb1Jp_2v4fyUs1rBlAgZzALymbkxuXvS9SJ3D7GTBx8xZ-0IDMyDvNhBltk9R7egbmDUNHtSy_m41-lNLkKQp7TpgOKJyDc5cg3FQAo8tZa-vu60JnLYvgyXRxggxuMLEYq\" height=\"200\" width=\"auto\" /><br><br>Church of St. Anna is a beautiful 12th-century Crusader church, erected over the traditional site of the birthplace of Anne (Hannah), the mother of Mary. It is an excellent example of Romanesque architecture. <br><br>2Kings 18, 17: This text also refers to the \"upper pool\". And the king of Assyria sent Tartan and Rabsaris and Rabshakeh fromLachish to king Hezekiah with a great host against Jerusalem. And they went upand came to Jerusalem. And when they were come up, they came and stood by theconduit of the upper pool, which is in the highway of the fuller's field.\"<br><br>Isaiah7, 3: This text refers to the \"upper pool\", perhaps the nameof the Bethesda pools. In this text, King Achaz prepared for war, and inspectedthe water supply in view of a possible siege.<br>John 51-9: This text tells abouthow Jesus cured a sick man in the pools of Bethesda, which is a pool near thesheep market.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/wY5QBMb1Jp_2v4fyUs1rBlAgZzALymbkxuXvS9SJ3D7GTBx8xZ-0IDMyDvNhBltk9R7egbmDUNHtSy_m41-lNLkKQp7TpgOKJyDc5cg3FQAo8tZa-vu60JnLYvgyXRxggxuMLEYq"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.235944,
+                    31.780642,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Via Dolorosa",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/SgoACA66h4TakKNFfIpJuiH15_AosAavrWaWfvqRLXafzamt8l4VCkVSMz9fwjEbWDJCre5H7Y9brAKxfli8t5GpCosrKDbzEeFM04ueme_ZSTRjKNbHcSRxrc89BIYv2w\" height=\"200\" width=\"auto\" /><br><br>The Via Dolorosa is a street, in two parts, within the Old City of Jerusalem. Since the 18th century, it has been traditionally held to be the path that Jesus walked, carrying his cross, on the way to his crucifixion. It is currently marked by nine Stations of the Cross; there have been fourteen stations since the late 15th century, with the remaining five stations being inside the Church of the Holy Sepulchre. The route is a place of pilgrimage.",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/SgoACA66h4TakKNFfIpJuiH15_AosAavrWaWfvqRLXafzamt8l4VCkVSMz9fwjEbWDJCre5H7Y9brAKxfli8t5GpCosrKDbzEeFM04ueme_ZSTRjKNbHcSRxrc89BIYv2w"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.228734,
+                    31.779474,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "The Holy Sepulchre - Anastasis",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/np0vz5NZyJglREBu4JX8l7hmcKwrUcuVVKuWHWtflHg5LtkarJPl0atDUFcfrmgnLK21nyYLU066eTvJvDI149MHR-LCuYRKKxfeEb-zXOXnX7hFtpbSzwW9p_n287sMIwhgftSijvzWHkHexdQzixc\" height=\"200\" width=\"auto\" /><br><br>Matthew 27: 59 And when Joseph had taken the body, he wrapped it in a clean linen cloth   <br>60 and laid it in his own new tomb, which he had hewn out in the rock. And he rolled a great stone to the door of the sepulcher and departed.",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/np0vz5NZyJglREBu4JX8l7hmcKwrUcuVVKuWHWtflHg5LtkarJPl0atDUFcfrmgnLK21nyYLU066eTvJvDI149MHR-LCuYRKKxfeEb-zXOXnX7hFtpbSzwW9p_n287sMIwhgftSijvzWHkHexdQzixc"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.239763,
+                    31.780131,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mary's Tomb",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/Tmuc7ScnnIz22wQld4_z18a8pOwc-h1YXlAhtmig2xLODqi5OHuJ5XbM-g1KEQCrc7ZmWg-hfClHC3tvKaFLfVOGxVb2-3Q_HPH-c_geFmsnfSHPSSovX7d1RcBm-w\" height=\"200\" width=\"auto\" /><br><br>Mary's Tomb is a tomb located in the Kidron Valley, on the foothills of Mount of Olives, near the Church of All Nations and Gethsemane garden, originally just outside Jerusalem. It is regarded as the burial place of the Mary, the mother of Jesus by most Eastern Christians.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/Tmuc7ScnnIz22wQld4_z18a8pOwc-h1YXlAhtmig2xLODqi5OHuJ5XbM-g1KEQCrc7ZmWg-hfClHC3tvKaFLfVOGxVb2-3Q_HPH-c_geFmsnfSHPSSovX7d1RcBm-w"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.240321,
+                    31.779365,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Gethesamene",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/RNkxCT5gFKOfG8-6-Klr5ghJ66y61fheshTX0CHlx2_B8ePI1VJbcnGGxQjCEOGEX43MzkMc_CYYulpPzniWVHh3S4C8RfsAeB98YJxZAEbqz08US1FjokxyuQL-\" height=\"200\" width=\"auto\" /><br><br>Matthew 26: 36 Then Jesus came with them unto a place called Gethsemane, and said unto the disciples, \"Sit ye here while I go and pray yonder.\"",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/RNkxCT5gFKOfG8-6-Klr5ghJ66y61fheshTX0CHlx2_B8ePI1VJbcnGGxQjCEOGEX43MzkMc_CYYulpPzniWVHh3S4C8RfsAeB98YJxZAEbqz08US1FjokxyuQL-"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.242252,
+                    31.778125,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Dominus Flevit",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/-_uzFp4iNECMhQ-OHicZf7nxrLi9P8rwHN6raqRIF_gqCJzZfbFjJiAaOEFqKY8N9vdL28E_6Z0NtrxGfSCmSixagfhe8LoAeskZWW6PLJsAKLltjEQtqfQng3y46YG4lHK-\" height=\"200\" width=\"auto\" /><br><br>Luke 19: 41-44 And when He had come near, He beheld the city and wept over it.",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/-_uzFp4iNECMhQ-OHicZf7nxrLi9P8rwHN6raqRIF_gqCJzZfbFjJiAaOEFqKY8N9vdL28E_6Z0NtrxGfSCmSixagfhe8LoAeskZWW6PLJsAKLltjEQtqfQng3y46YG4lHK-"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.246887,
+                    31.778271,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Pater Noster",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/kgpmafoGaiYNGhkiJF67GiRr8MoXItWtWt8xrDtp0yqFUt1NOrgKFZ6CAm70k1fdC_9fYQhtZCnFzZX7jU8ERacW5VIvudU7uRIN6nqGaKXwbw_TJZwXuEnn1dtl9IGsrw\" height=\"200\" width=\"auto\" /><br><br>Luke 11: 1 And it came to pass that as He was praying in a certain place, when He ceased, one of His disciples said unto Him, \"Lord, teach us to pray as John also taught his disciples.\"   <br>2 And He said unto them, \"When ye pray, say: Our Father who art in Heaven, hallowed be Thy name. Thy Kingdom come. Thy will be done, as in Heaven, so on earth.<br>3 Give us day by day our daily bread.  <br>4 And forgive us our sins, for we also forgive every one that is indebted to us. And lead us not into temptation, but deliver us from evil.\"<br><br>Matthew6 9-13 TheMatthew version of the Pater Noster prayer is part of the Sermon on theMount, which is in the Galilee (see mountof Beatitudes).",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/kgpmafoGaiYNGhkiJF67GiRr8MoXItWtWt8xrDtp0yqFUt1NOrgKFZ6CAm70k1fdC_9fYQhtZCnFzZX7jU8ERacW5VIvudU7uRIN6nqGaKXwbw_TJZwXuEnn1dtl9IGsrw"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.247145,
+                    31.78221,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Ascension Chapel ",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh3.googleusercontent.com/proxy/qwiwZRktpn5J87zm228qWlirYteM_M69WCJfKpOE1AZyaW_pCU6fl2HOjsTjwNiz1Y6sOOdZsiqNkPUKxWZ5NSyDm_mis55w9HK1lwON1EHB0ff3LEWp-oRuBDiMS9UNXAljfg8\" height=\"200\" width=\"auto\" /><br><br>Mark 16: 19 So then after the Lord had spoken unto them, He was received up into Heaven, and sat at the right hand of God.",
+                "gx_media_links": "https://lh3.googleusercontent.com/proxy/qwiwZRktpn5J87zm228qWlirYteM_M69WCJfKpOE1AZyaW_pCU6fl2HOjsTjwNiz1Y6sOOdZsiqNkPUKxWZ5NSyDm_mis55w9HK1lwON1EHB0ff3LEWp-oRuBDiMS9UNXAljfg8"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.249677,
+                    31.787062,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Augusta Victoria",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/c6yZUQz4W35dgKpvKBjkgjjVNZuJIwgMsW6xSOLyQ6gDWF9JX8OpuJLrIrWNg6sklhqSEQpm4W7D3gwF1bzLKYJeHdIaRuVb0tnieSqjDJBzdkX_jfINRUFReyAUHSikjB4pv9k\" height=\"200\" width=\"auto\" /><br><br>Augusta Victoria was built in 1907 as a center for the German Protestant community in Ottoman Palestine. The complex, completed in 1910, included the Evangelical Lutheran Church of the Ascension with a 65-meter belltower and a hospice for Christian pilgrims. During World War II, it was converted into a hospital by the British. The complex was named for Augusta Viktoria of Schleswig-Holstein, wife of German Kaiser Wilhelm II, who visited Jerusalem in 1898. The architect, Robert Leibnitz.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/c6yZUQz4W35dgKpvKBjkgjjVNZuJIwgMsW6xSOLyQ6gDWF9JX8OpuJLrIrWNg6sklhqSEQpm4W7D3gwF1bzLKYJeHdIaRuVb0tnieSqjDJBzdkX_jfINRUFReyAUHSikjB4pv9k"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.250835,
+                    31.777614,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Beit Phage",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/cv1Dv81xJyxEVTEgGlTUKsHw02WU7ySd1yG4-voYcq_WJ2FQPGI3u1PSRybGbZSgQ0YhG80ALbZ8yBBjnzcMnG7hW64xdS9FYrpcves-06vjysvnSeSvKxhW1g\" height=\"200\" width=\"auto\" /><br><br>The modern church, built in 1883, rests on the foundations of a 12th century crusader chapel which was located in the ancient village of Beth phage.<br>Matthew 21: 1 And when they drew nigh unto Jerusalem and had come to Bethphage unto the Mount of Olives, then sent Jesus two disciples,",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/cv1Dv81xJyxEVTEgGlTUKsHw02WU7ySd1yG4-voYcq_WJ2FQPGI3u1PSRybGbZSgQ0YhG80ALbZ8yBBjnzcMnG7hW64xdS9FYrpcves-06vjysvnSeSvKxhW1g"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.236073,
+                    31.772433,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "The City of David",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/6QudW7pw-P7bymMuIe--0qG8brSGlUIDiuGjDzdrhMoN7DibuwmYYWeaTjgwmW-Yy0kYuPoRJ7dddIn5U0Fz2_zXRafre22WQ2edTfrTz30sG6uO-qPrYh8LLuog4AFYu6YF1A\" height=\"200\" width=\"auto\" /><br><br>2 Samuel 5: 7-9 Nevertheless David took the stronghold of Zion; the same is the city of David.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/6QudW7pw-P7bymMuIe--0qG8brSGlUIDiuGjDzdrhMoN7DibuwmYYWeaTjgwmW-Yy0kYuPoRJ7dddIn5U0Fz2_zXRafre22WQ2edTfrTz30sG6uO-qPrYh8LLuog4AFYu6YF1A"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.235257,
+                    31.770572,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Shiluach Pool",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "John 9: 1 And as Jesus passed by, He saw a man who was blind from his birth.<br>7 and said unto him, \"Go, wash in the pool of Siloam\" (which interpreted means, \"Sent\"). He went his way therefore and washed, and came back seeing."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.231781,
+                    31.771558,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "St. Peter In Galicanto",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/dIdU7q0lvZiL0EOziBjn4sohLSrgc1Wu4Gxpsdl5gmoMAO4J_FtDSL1jZELFs5k5CszOq_pixZjl_EMEGYqgMhvDPTiceUdT2oBYg0aO8XmBYnPBzS6BJsQD_-srvoSifj5tUGUVuonxm32PwA6F\" height=\"200\" width=\"auto\" /><br><br>Matthew 26: 33 Peter answered and said unto Him, \"Though all men shall be offended because of Thee, yet I will never be offended.\" <br>34 Jesus said unto him, \"Verily I say unto thee, that this night before the cock crow, thou shalt deny Me thrice.\"<br>Matthew 26: 74-75",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/dIdU7q0lvZiL0EOziBjn4sohLSrgc1Wu4Gxpsdl5gmoMAO4J_FtDSL1jZELFs5k5CszOq_pixZjl_EMEGYqgMhvDPTiceUdT2oBYg0aO8XmBYnPBzS6BJsQD_-srvoSifj5tUGUVuonxm32PwA6F"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.234742,
+                    31.775242,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Davidson Center",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/pBql5Fzw2nHPJeDKN1c58ZKne3NpsgHWwKyXr5BvoRqy1jBAm6Ze9wWKIdConOXODv3_wEjXQu-JEKwzNiCNEdZ2gi6RvJM4SVZDRlTotmpNL0ym4XsetzsJzoWnvSaycFzLXaW7aNp9x9YENuWJvQ\" height=\"200\" width=\"auto\" /><br><br>The new center offers the visitor an in-depth archaeological and historical introduction to the Jerusalem Archaeological Park by means of an exhibition of archaeological objects, augmented by visual, textual and audio information.",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/pBql5Fzw2nHPJeDKN1c58ZKne3NpsgHWwKyXr5BvoRqy1jBAm6Ze9wWKIdConOXODv3_wEjXQu-JEKwzNiCNEdZ2gi6RvJM4SVZDRlTotmpNL0ym4XsetzsJzoWnvSaycFzLXaW7aNp9x9YENuWJvQ"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.990082,
+                    32.803436,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Bahai Gardens",
+                "styleUrl": "#icon-143",
+                "styleHash": "-2513e80a",
+                "styleMapHash": {
+                    "normal": "#icon-143-normal",
+                    "highlight": "#icon-143-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/mx9uha6_gd7K4FKqJG8-yJ0DpD2T7ppOt5mswX3ogfnLjTg_Vm-Ddj0XGyJGZR3Z85jmWSImGyYBqJKC3WehEuJLGRP1NP1PTkCASuOPZdbOtcF3thksjiJlaHS70JDrGd2vciP2Y1Eo\" height=\"200\" width=\"auto\" /><br><br>Haifa is the international headquarters for the gentle Baha'i Faith, which began amidst persecution in Persia in the mid-19th century.<br>Baha'is believe in the unity of all religions and believe that messengers of God like Moses, Jesus and Muhammad have been sent at different times in history with doctrines varying to fit changing social needs, but bringing substantially the same message. <br>The most recent of these heavenly teachers, according to Baha'is, was Baha' Allah (1817-92). He was exiled by the Turkish authorities to Acre (Akko), wrote his doctrines there, and died a peaceful death in Bahji House just north of Acre.<br>During one of His visits to Haifa in 1890, Baha'u'llah pointed out to his son the spot on Mount Carmel where the remains of the Bab, herald of the Baha'i faith, should be laid to rest in a befitting tomb.<br>The Bab's remains were hidden for years after he died a martyr's death in front of a firing squad. Eventually, his followers secretly carried his remains to the Holy Land.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/mx9uha6_gd7K4FKqJG8-yJ0DpD2T7ppOt5mswX3ogfnLjTg_Vm-Ddj0XGyJGZR3Z85jmWSImGyYBqJKC3WehEuJLGRP1NP1PTkCASuOPZdbOtcF3thksjiJlaHS70JDrGd2vciP2Y1Eo"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.415459,
+                    32.48457,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Battle of Gilboa and the death of Saul",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/egy7Xu6R4gzhMuvpm60HS3ts-Zj-nzYy2YIPyRI_W61FzN-LQ5tM-aggPg1wZdXcQ_jO7kkjOnOivUAmNKwjeZzn6A60mzxLXHfMSOi6zwzWbg8wwUxnbfVg3nPLZywT\" height=\"200\" width=\"auto\" /><br><br>Despite the oath(s) of reconciliation, the biblical text states that David felt insecure, and so made an alliance with the Philistines, becoming their vassal. Emboldened by this, the Philistines prepared to attack Israel, and Saul led out his army to face them at Mount Gilboa, but before the battle decided to secretly consult the witch of Endor for advice. The witch, unaware of who he is, reminds Saul that the king (i.e. Saul himself) had made witchery a capital offence, but after being assured that Saul wouldn't harm her, the witch conjures up the ghost of Samuel. Samuel's ghost tells Saul that he would lose the battle and his life.<br><br>Broken in spirit, Saul returns to face the enemy, and the Israelites are duly defeated. To escape the ignominy of capture, Saul asks his armour bearer to kill him, but is forced to commit suicide by falling on his sword when the armour bearer refuses. An Amalekite then claims to have killed Saul, and the Amalekite tells David. Infuriated, David orders the Amalekite to be put to death as punishment for killing the God's anointed, despite Saul's earlier assassination attempt against him. The body of Saul, with those of his sons, were fastened to the wall of Beth-shan, and his armor was hung up in the house of Ashtaroth (an Ascalonian temple of the Canaanites). The inhabitants of Jabesh-gilead (the scene of Saul's first victory) rescue the bodies and take them to Jabesh-gilead, where they burn their flesh and bury the bones (Sam.I 31,13).",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/egy7Xu6R4gzhMuvpm60HS3ts-Zj-nzYy2YIPyRI_W61FzN-LQ5tM-aggPg1wZdXcQ_jO7kkjOnOivUAmNKwjeZzn6A60mzxLXHfMSOi6zwzWbg8wwUxnbfVg3nPLZywT"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.204315,
+                    31.751525,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Jerusalem",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/LIMWI8oqghKKVEvFqF5UyVW-_afrjqMGEeFLyaQKwzIgacY5iY2c6iz7C40r75C8GBb1HwUPAIximvFi1U0yUnB3LZyz1o9PhTjBZBMcPDXrECudOMzuHnwNLp0w2BKIXioLyS7eIMs\" height=\"200\" width=\"auto\" /><br><br>Genesis14: 18-19 - The first biblical reference of Jerusalem: King of Salem(Shalem, the city before it Jerusalem) blesses Abram: \"But Melchisedech (http://www.newadvent.org/cathen/10156b.htm),the king of Salem (http://www.newadvent.org/cathen/08344a.htm),bringing forth bread and wine, for he was the priest (http://www.newadvent.org/cathen/12406a.htm) of the mosthigh God (http://www.newadvent.org/cathen/06608a.htm),  Blessed (http://www.newadvent.org/cathen/02599b.htm) him, and said: Blessed (http://www.newadvent.org/cathen/02599b.htm) be Abram (http://www.newadvent.org/cathen/01051a.htm) by the mosthigh God (http://www.newadvent.org/cathen/06608a.htm), who created (http://www.newadvent.org/cathen/04470a.htm) heaven (http://www.newadvent.org/cathen/07170a.htm) and earth. \"<br><br>2Samuel, 5: 5-11 - This text tells about the conquest of Jerusalem from theJebusites, and builds his palace and capital: \"In Hebronhe reined over Judah seven years and six months; and in Jerusalem he reignedthirty and three years over all Israel and Judah. And the king and his men wentto Jerusalem against the Jebusites, the inhabitantsof the land, who spoke unto David, saying: 'Except thou take away the blind andthe lame, thou shalt not come in hither'; thinking: 'David cannot come inhither.' Nevertheless David took the stronghold of Zion; the same is the cityof David.<br><br><br><br>And David said on that day: 'Whosoever smiteth the Jebusites, andgetteth up to the gutter, and taketh away the lame and the blind that are hatedof David's soul--.' Wherefore they say: 'There are the blind and the lame; hecannot come into the house.' And David dwelt in the stronghold, and called itthe city of David. And David built roundabout from Millo and inward. And Davidwaxed greater and greater; for HaShem, the God of hosts was with him. And Hiramking of Tyre sent messengers to David, and cedar-trees, and carpenters, andmasons; and they built David a house.\" (1000 BCE)<br><br><br><br>According to Hebrew scripture, King David reigned until 970 BCE. He was succeeded by his son Solomon, who built the Holy Temple on Mount Moriah. Solomon's Temple (later known as the First Temple), went on to play a pivotal role in Jewish history as the repository of the Ark of the Covenant. For over 450 years, until the Babylonian conquest in 587 BCE, Jerusalem was the political capital of firstly the united Kingdom of Israel and then the Kingdom of Judah and the Temple was the religious center of the Israelites. This period is known in history as the First Temple Period. Upon Solomon's death (c. 930 BCE), the ten northern tribes split off to form the Kingdom of Israel. Under the leadership of the House of David and Solomon, Jerusalem remained the capital of the Kingdom of Judah.<br>Roman rule over Jerusalem and the region began to be challenged with the First Jewish–Roman War, which resulted in the destruction of the Second Temple in 70CE.<br>Josephus (http://astore.amazon.com/hollanisrtou-20) War of the Jews Book 6<br><br><br>Dio Cassius Book LXIX P 425 - 136 CE Hadrian builds Aelia Capitolina 12 At Jerusalem he founded a city in place of the onewhich had been razed to the ground, naming it Aelia Capitolina, and on the siteof the temple of the god he raised a new temple to Jupiter. <br>After Israel liberated Jerusalem in the 1967 Six-Day War, Jewish and Christian access to holy sites was restored, while the Temple Mount remained under the jurisdiction of an Islamic waqf. The Moroccan Quarter, which was located adjacent to the Western Wall, was vacated and razed to make way for a plaza for those visiting the wall.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/LIMWI8oqghKKVEvFqF5UyVW-_afrjqMGEeFLyaQKwzIgacY5iY2c6iz7C40r75C8GBb1HwUPAIximvFi1U0yUnB3LZyz1o9PhTjBZBMcPDXrECudOMzuHnwNLp0w2BKIXioLyS7eIMs"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.243711,
+                    31.780423,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mount Olives",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh6.googleusercontent.com/proxy/SU418891BOB1Mb4Dk14GDKQjyMnvDWxse05Es0aXNcfN2r5Re1sBuEpvvQIMWjLtZEVTY7CvmYMoz3_K_9kUIHKzxi0aIsxXSaDTqEEWfqDof9qiGI-ku5k92-Cee8g\" height=\"200\" width=\"auto\" /><br><br>2Samuel 15: 30: Davidfled Jerusalem, passing thru Mount of Olives:<br> \"And David wentup by the ascent of mount Olivet, and wept as he went up, and had hishead covered, and he went barefoot: and all the people that were with himcovered every man his head, and they went up, weeping as they went up\".<br><br><br>Zechariah 14: 1-11 The prophet talks about the destruction of Jerusalem, and God fighting the battle against the enemies. Furthermore, the prophet describes that an earthquake will split Mount of Olives to 2 parts, south and north, and describes the horrors of that day which will be recognized as God's acts, but will be followed by a salvation.<br><br>   \"Behold, the day of the LORD cometh, and thy spoil shall be divided in the midst of thee. For I will gather all nations against Jerusalem to battle; and the city shall be taken, and the houses rifled, and the women ravished; and half of the city shall go forth into captivity, and the residue of the people shall not be cut off from the city. Then shall the LORD go forth, and fight against those nations, as when he fought in the day of battle. And his feet shall stand in that day upon the mount of Olives, which is before Jerusalem on the east, and the mount of Olives shall cleave in the midst thereof toward the east and toward the west, and there shall be a very great valley; and half of the mountain shall remove toward the north, and half of it toward the south. And ye shall flee to the valley of the mountains; for the valley of the mountains shall reach unto Azal: yea, ye shall flee, like as ye fled from before the earthquake in the days of Uzziah king of Judah: and the LORD my God shall come, and all the saints with thee. And it shall come to pass in that day, that the light shall not be clear, nor dark: But it shall be one day which shall be known to the LORD, not day, nor night: but it shall come to pass, that at evening time it shall be light. And it shall be in that day, that living waters shall go out from Jerusalem; half of them toward the former sea, and half of them toward the hinder sea: in summer and in winter shall it be. And the LORD shall be king over all the earth: in that day shall there be one LORD, and his name one. All the land shall be turned as a plain from Geba to Rimmon south of Jerusalem: and it shall be lifted up, and inhabited in her place, from Benjamin's gate unto the place of the first gate, unto the corner gate, and from the tower of Hananeel unto the king's wine presses. And men shall dwell in it, and there shall be no more utter destruction; but Jerusalem shall be safely inhabited\".<br><br>John8:1 JesusArrives in Jerusalem for the feast of Tabernacles (Sukkoth), and passed throughMount of Olives.\"Jesus went unto the Mount of Olives. And early inthe morning he came again into the temple, and all the people came unto him;and he sat down, and taught them\".",
+                "gx_media_links": "https://lh6.googleusercontent.com/proxy/SU418891BOB1Mb4Dk14GDKQjyMnvDWxse05Es0aXNcfN2r5Re1sBuEpvvQIMWjLtZEVTY7CvmYMoz3_K_9kUIHKzxi0aIsxXSaDTqEEWfqDof9qiGI-ku5k92-Cee8g"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.229292,
+                    31.778489,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Redeemer Church",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh5.googleusercontent.com/proxy/aCkSxhe5jChewVSJgP3KGZRNNkZWLzjgrEL3PEj3DwEkzd8kRW4CJo4LYAWjj6Gi_HzyXk5dJZA5k-OvSSiO4wyly9IchsnO8c4Xqb0TPpYHXIuzNwGPzlavTbC8u1bXZw6GCg\" height=\"200\" width=\"auto\" /><br><br>The Lutheran Church of the Redeemer is the only Protestant church in the Old City of Jerusalem. Built in the late 19th century by Kaiser Wilhelm II, the Church of the Redeemer currently houses Lutheran congregations that worship in Arabic, German, Danish, and English. The church also serves as the headquarters of Bishop Munib A. Younan of the Evangelical Lutheran Church in Jordan and the Holy Land.",
+                "gx_media_links": "https://lh5.googleusercontent.com/proxy/aCkSxhe5jChewVSJgP3KGZRNNkZWLzjgrEL3PEj3DwEkzd8kRW4CJo4LYAWjj6Gi_HzyXk5dJZA5k-OvSSiO4wyly9IchsnO8c4Xqb0TPpYHXIuzNwGPzlavTbC8u1bXZw6GCg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.859619,
+                    30.897511,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "The Holy Land of Israel",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "<img src=\"https://lh4.googleusercontent.com/proxy/oB2i851ujwxPYeVjb1zXRb84byQzAU-OZrAm6uSJ45yYyRpJloO7P3sQRiQ0ZDvbRmAQ8Uu7cdWaz8QMa7ofx8IN0FmySxgND4I7vqeWKCdPRnIFnRrISqYGXGx8sODogXxXTGCX1YVNxA5EnrsD97JvUFGK6vLRhg\" height=\"200\" width=\"auto\" /><br><br>Genesis Chapter 15: 18 In that day the LORD made a covenant with Abram, saying: 'Unto thy seed have I given this land, from the river of Egypt unto the great river, the river Euphrates;",
+                "gx_media_links": "https://lh4.googleusercontent.com/proxy/oB2i851ujwxPYeVjb1zXRb84byQzAU-OZrAm6uSJ45yYyRpJloO7P3sQRiQ0ZDvbRmAQ8Uu7cdWaz8QMa7ofx8IN0FmySxgND4I7vqeWKCdPRnIFnRrISqYGXGx8sODogXxXTGCX1YVNxA5EnrsD97JvUFGK6vLRhg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    35.213711,
+                    31.768318,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Jerusalem",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "Israel"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    34.943215,
+                    31.32701,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Meitar",
+                "styleUrl": "#icon-22",
+                "styleHash": "72e693d3",
+                "styleMapHash": {
+                    "normal": "#icon-22-normal",
+                    "highlight": "#icon-22-highlight"
+                },
+                "description": "Israel"
+            }
+        }
+    ]
+}

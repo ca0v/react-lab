@@ -101,19 +101,39 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                 if (!layerType) return;
 
                 let source = bingLayerCache[layerType];
-                if (!source && layerType !== "Black") {
-                    source = bingLayerCache[layerType] = new ol.source.BingMaps({
-                        key: 'AuPHWkNxvxVAL_8Z4G8Pcq_eOKGm5eITH_cJMNAyYoIC1S_29_HhE893YrUUbIGl',
-                        imagerySet: layerType
-                    });
-                }
 
+                switch (layerType) {
+                    case "EsriAerial":
+                        {
+                            if (!source) {
+                                source = new ol.source.XYZ({
+                                    url: `https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}`,
+                                });
+                            }
+                            break;
+                        }
+                    case "Black":
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            if (!source) {
+                                source = bingLayerCache[layerType] = new ol.source.BingMaps({
+                                    key: 'AuPHWkNxvxVAL_8Z4G8Pcq_eOKGm5eITH_cJMNAyYoIC1S_29_HhE893YrUUbIGl',
+                                    imagerySet: layerType
+                                });
+                            }
+                            break;
+                        }
+                }
                 if (!bingLayer) {
                     bingLayer = new ol.layer.Tile({ source: source });
                     map.getLayers().insertAt(0, bingLayer);
                 } else {
                     bingLayer.setSource(source);
                 }
+
             });
         }
     }

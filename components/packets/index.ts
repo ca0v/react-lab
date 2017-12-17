@@ -28,18 +28,21 @@ const packets: Dictionary<IPacket<any>> = {
         url: usaStatesPacket.url,
         name: usaStatesPacket.name,
         filter: (f,score) => -1 < ["Vermont", "New Hampshire", "Maine", "Massachusetts", "Rhode Island", "Connecticut"].indexOf(f.properties[usaStatesPacket.name]),
+        style: usaStatesPacket.style,
     },
     "US South East": {
         type: "geojson",
         url: usaStatesPacket.url,
         name: usaStatesPacket.name,
         filter: (f,score) => -1 < ["North Carlina", "South Carolina", "Georgia", "Florida", "Alabama", "Tennessee", "Kentucky"].indexOf(f.properties[usaStatesPacket.name]),
+        style: usaStatesPacket.style,
     },
     "US Western States": {
         type: "geojson",
         url: usaStatesPacket.url,
         name: usaStatesPacket.name,
         filter: (f,score) => -1 < ["California", "Oregon", "Washington", "Nevada", "Idaho", "Montana", "Wyoming", "Utah", "Arizona"].indexOf(f.properties[usaStatesPacket.name]),
+        style: usaStatesPacket.style,
     },
     "US Cities": usaCitiesPacket,    
     "Volcanoes": {

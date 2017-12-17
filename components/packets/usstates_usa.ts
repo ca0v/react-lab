@@ -7,7 +7,8 @@ export = {
         (score < 500 && (-1 === "AlaskaHawaiiPuerto Rico".indexOf(f.properties.name))),
     style: (score: number) =>
         (score < 500 && "AerialWithLabels") ||
-        (score < 1000 && "CanvasDark") ||
+        (score < 1000 && "EsriAerial") ||
         (score < 2000 && "Aerial") ||
+        (score < 4000 && "CanvasDark") ||
         "Black"
 };

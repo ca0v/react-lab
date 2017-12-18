@@ -119,7 +119,7 @@ export class App extends Component<AppProps, AppState> {
             <title>React + Openlayers Lab</title>
             {!this.state.featureNameFieldName && <Toolbar>
                 {Object.keys(packets)
-                    .sort((a, b) => storage.force(b).score - storage.force(a).score)
+                    .sort((a, b) => (storage.force(b).score - storage.force(a).score) || a.localeCompare(b) )
                     .map(p => <button onClick={() => this.pickPacket(p)}>{p} ({storage.force(p).score})</button>)}
             </Toolbar>}
             {!!this.state.packetName && <QuizletComponent

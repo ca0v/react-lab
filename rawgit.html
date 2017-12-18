@@ -11,19 +11,34 @@
 <body>
     <app/>
     <script>
-        requirejs.config({
-            // module name mapped to CDN url
-            paths: {
-                'react': 'https://unpkg.com/react@16.2.0/umd/react.production.min',
-                'react-dom': 'https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min',
-                'openlayers': 'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.2/ol',
-                'turf': 'https://npmcdn.com/@turf/turf@5.1.6/turf.min'
-            },
-            deps: ['built/index'],
-            callback: function () {
-                require(["index"], function (go) { go() });
+        var globals = {};
+        (function () {
+            function getParameterByName(name, url = window.location.href) {
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
             }
-        });
+            let run = getParameterByName("run") || "index";
+            let debug = getParameterByName("debug") === "1";
+
+            requirejs.config({
+                // module name mapped to CDN url
+                paths: {
+                    'react': debug ? "https://unpkg.com/react@16.2.0/umd/react.development" : "https://unpkg.com/react@16.2.0/umd/react.production.min",
+                    'react-dom': debug ? "https://unpkg.com/react-dom@16.2.0/umd/react-dom.development" : "https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min",
+                    'openlayers': debug ? "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.2/ol-debug" : "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.2/ol",
+                    'turf': debug ? "https://npmcdn.com/@turf/turf@5.1.6/turf" : "https://npmcdn.com/@turf/turf@5.1.6/turf.min"
+                },
+                deps: ["built/index"],
+                callback: function () {
+                    globals.debug = debug;
+                    require([run], function (go) { go() });
+                }
+            });
+        })();
     </script>
 </body>
 

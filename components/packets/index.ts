@@ -1,3 +1,5 @@
+declare var globals: any;
+
 import { IPacket } from "./common";
 import { Dictionary, shuffle } from "../../common/common";
 
@@ -78,18 +80,21 @@ const packets: Dictionary<IPacket<any>> = {
         name: "name",
         style: () => "EsriAerial",
     },
-    "Greenville Active Calls (HTTP only)": {
-        type: "agsjson",
-        url: "http://www.gcgis.org/arcgis/rest/services/GreenvilleJS/Map_Layers_JS/MapServer/1/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&returnTrueCurves=false&resultOffset=&resultRecordCount=&f=json",
-        name: "ITI_TypeText",
-        style: () => "CanvasDark",
-    },
     "Greenville Parks": {
         type: "agsjson",
         url: "./data/gsp-parks.json",
         name: "NAME",
         style: () => "CanvasDark",
     },
+};
+
+if (globals.debug) {
+    packets["Greenville Active Calls (HTTP only)"] = {
+        type: "agsjson",
+        url: "http://www.gcgis.org/arcgis/rest/services/GreenvilleJS/Map_Layers_JS/MapServer/1/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&returnTrueCurves=false&resultOffset=&resultRecordCount=&f=json",
+        name: "ITI_TypeText",
+        style: () => "CanvasDark",
+    };
 }
 
 export = packets;

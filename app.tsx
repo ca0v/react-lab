@@ -118,7 +118,6 @@ export class App extends Component<AppProps, AppState> {
         return <div className="app">
             <title>React + Openlayers Lab</title>
             {!this.state.featureNameFieldName && <Toolbar>
-                <label>Pick a Quiz</label>
                 {Object.keys(packets)
                     .sort((a, b) => storage.force(b).score - storage.force(a).score)
                     .map(p => <button onClick={() => this.pickPacket(p)}>{p} ({storage.force(p).score})</button>)}

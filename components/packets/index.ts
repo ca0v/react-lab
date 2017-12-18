@@ -1,5 +1,5 @@
 import { IPacket } from "./common";
-import {  Dictionary, shuffle } from "../../common/common";
+import { Dictionary, shuffle } from "../../common/common";
 
 import continentPacket = require("./continents_world");
 import europeanCountriesPacket = require("./countries_europe");
@@ -27,24 +27,45 @@ const packets: Dictionary<IPacket<any>> = {
         type: "geojson",
         url: usaStatesPacket.url,
         name: usaStatesPacket.name,
-        filter: (f,score) => -1 < ["Vermont", "New Hampshire", "Maine", "Massachusetts", "Rhode Island", "Connecticut"].indexOf(f.properties[usaStatesPacket.name]),
+        filter: (f, score) => f.properties.region === "NE",
         style: usaStatesPacket.style,
     },
     "US South East": {
         type: "geojson",
         url: usaStatesPacket.url,
         name: usaStatesPacket.name,
-        filter: (f,score) => -1 < ["North Carlina", "South Carolina", "Georgia", "Florida", "Alabama", "Tennessee", "Kentucky"].indexOf(f.properties[usaStatesPacket.name]),
+        filter: (f, score) => f.properties.region === "SE",
+        style: usaStatesPacket.style,
+    },
+    "US Mid-Western States": {
+        type: "geojson",
+        url: usaStatesPacket.url,
+        name: usaStatesPacket.name,
+        filter: (f, score) => f.properties.region === "MW",
+        style: usaStatesPacket.style,
+    },
+    "US North West States": {
+        type: "geojson",
+        url: usaStatesPacket.url,
+        name: usaStatesPacket.name,
+        filter: (f, score) => f.properties.region === "NW",
+        style: usaStatesPacket.style,
+    },
+    "US South West States": {
+        type: "geojson",
+        url: usaStatesPacket.url,
+        name: usaStatesPacket.name,
+        filter: (f, score) => f.properties.region === "SW",
         style: usaStatesPacket.style,
     },
     "US Western States": {
         type: "geojson",
         url: usaStatesPacket.url,
         name: usaStatesPacket.name,
-        filter: (f,score) => -1 < ["California", "Oregon", "Washington", "Nevada", "Idaho", "Montana", "Wyoming", "Utah", "Arizona"].indexOf(f.properties[usaStatesPacket.name]),
+        filter: (f, score) => f.properties.region === "W",
         style: usaStatesPacket.style,
     },
-    "US Cities": usaCitiesPacket,    
+    "US Cities": usaCitiesPacket,
     "Volcanoes": {
         type: "geojson",
         url: `./data/volcanoes/${volcanoes.pop()}`,

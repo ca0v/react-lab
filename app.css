@@ -65,6 +65,9 @@ div.score > button:hover {
     margin: 4px;
     padding-right:4px;
     border-radius:8px;
+    width: 320px;
+    height: 96px;
+    vertical-align: top;
 }
     
 button.active {
@@ -96,7 +99,13 @@ button.active {
     display: none;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1200px) {
+    .maplet.inset {
+        display: none;
+    }
+}
+
+@media (max-height: 1024px) {
     .maplet.inset {
         display: none;
     }

@@ -1,9 +1,9 @@
 import * as ol from "openlayers";
 import continents = require("../../data/continents");
 
-import { BingImagerySet } from "../openlayers";
+import { BingImagerySet, OtherImagerySet } from "../openlayers";
 
-interface IGeoJsonFeature<T> {
+export interface IGeoJsonFeature<T> {
     type: string;
     properties: T;
     geometry: {
@@ -16,7 +16,7 @@ export interface IPacket<T> {
     type: string;
     url: string;
     name: string; // primaryFieldName
-    style?: (score: number) => BingImagerySet;
+    style?: (score: number) => BingImagerySet | OtherImagerySet;
     weight?: (d: IGeoJsonFeature<T>) => number;
     filter?: (d: IGeoJsonFeature<T>, score: number) => boolean;
     score?: number;

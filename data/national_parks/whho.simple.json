@@ -1,0 +1,43 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.03525646600578,
+          38.89633613048529
+        ],
+        [
+          -77.03784993236671,
+          38.8963353189695
+        ],
+        [
+          -77.0378510994253,
+          38.89853488575294
+        ],
+        [
+          -77.03525755309786,
+          38.89853569729345
+        ],
+        [
+          -77.03525646600578,
+          38.89633613048529
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "Other Designation",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "WHHO",
+    "UNIT_NAME": "White House",
+    "DATE_EDIT": "20100528",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/WHHO/Metadata/whho_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/WHHO_metadata.xml",
+    "PARKNAME": "White House",
+    "GNIS_ID": ""
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -90.35254337743868,
+          38.55093458212434
+        ],
+        [
+          -90.35128876425085,
+          38.553037887658036
+        ],
+        [
+          -90.35004176579685,
+          38.552160047194775
+        ],
+        [
+          -90.35254337743868,
+          38.55093458212434
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "MO",
+    "REGION": "MW",
+    "UNIT_CODE": "ULSG",
+    "UNIT_NAME": "Ulysses S. Grant National Historic Site",
+    "DATE_EDIT": "20080701",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/ULSG/Metadata/ulsg_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/ULSG_metadata.xml",
+    "PARKNAME": "Ulysses S. Grant",
+    "GNIS_ID": ""
+  }
+}

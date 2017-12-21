@@ -1,0 +1,75 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -70.8863103217542,
+          42.52199328412892
+        ],
+        [
+          -70.8863103217542,
+          42.52199328412892
+        ]
+      ],
+      [
+        [
+          -70.88692247847919,
+          42.521393667895545
+        ],
+        [
+          -70.88344535514537,
+          42.5166067895926
+        ],
+        [
+          -70.8833001359149,
+          42.516545416595214
+        ],
+        [
+          -70.88617102507372,
+          42.519057025579194
+        ],
+        [
+          -70.88676815696972,
+          42.5191140713603
+        ],
+        [
+          -70.8877888550054,
+          42.520559428003494
+        ],
+        [
+          -70.88801759217367,
+          42.520922043095375
+        ],
+        [
+          -70.88692247847919,
+          42.521393667895545
+        ]
+      ],
+      [
+        [
+          -70.88703822560527,
+          42.522259733752236
+        ],
+        [
+          -70.88703822560527,
+          42.522259733752236
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "MW",
+    "REGION": "NE",
+    "UNIT_CODE": "SAMA",
+    "UNIT_NAME": "Salem Maritime National Historic Site",
+    "DATE_EDIT": "20100325",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/SAMA/Metadata/sama_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/SAMA_metadata.xml",
+    "PARKNAME": "Salem Maritime",
+    "GNIS_ID": ""
+  }
+}

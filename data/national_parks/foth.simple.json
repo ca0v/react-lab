@@ -1,0 +1,41 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.0254616553013,
+          38.89681610021183
+        ],
+        [
+          -77.0254616553013,
+          38.89681610021183
+        ]
+      ],
+      [
+        [
+          -77.02613913594813,
+          38.89679672867543
+        ],
+        [
+          -77.02613913594813,
+          38.89679672867543
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "FOTH",
+    "UNIT_NAME": "Ford's Theatre National Historic Site",
+    "DATE_EDIT": "20060921",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/FOTH/Metadata/foth_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/FOTH_metadata.xml",
+    "PARKNAME": "Ford's Theatre",
+    "GNIS_ID": ""
+  }
+}

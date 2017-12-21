@@ -1,0 +1,39 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -71.12700885198382,
+          42.376646039040665
+        ],
+        [
+          -71.12653381896098,
+          42.37753496817613
+        ],
+        [
+          -71.12573953782024,
+          42.377337475546675
+        ],
+        [
+          -71.12700885198382,
+          42.376646039040665
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "MA",
+    "REGION": "NE",
+    "UNIT_CODE": "LONG",
+    "UNIT_NAME": "Longfellow National Historic Site",
+    "DATE_EDIT": "20110418",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/LONG/Metadata/long_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/LONG_metadata.xml",
+    "PARKNAME": "Longfellow",
+    "GNIS_ID": ""
+  }
+}

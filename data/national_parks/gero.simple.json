@@ -1,0 +1,55 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -87.53755732697883,
+          38.67800322558164
+        ],
+        [
+          -87.53839238880185,
+          38.6782058569253
+        ],
+        [
+          -87.53855871910876,
+          38.67873254450001
+        ],
+        [
+          -87.5338404223984,
+          38.68102648749941
+        ],
+        [
+          -87.53365007590793,
+          38.6811244258032
+        ],
+        [
+          -87.53239509970804,
+          38.67927450010944
+        ],
+        [
+          -87.53235460082348,
+          38.679230430666415
+        ],
+        [
+          -87.53755732697883,
+          38.67800322558164
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historical Park",
+    "STATE": "IN",
+    "REGION": "MW",
+    "UNIT_CODE": "GERO",
+    "UNIT_NAME": "George Rogers Clark National Historical Park",
+    "DATE_EDIT": "20100818",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/GERO/Metadata/gero_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/GERO_metadata.xml",
+    "PARKNAME": "George Rogers Clark",
+    "GNIS_ID": ""
+  }
+}

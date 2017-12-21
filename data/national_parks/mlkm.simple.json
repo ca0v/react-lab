@@ -1,0 +1,39 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.04320355455366,
+          38.88647622644201
+        ],
+        [
+          -77.0448576669976,
+          38.88534702032853
+        ],
+        [
+          -77.04490516873744,
+          38.8867110175873
+        ],
+        [
+          -77.04320355455366,
+          38.88647622644201
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "Other Designation",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "MLKM",
+    "UNIT_NAME": "Martin Luther King Jr Memorial",
+    "DATE_EDIT": "20111104",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/MLKM/Metadata/mlkm_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/MLKM_metadata.xml",
+    "PARKNAME": "Martin Luther King Jr Memori",
+    "GNIS_ID": ""
+  }
+}

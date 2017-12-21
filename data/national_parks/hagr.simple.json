@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -73.94737342314153,
+          40.821740098189174
+        ],
+        [
+          -73.94737342314153,
+          40.821740098189174
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "NY",
+    "REGION": "NE",
+    "UNIT_CODE": "HAGR",
+    "UNIT_NAME": "Hamilton Grange National Memorial",
+    "DATE_EDIT": "20070205",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/HAGR/Metadata/hagr_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/HAGR_metadata.xml",
+    "PARKNAME": "Hamilton Grange",
+    "GNIS_ID": ""
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -99.61734204106415,
+          39.39036059980924
+        ],
+        [
+          -99.61734492759405,
+          39.38994886566627
+        ],
+        [
+          -99.61840638974212,
+          39.38994979945517
+        ],
+        [
+          -99.61734204106415,
+          39.39036059980924
+        ]
+      ],
+      [
+        [
+          -99.61587899961637,
+          39.39234961526432
+        ],
+        [
+          -99.61587899961637,
+          39.39234961526432
+        ]
+      ],
+      [
+        [
+          -99.61509410608375,
+          39.39302143319577
+        ],
+        [
+          -99.61509410608375,
+          39.39302143319577
+        ]
+      ],
+      [
+        [
+          -99.61455885215759,
+          39.39365246335399
+        ],
+        [
+          -99.61455885215759,
+          39.39365246335399
+        ]
+      ],
+      [
+        [
+          -99.61668073843236,
+          39.39368191598032
+        ],
+        [
+          -99.61668073843236,
+          39.39368191598032
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "KS",
+    "REGION": "MW",
+    "UNIT_CODE": "NICO",
+    "UNIT_NAME": "Nicodemus National Historic Site",
+    "DATE_EDIT": "20120117",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/NICO/Metadata/nico_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/NICO_metadata.xml",
+    "PARKNAME": "Nicodemus",
+    "GNIS_ID": ""
+  }
+}

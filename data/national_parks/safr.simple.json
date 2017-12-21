@@ -1,0 +1,63 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -122.4268523416995,
+          37.80893844713841
+        ],
+        [
+          -122.42784231578153,
+          37.813834497622956
+        ],
+        [
+          -122.42641356550646,
+          37.8142840859376
+        ],
+        [
+          -122.42331924043692,
+          37.81464282114502
+        ],
+        [
+          -122.42307926121593,
+          37.811014512386926
+        ],
+        [
+          -122.41966426652701,
+          37.806890309608946
+        ],
+        [
+          -122.4196448714379,
+          37.80686792453552
+        ],
+        [
+          -122.42484586589025,
+          37.80611172959786
+        ],
+        [
+          -122.42569356810132,
+          37.80600422594535
+        ],
+        [
+          -122.4268523416995,
+          37.80893844713841
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historical Park",
+    "STATE": "CA",
+    "REGION": "PW",
+    "UNIT_CODE": "SAFR",
+    "UNIT_NAME": "San Francisco Maritime National Historical Park",
+    "DATE_EDIT": "20130219",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/SAFR/Metadata/safr_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/SAFR_metadata.xml",
+    "PARKNAME": "San Francisco Maritime",
+    "GNIS_ID": ""
+  }
+}

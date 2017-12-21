@@ -215,9 +215,9 @@ export class ExplodeAnimation extends FeatureAnimation {
 
         super(options);
 
-        let dr = options.radius = options.radius || 150;
+        let dr = options.radius = options.radius || 30;
         options.length = options.length || 12;
-        options.color = options.color || "#ebb";
+        options.color = options.color || "#e55";
 
         let c = document.createElement('canvas');
         c.width = c.height = 10;

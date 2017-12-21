@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -75.15020361642398,
+          39.96160555477793
+        ],
+        [
+          -75.15020361642398,
+          39.96160555477793
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "PA",
+    "REGION": "NE",
+    "UNIT_CODE": "EDAL",
+    "UNIT_NAME": "Edgar Allan Poe National Historic Site",
+    "DATE_EDIT": "20090317",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/EDAL/Metadata/edal_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/EDAL_metadata.xml",
+    "PARKNAME": "Edgar Allan Poe",
+    "GNIS_ID": ""
+  }
+}

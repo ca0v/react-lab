@@ -10,6 +10,7 @@
     "watch": "tsc -w",
     "build": "npm run compile && npm run compress",
     "install": "npm run build",
+    "simplify": "forfiles /C \"cmd /c simplify-geojson @file > @fname.simple.json\"",
     "dev": "live-server --port=5000 --wait=2000"
   },
   "author": "",
@@ -27,6 +28,7 @@
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
     "live-server": "^1.2.0",
+    "simplify-geojson": "^1.0.3",
     "typescript": "^2.7.0-dev.20171129",
     "uglify": "^0.1.5"
   }

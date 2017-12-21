@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.0557980431717,
+          38.89496972407434
+        ],
+        [
+          -77.0557980431717,
+          38.89496972407434
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "",
+    "STATE": "",
+    "REGION": "NE",
+    "UNIT_CODE": "JOFK",
+    "UNIT_NAME": "John F. Kennedy Center for Performing Arts",
+    "DATE_EDIT": "00000000",
+    "GIS_NOTES": "Good  (copied from Dean's)",
+    "CREATED_BY": "Legacy",
+    "METADATA": "",
+    "PARKNAME": "",
+    "GNIS_ID": ""
+  }
+}

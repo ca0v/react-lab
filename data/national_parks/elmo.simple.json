@@ -1,0 +1,59 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -108.36403009748771,
+          35.042618630765034
+        ],
+        [
+          -108.36402812843589,
+          35.046233858965245
+        ],
+        [
+          -108.33325642657128,
+          35.046191803071345
+        ],
+        [
+          -108.32884825723302,
+          35.0461763495744
+        ],
+        [
+          -108.32876025178841,
+          35.035279038204884
+        ],
+        [
+          -108.32873096386018,
+          35.0316586729643
+        ],
+        [
+          -108.3596298610346,
+          35.031755555647266
+        ],
+        [
+          -108.36403575893296,
+          35.03177303449968
+        ],
+        [
+          -108.36403009748771,
+          35.042618630765034
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Monument",
+    "STATE": "NM",
+    "REGION": "IM",
+    "UNIT_CODE": "ELMO",
+    "UNIT_NAME": "El Morro National Monument",
+    "DATE_EDIT": "20061211",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/ELMO/Metadata/elmo_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/ELMO_metadata.xml",
+    "PARKNAME": "El Morro",
+    "GNIS_ID": ""
+  }
+}

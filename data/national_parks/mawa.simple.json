@@ -1,0 +1,41 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.43675186473544,
+          37.547548331658476
+        ],
+        [
+          -77.43675186473544,
+          37.547548331658476
+        ]
+      ],
+      [
+        [
+          -77.43720525186825,
+          37.5478269476881
+        ],
+        [
+          -77.43720525186825,
+          37.5478269476881
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "VA",
+    "REGION": "NE",
+    "UNIT_CODE": "MAWA",
+    "UNIT_NAME": "Maggie L. Walker National Historic Site",
+    "DATE_EDIT": "20111130",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/MAWA/Metadata/mawa_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/MAWA_metadata.xml",
+    "PARKNAME": "Maggie L. Walker",
+    "GNIS_ID": ""
+  }
+}

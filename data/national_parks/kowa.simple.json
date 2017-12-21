@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.04749024552781,
+          38.88767170689902
+        ],
+        [
+          -77.04749024552781,
+          38.88767170689902
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "KOWA",
+    "UNIT_NAME": "Korean War Veterans Memorial",
+    "DATE_EDIT": "20111103",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/KOWA/Metadata/kowa_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/KOWA_metadata.xml",
+    "PARKNAME": "Korean War Veterans Memorial",
+    "GNIS_ID": ""
+  }
+}

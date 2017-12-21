@@ -1,0 +1,59 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -111.5391002,
+          32.99141229999993
+        ],
+        [
+          -111.5412531,
+          32.99138069999993
+        ],
+        [
+          -111.54128090000002,
+          32.99866819999992
+        ],
+        [
+          -111.5412948,
+          33.00231279999992
+        ],
+        [
+          -111.52601280000002,
+          33.00244309999993
+        ],
+        [
+          -111.5240162,
+          33.00246019999993
+        ],
+        [
+          -111.52402040000001,
+          32.995243199999926
+        ],
+        [
+          -111.5240231,
+          32.991634199999936
+        ],
+        [
+          -111.5391002,
+          32.99141229999993
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Monument",
+    "STATE": "AZ",
+    "REGION": "IM",
+    "UNIT_CODE": "CAGR",
+    "UNIT_NAME": "Casa Grande Ruins National Monument",
+    "DATE_EDIT": "20100528",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/CAGR/Metadata/cagr_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/CAGR_metadata.xml",
+    "PARKNAME": "Casa Grande Ruins",
+    "GNIS_ID": ""
+  }
+}

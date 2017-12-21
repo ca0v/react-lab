@@ -1,0 +1,47 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.14072270091359,
+          38.96698758928302
+        ],
+        [
+          -77.14098455481789,
+          38.96781494306008
+        ],
+        [
+          -77.14019759529047,
+          38.968946636647416
+        ],
+        [
+          -77.13934373981711,
+          38.96775250134291
+        ],
+        [
+          -77.13914520206727,
+          38.96736205104892
+        ],
+        [
+          -77.14072270091359,
+          38.96698758928302
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "MD",
+    "REGION": "NC",
+    "UNIT_CODE": "CLBA",
+    "UNIT_NAME": "Clara Barton National Historic Site",
+    "DATE_EDIT": "20081117",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/CLBA/Metadata/clba_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/CLBA_metadata.xml",
+    "PARKNAME": "Clara Barton",
+    "GNIS_ID": ""
+  }
+}

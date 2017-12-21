@@ -1,0 +1,47 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.04230763289945,
+          38.88357866621123
+        ],
+        [
+          -77.04178475947236,
+          38.88218491725708
+        ],
+        [
+          -77.04179558917215,
+          38.882186727071684
+        ],
+        [
+          -77.04541127571177,
+          38.88423144619605
+        ],
+        [
+          -77.04546955434603,
+          38.884282242091025
+        ],
+        [
+          -77.04230763289945,
+          38.88357866621123
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "FRDE",
+    "UNIT_NAME": "Franklin Delano Roosevelt Memorial",
+    "DATE_EDIT": "20110926",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/FRDE/Metadata/frde_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/FRDE_metadata.xml",
+    "PARKNAME": "Franklin Delano Roosevelt",
+    "GNIS_ID": ""
+  }
+}

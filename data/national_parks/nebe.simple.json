@@ -1,0 +1,63 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -70.92183373799851,
+          41.63762130021046
+        ],
+        [
+          -70.92129908716738,
+          41.63324865971941
+        ],
+        [
+          -70.92304526610515,
+          41.63306134340997
+        ],
+        [
+          -70.92269450577861,
+          41.63445013277432
+        ],
+        [
+          -70.92269846222219,
+          41.634481961251296
+        ],
+        [
+          -70.92450201606643,
+          41.634300143708224
+        ],
+        [
+          -70.92498115055115,
+          41.634247441598276
+        ],
+        [
+          -70.9255218995612,
+          41.63741488532787
+        ],
+        [
+          -70.92559532174606,
+          41.6379174799511
+        ],
+        [
+          -70.92183373799851,
+          41.63762130021046
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historical Park",
+    "STATE": "MA",
+    "REGION": "NE",
+    "UNIT_CODE": "NEBE",
+    "UNIT_NAME": "New Bedford Whaling National Historical Park",
+    "DATE_EDIT": "20110715",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/NEBE/Metadata/nebe_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/NEBE_metadata.xml",
+    "PARKNAME": "New Bedford Whaling",
+    "GNIS_ID": ""
+  }
+}

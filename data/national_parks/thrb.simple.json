@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -73.9890129403993,
+          40.73844941466538
+        ],
+        [
+          -73.9890129403993,
+          40.73844941466538
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "NY",
+    "REGION": "NE",
+    "UNIT_CODE": "THRB",
+    "UNIT_NAME": "Theodore Roosevelt Birthplace National Historic Site",
+    "DATE_EDIT": "20110328",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/THRB/Metadata/thrb_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/THRB_metadata.xml",
+    "PARKNAME": "Theodore Roosevelt Birthplace",
+    "GNIS_ID": ""
+  }
+}

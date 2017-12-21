@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -71.13121397286453,
+          42.32543442827489
+        ],
+        [
+          -71.13121397286453,
+          42.32543442827489
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "",
+    "REGION": "NE",
+    "UNIT_CODE": "FRLA",
+    "UNIT_NAME": "Frederick Law Olmsted",
+    "DATE_EDIT": "00000000",
+    "GIS_NOTES": "near newton MA, what park?",
+    "CREATED_BY": "Legacy",
+    "METADATA": "",
+    "PARKNAME": "",
+    "GNIS_ID": ""
+  }
+}

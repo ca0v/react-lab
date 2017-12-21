@@ -1,0 +1,71 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -84.37429020957589,
+          33.754437809771424
+        ],
+        [
+          -84.37421004502055,
+          33.75960850652494
+        ],
+        [
+          -84.37420994283046,
+          33.75971056188062
+        ],
+        [
+          -84.372346166802,
+          33.75973015605125
+        ],
+        [
+          -84.3721570023827,
+          33.75959694818816
+        ],
+        [
+          -84.37288965899629,
+          33.755975549406486
+        ],
+        [
+          -84.37288994924147,
+          33.75557705404598
+        ],
+        [
+          -84.36938146187988,
+          33.75583099800548
+        ],
+        [
+          -84.36909639511202,
+          33.75582564429106
+        ],
+        [
+          -84.3698265289452,
+          33.75421138853658
+        ],
+        [
+          -84.3698324148057,
+          33.75379917646002
+        ],
+        [
+          -84.37429020957589,
+          33.754437809771424
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "GA",
+    "REGION": "SE",
+    "UNIT_CODE": "MALU",
+    "UNIT_NAME": "Martin Luther King Jr. National Historic Site",
+    "DATE_EDIT": "20051118",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/MALU/Metadata/malu_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/MALU_metadata.xml",
+    "PARKNAME": "Martin Luther King Jr.",
+    "GNIS_ID": ""
+  }
+}

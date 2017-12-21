@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -74.0100666833575,
+          40.706915067492304
+        ],
+        [
+          -74.0100666833575,
+          40.706915067492304
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "NY",
+    "REGION": "NE",
+    "UNIT_CODE": "FEHA",
+    "UNIT_NAME": "Federal Hall National Memorial",
+    "DATE_EDIT": "20070216",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/FEHA/Metadata/feha_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/FEHA_metadata.xml",
+    "PARKNAME": "Federal Hall",
+    "GNIS_ID": ""
+  }
+}

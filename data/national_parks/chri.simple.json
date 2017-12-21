@@ -1,0 +1,79 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -64.7036743638569,
+          17.7457329162704
+        ],
+        [
+          -64.7036743638569,
+          17.7457329162704
+        ]
+      ],
+      [
+        [
+          -64.7027201715583,
+          17.746329673466
+        ],
+        [
+          -64.7033890363985,
+          17.747392948923
+        ],
+        [
+          -64.7032439330431,
+          17.7475011114083
+        ],
+        [
+          -64.7011164624207,
+          17.7468536029634
+        ],
+        [
+          -64.7011048254955,
+          17.7468492737898
+        ],
+        [
+          -64.7027201715583,
+          17.746329673466
+        ]
+      ],
+      [
+        [
+          -64.7411825010343,
+          17.7326041081767
+        ],
+        [
+          -64.7417567672873,
+          17.7341870069768
+        ],
+        [
+          -64.7384501485509,
+          17.7354682644819
+        ],
+        [
+          -64.7378137434784,
+          17.7336588359695
+        ],
+        [
+          -64.7411825010343,
+          17.7326041081767
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "VI",
+    "REGION": "SE",
+    "UNIT_CODE": "CHRI",
+    "UNIT_NAME": "Christiansted National Historic Site",
+    "DATE_EDIT": "20060321",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/CHRI/Metadata/chri_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/CHRI_metadata.xml",
+    "PARKNAME": "Christiansted",
+    "GNIS_ID": ""
+  }
+}

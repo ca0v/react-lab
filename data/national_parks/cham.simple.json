@@ -1,0 +1,59 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -106.45158324498578,
+          31.767381062381553
+        ],
+        [
+          -106.4518256554819,
+          31.766796058636896
+        ],
+        [
+          -106.4515526065922,
+          31.76559147919288
+        ],
+        [
+          -106.45654109284884,
+          31.7648635689117
+        ],
+        [
+          -106.45803397763838,
+          31.767733369144864
+        ],
+        [
+          -106.45788075540884,
+          31.76782252924966
+        ],
+        [
+          -106.45431073143209,
+          31.769380305322002
+        ],
+        [
+          -106.45119787638835,
+          31.76920947850351
+        ],
+        [
+          -106.45158324498578,
+          31.767381062381553
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "TX",
+    "REGION": "IM",
+    "UNIT_CODE": "CHAM",
+    "UNIT_NAME": "Chamizal National Memorial",
+    "DATE_EDIT": "20080520",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/CHAM/Metadata/cham_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/CHAM_metadata.xml",
+    "PARKNAME": "Chamizal",
+    "GNIS_ID": ""
+  }
+}

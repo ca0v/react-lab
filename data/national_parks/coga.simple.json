@@ -1,0 +1,69 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.03939856810587,
+          38.89142772943836
+        ],
+        [
+          -77.039397674665,
+          38.890286054196224
+        ],
+        [
+          -77.03940126421907,
+          38.88993622149917
+        ],
+        [
+          -77.0493014473916,
+          38.89017725777882
+        ],
+        [
+          -77.04934616177991,
+          38.890203756918254
+        ],
+        [
+          -77.04792525270318,
+          38.89198577340477
+        ],
+        [
+          -77.03939856810587,
+          38.89142772943836
+        ]
+      ],
+      [
+        [
+          -77.0480714527065,
+          38.89045436032205
+        ],
+        [
+          -77.0466819694131,
+          38.89124791372461
+        ],
+        [
+          -77.04667995586783,
+          38.89125739968824
+        ],
+        [
+          -77.0480714527065,
+          38.89045436032205
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "Other Designation",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "COGA",
+    "UNIT_NAME": "Constitution Gardens",
+    "DATE_EDIT": "20111103",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/COGA/Metadata/coga_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/COGA_metadata.xml",
+    "PARKNAME": "Constitution Gardens",
+    "GNIS_ID": ""
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -94.5291889848001,
+          38.90113685175612
+        ],
+        [
+          -94.53156950262479,
+          38.90107812132243
+        ],
+        [
+          -94.53241985947932,
+          38.90111926826199
+        ],
+        [
+          -94.5291889848001,
+          38.90113685175612
+        ]
+      ],
+      [
+        [
+          -94.4238286089207,
+          39.09367482323739
+        ],
+        [
+          -94.4238286089207,
+          39.09367482323739
+        ]
+      ],
+      [
+        [
+          -94.4225197049999,
+          39.0939455518195
+        ],
+        [
+          -94.42293451980203,
+          39.0935010565542
+        ],
+        [
+          -94.42366137459891,
+          39.09352845724851
+        ],
+        [
+          -94.4225197049999,
+          39.0939455518195
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "MO",
+    "REGION": "MW",
+    "UNIT_CODE": "HSTR",
+    "UNIT_NAME": "Harry S Truman National Historic Site",
+    "DATE_EDIT": "20120206",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/HSTR/Metadata/hstr_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/HSTR_metadata.xml",
+    "PARKNAME": "Harry S Truman",
+    "GNIS_ID": ""
+  }
+}

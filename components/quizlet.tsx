@@ -4,7 +4,7 @@
 * If user clicks wrong feature, "incorrect" event is raised
 * If user clicks correct feature, "correct" event is raised
 */
-import { OpenLayers, BingImagerySet } from './openlayers';
+import { OpenLayers, BingImagerySet, OtherImagerySet } from './openlayers';
 import { PureComponent as Component, createElement as create } from 'react';
 import { render } from "react-dom";
 import { Dictionary, debounce, distinct, EventDispatcher, shuffle, LocalStorage } from "../common/common";
@@ -28,7 +28,7 @@ export interface QuizletStates {
     hint?: number;
     answers: string[];
     score: number;
-    bingImagerySet: BingImagerySet;
+    bingImagerySet: BingImagerySet | OtherImagerySet;
 }
 
 export interface QuizletProps {
@@ -36,7 +36,7 @@ export interface QuizletProps {
     source: ol.source.Vector;
     featureNameFieldName: string;
     questionsPerQuiz: number;
-    getLayerStyle: (score: number) => BingImagerySet;
+    getLayerStyle: (score: number) => BingImagerySet | OtherImagerySet;
 }
 
 export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
@@ -285,7 +285,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         if (!this.state.answer) return;
         this.score(-1);
         let answers = this.state.answers;
-        answers && answers.unshift(this.state.answer);
+        answers && answers.length && answers.unshift(this.state.answer);
         this.next();
     }
 
@@ -304,13 +304,10 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             this.dispatcher.trigger("adjust-answers", byref);
             answers = byref.answers;
         }
-        console.log(answers);
         shuffle(answers);
-        console.log(answers);
         if (answers.length > this.props.questionsPerQuiz) {
             answers = answers.splice(0, this.props.questionsPerQuiz);
         }
-        console.log(answers);
         return answers;
     }
 

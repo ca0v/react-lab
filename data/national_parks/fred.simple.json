@@ -1,0 +1,47 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.47077264818114,
+          38.29365317222159
+        ],
+        [
+          -77.46793158805433,
+          38.29270917792902
+        ],
+        [
+          -77.467921588543,
+          38.29256318113153
+        ],
+        [
+          -77.46942362506164,
+          38.292119199091665
+        ],
+        [
+          -77.46984863549682,
+          38.29197520457661
+        ],
+        [
+          -77.47077264818114,
+          38.29365317222159
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "",
+    "STATE": "",
+    "REGION": "NE",
+    "UNIT_CODE": "FRED",
+    "UNIT_NAME": "Fredericksburg",
+    "DATE_EDIT": "00000000",
+    "GIS_NOTES": "Good (copied from Dean's)",
+    "CREATED_BY": "Legacy",
+    "METADATA": "",
+    "PARKNAME": "",
+    "GNIS_ID": ""
+  }
+}

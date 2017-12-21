@@ -1,0 +1,55 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -89.64379167375196,
+          39.79820354435682
+        ],
+        [
+          -89.64381552988522,
+          39.79608115365644
+        ],
+        [
+          -89.64382726682172,
+          39.79606997289025
+        ],
+        [
+          -89.64651138449464,
+          39.796144161856844
+        ],
+        [
+          -89.64651626158188,
+          39.79615417366158
+        ],
+        [
+          -89.64645531880899,
+          39.79822870220511
+        ],
+        [
+          -89.6464454017062,
+          39.79824097065228
+        ],
+        [
+          -89.64379167375196,
+          39.79820354435682
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "IL",
+    "REGION": "MW",
+    "UNIT_CODE": "LIHO",
+    "UNIT_NAME": "Lincoln Home National Historic Site",
+    "DATE_EDIT": "20070827",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/LIHO/Metadata/liho_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/LIHO_metadata.xml",
+    "PARKNAME": "Lincoln Home",
+    "GNIS_ID": ""
+  }
+}

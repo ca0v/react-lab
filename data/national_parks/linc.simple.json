@@ -1,0 +1,47 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.04912762195833,
+          38.88961334174717
+        ],
+        [
+          -77.04989431893783,
+          38.888419254318094
+        ],
+        [
+          -77.04993211856312,
+          38.888412500832956
+        ],
+        [
+          -77.05128726587914,
+          38.88924114404048
+        ],
+        [
+          -77.0512879727831,
+          38.88927180792237
+        ],
+        [
+          -77.04912762195833,
+          38.88961334174717
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "LINC",
+    "UNIT_NAME": "Lincoln Memorial",
+    "DATE_EDIT": "20111104",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/LINC/Metadata/linc_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/LINC_metadata.xml",
+    "PARKNAME": "Lincoln Memorial",
+    "GNIS_ID": ""
+  }
+}

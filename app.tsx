@@ -64,6 +64,7 @@ function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
                 })
                 break;
             }
+        case "multigeojson":
         case "geojson":
             {
                 let loader = new GeoJsonLoader<any>();

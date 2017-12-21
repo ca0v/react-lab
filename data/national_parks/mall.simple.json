@@ -1,0 +1,63 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.0221471803888,
+          38.89191727228871
+        ],
+        [
+          -77.0149945674143,
+          38.891144225293715
+        ],
+        [
+          -77.01269176320511,
+          38.89050573907696
+        ],
+        [
+          -77.01266355752483,
+          38.8891639411288
+        ],
+        [
+          -77.01273003204085,
+          38.88906413084419
+        ],
+        [
+          -77.01669398429931,
+          38.88771937952464
+        ],
+        [
+          -77.01679575871918,
+          38.887710086160496
+        ],
+        [
+          -77.03176648121143,
+          38.88819314647742
+        ],
+        [
+          -77.03176816673198,
+          38.8919785747039
+        ],
+        [
+          -77.0221471803888,
+          38.89191727228871
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "Other Designation",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "MALL",
+    "UNIT_NAME": "National Mall",
+    "DATE_EDIT": "20111006",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/MALL/Metadata/mall_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/MALL_metadata.xml",
+    "PARKNAME": "National Mall",
+    "GNIS_ID": ""
+  }
+}

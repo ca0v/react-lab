@@ -1,0 +1,47 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.03956271110349,
+          38.889937781796846
+        ],
+        [
+          -77.04101680891591,
+          38.88775369584158
+        ],
+        [
+          -77.04107418283195,
+          38.88772465329805
+        ],
+        [
+          -77.04118550055028,
+          38.88991130239043
+        ],
+        [
+          -77.04118554964487,
+          38.89041313315994
+        ],
+        [
+          -77.03956271110349,
+          38.889937781796846
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "WWII",
+    "UNIT_NAME": "World War II Memorial",
+    "DATE_EDIT": "20111103",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/WWII/Metadata/wwii_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/WWII_metadata.xml",
+    "PARKNAME": "World War II Memorial",
+    "GNIS_ID": ""
+  }
+}

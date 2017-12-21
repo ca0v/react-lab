@@ -12,9 +12,8 @@ import worldCitiesPacket = require("./cities_world");
 import usaGreatLakesPacket = require("./lakes_usa");
 import usaStatesPacket = require("./usstates_usa");
 import usaCitiesPacket = require("./cities_usa");
-import volcanoesDir = require("../../data/volcanoes/dir");
-
-let volcanoes = shuffle(volcanoesDir.split("\n").map(v => v.trim()).filter(v => !!v));
+import volcanoesPacket = require("./volcanoes");
+import nationalParksPacket = require("./national_parks");
 
 const packets: Dictionary<IPacket<any>> = {
     "Continents": continentPacket,
@@ -68,12 +67,8 @@ const packets: Dictionary<IPacket<any>> = {
         style: usaStatesPacket.style,
     },
     "US Cities": usaCitiesPacket,
-    "Volcanoes": {
-        type: "geojson",
-        url: `./data/volcanoes/${volcanoes.pop()}`,
-        name: "Name",
-        style: () => "Aerial",
-    },
+    "Volcanoes": volcanoesPacket,
+    "National Parks": nationalParksPacket,
     "Holy Sites": {
         type: "geojson",
         url: "./data/holysites.json",

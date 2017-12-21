@@ -1,0 +1,47 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -94.70605952709803,
+          37.843293442424525
+        ],
+        [
+          -94.70270912985751,
+          37.84477562842486
+        ],
+        [
+          -94.70266901157491,
+          37.84410805009279
+        ],
+        [
+          -94.7037923984543,
+          37.84244409217671
+        ],
+        [
+          -94.70379299993739,
+          37.842018830052275
+        ],
+        [
+          -94.70605952709803,
+          37.843293442424525
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "KS",
+    "REGION": "MW",
+    "UNIT_CODE": "FOSC",
+    "UNIT_NAME": "Fort Scott National Historic Site",
+    "DATE_EDIT": "20100816",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/FOSC/Metadata/fosc_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/FOSC_metadata.xml",
+    "PARKNAME": "Fort Scott",
+    "GNIS_ID": ""
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -82.64244949018662,
+          27.52160484611679
+        ],
+        [
+          -82.64187212074543,
+          27.520594441581988
+        ],
+        [
+          -82.64273801408712,
+          27.519951830066407
+        ],
+        [
+          -82.64472469243564,
+          27.521200317210564
+        ],
+        [
+          -82.64526427200518,
+          27.52119862897642
+        ],
+        [
+          -82.64526119102673,
+          27.521611214531568
+        ],
+        [
+          -82.64524556658232,
+          27.523703564201334
+        ],
+        [
+          -82.64078005089397,
+          27.525446735182275
+        ],
+        [
+          -82.6407255557806,
+          27.525463715895846
+        ],
+        [
+          -82.64244949018662,
+          27.52160484611679
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "FL",
+    "REGION": "SE",
+    "UNIT_CODE": "DESO",
+    "UNIT_NAME": "De Soto National Memorial",
+    "DATE_EDIT": "20071016",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/DESO/Metadata/deso_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/DESO_metadata.xml",
+    "PARKNAME": "De Soto",
+    "GNIS_ID": ""
+  }
+}

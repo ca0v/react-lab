@@ -1,0 +1,41 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -81.37555012620237,
+          40.79664474921657
+        ],
+        [
+          -81.37555012620237,
+          40.79664474921657
+        ]
+      ],
+      [
+        [
+          -81.37564210362552,
+          40.797709104791295
+        ],
+        [
+          -81.37564210362552,
+          40.797709104791295
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "OH",
+    "REGION": "MW",
+    "UNIT_CODE": "FILA",
+    "UNIT_NAME": "First Ladies National Historic Site",
+    "DATE_EDIT": "20130807",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/FILA/METADATA/fila_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/FILA_METADATA.xml",
+    "PARKNAME": "First Ladies",
+    "GNIS_ID": ""
+  }
+}

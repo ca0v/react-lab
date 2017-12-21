@@ -1,0 +1,63 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -78.1059184309549,
+          34.45684271363739
+        ],
+        [
+          -78.10708149748932,
+          34.455590032018605
+        ],
+        [
+          -78.10762508164625,
+          34.45499603544693
+        ],
+        [
+          -78.11596942085819,
+          34.458620624676165
+        ],
+        [
+          -78.11624274072491,
+          34.45882470005684
+        ],
+        [
+          -78.1133625578794,
+          34.460843487777026
+        ],
+        [
+          -78.11267807537727,
+          34.46157941151523
+        ],
+        [
+          -78.10711520652708,
+          34.459035558455525
+        ],
+        [
+          -78.10471130868794,
+          34.458104370510114
+        ],
+        [
+          -78.1059184309549,
+          34.45684271363739
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Battlefield",
+    "STATE": "NC",
+    "REGION": "SE",
+    "UNIT_CODE": "MOCR",
+    "UNIT_NAME": "Moores Creek National Battlefield",
+    "DATE_EDIT": "20091026",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/MOCR/Metadata/mocr_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/MOCR_metadata.xml",
+    "PARKNAME": "Moores Creek",
+    "GNIS_ID": ""
+  }
+}

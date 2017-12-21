@@ -41,7 +41,7 @@ interface OpenLayersProps {
     className?: string;
     setCenter?: (v: [number, number], z: number) => void;
     title?: string;
-    bingImagerySet?: BingImagerySet & OtherImagerySet;
+    bingImagerySet?: BingImagerySet | OtherImagerySet;
     osm?: boolean;
     center?: [number, number];
     zoom?: number;
@@ -129,6 +129,8 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                         {
                             break;
                         }
+                    case "CanvasDarkWithLabels":
+                        layerType = "CanvasDark";
                     case "Aerial":
                     case "AerialWithLabels":
                     case "CanvasDark":
@@ -316,7 +318,11 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                                 if (features.length !== 1) return;
                                 let feature = features[0];
                                 if (feature instanceof ol.Feature) {
-                                    this.props.onFeatureClick({ layer: vector, feature: feature });
+                                    this.props.onFeatureClick({
+                                        layer: vector,
+                                        feature: feature,
+                                        coordinate: args.coordinate
+                                    });
                                 }
                             }
                         });

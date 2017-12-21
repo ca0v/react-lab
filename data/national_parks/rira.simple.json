@@ -1,0 +1,55 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -83.37539654940842,
+          41.9095235778358
+        ],
+        [
+          -83.37917317843484,
+          41.91308619266177
+        ],
+        [
+          -83.379412832155,
+          41.913155703358555
+        ],
+        [
+          -83.3776904803278,
+          41.91514505854356
+        ],
+        [
+          -83.3775564329809,
+          41.91530170432888
+        ],
+        [
+          -83.37336822606484,
+          41.91398795570777
+        ],
+        [
+          -83.37305880842078,
+          41.91378566208839
+        ],
+        [
+          -83.37539654940842,
+          41.9095235778358
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Battlefield Park",
+    "STATE": "MI",
+    "REGION": "MW",
+    "UNIT_CODE": "RIRA",
+    "UNIT_NAME": "River Raisin National Battlefield Park",
+    "DATE_EDIT": "20110516",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/RIRA/Metadata/rira_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/RIRA_metadata.xml",
+    "PARKNAME": "River Raisin",
+    "GNIS_ID": ""
+  }
+}

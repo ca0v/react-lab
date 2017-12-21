@@ -1,0 +1,43 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -79.8271446669147,
+          32.8471401231361
+        ],
+        [
+          -79.8226936651562,
+          32.8471900091305
+        ],
+        [
+          -79.8226564948847,
+          32.8446554542597
+        ],
+        [
+          -79.8270561488126,
+          32.8438551299752
+        ],
+        [
+          -79.8271446669147,
+          32.8471401231361
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "SC",
+    "REGION": "SE",
+    "UNIT_CODE": "CHPI",
+    "UNIT_NAME": "Charles Pinckney National Historic Site",
+    "DATE_EDIT": "20060320",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/CHPI/Metadata/chpi_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/CHPI_metadata.xml",
+    "PARKNAME": "Charles Pinckney",
+    "GNIS_ID": ""
+  }
+}

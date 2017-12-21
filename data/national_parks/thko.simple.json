@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -75.14738255508365,
+          39.94350310790658
+        ],
+        [
+          -75.14738255508365,
+          39.94350310790658
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "PA",
+    "REGION": "NE",
+    "UNIT_CODE": "THKO",
+    "UNIT_NAME": "Thaddeus Kosciuszko National Memorial",
+    "DATE_EDIT": "20100707",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/THKO/Metadata/thko_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/THKO_metadata.xml",
+    "PARKNAME": "Thaddeus Kosciuszko",
+    "GNIS_ID": ""
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -89.48008077584419,
+          41.835998743677195
+        ],
+        [
+          -89.48008077584419,
+          41.835998743677195
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "IL",
+    "REGION": "MW",
+    "UNIT_CODE": "RRBH",
+    "UNIT_NAME": "Ronald Reagan Boyhood Home National Historic Site",
+    "DATE_EDIT": "20130103",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/RRBH/Metadata/rrbh_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/RRBH_metadata.xml",
+    "PARKNAME": "Ronald Reagan Boyhood Home",
+    "GNIS_ID": ""
+  }
+}

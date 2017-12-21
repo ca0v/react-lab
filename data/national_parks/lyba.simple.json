@@ -1,0 +1,47 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.05477552147536,
+          38.88055663966093
+        ],
+        [
+          -77.04884431135369,
+          38.877067836067525
+        ],
+        [
+          -77.04880696150897,
+          38.87697550047244
+        ],
+        [
+          -77.04967758772256,
+          38.87637035806222
+        ],
+        [
+          -77.05038680624364,
+          38.87617555965557
+        ],
+        [
+          -77.05477552147536,
+          38.88055663966093
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "LYBA",
+    "UNIT_NAME": "Lyndon Baines Johnson Grove National Memorial",
+    "DATE_EDIT": "20050531",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/LYBA/Metadata/lyba_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/LYBA_metadata.xml",
+    "PARKNAME": "Lyndon Baines Johnson Grove",
+    "GNIS_ID": ""
+  }
+}

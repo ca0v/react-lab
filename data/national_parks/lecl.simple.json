@@ -1,0 +1,71 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -95.8331784789051,
+          40.66678625444745
+        ],
+        [
+          -95.8316512952652,
+          40.668672391391084
+        ],
+        [
+          -95.8313395767029,
+          40.6687435017979
+        ],
+        [
+          -95.8292739693658,
+          40.667555728524896
+        ],
+        [
+          -95.82860242373204,
+          40.66702090713868
+        ],
+        [
+          -95.83080180657632,
+          40.66382323420855
+        ],
+        [
+          -95.83064407322522,
+          40.66057048343784
+        ],
+        [
+          -95.83073344747031,
+          40.660569553965125
+        ],
+        [
+          -95.83535263459093,
+          40.66051891945387
+        ],
+        [
+          -95.83543259390872,
+          40.664058310676005
+        ],
+        [
+          -95.83539125421515,
+          40.66446842347486
+        ],
+        [
+          -95.8331784789051,
+          40.66678625444745
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Trail",
+    "STATE": "NE",
+    "REGION": "MW",
+    "UNIT_CODE": "LECL",
+    "UNIT_NAME": "Lewis and Clark National Historic Trail",
+    "DATE_EDIT": "20090422",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/LECL/Metadata/lecl_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/LECL_metadata.xml",
+    "PARKNAME": "Lewis and Clark",
+    "GNIS_ID": ""
+  }
+}

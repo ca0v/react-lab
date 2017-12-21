@@ -1,0 +1,73 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -94.43046040109328,
+          35.386512347622954
+        ],
+        [
+          -94.43046040109328,
+          35.386512347622954
+        ]
+      ],
+      [
+        [
+          -94.42977881147617,
+          35.38740488335956
+        ],
+        [
+          -94.43161981037086,
+          35.38617173366597
+        ],
+        [
+          -94.43168602717498,
+          35.38466268052399
+        ],
+        [
+          -94.43388470513449,
+          35.38761882810887
+        ],
+        [
+          -94.4339119017606,
+          35.387760888454345
+        ],
+        [
+          -94.4319501054914,
+          35.390933777969835
+        ],
+        [
+          -94.43163125088319,
+          35.39134122355222
+        ],
+        [
+          -94.42920432711206,
+          35.38923441565322
+        ],
+        [
+          -94.42832128798263,
+          35.388643663207915
+        ],
+        [
+          -94.42977881147617,
+          35.38740488335956
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "AR",
+    "REGION": "MW",
+    "UNIT_CODE": "FOSM",
+    "UNIT_NAME": "Fort Smith National Historic Site",
+    "DATE_EDIT": "20061102",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/FOSM/Metadata/fosm_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/FOSM_metadata.xml",
+    "PARKNAME": "Fort Smith",
+    "GNIS_ID": ""
+  }
+}

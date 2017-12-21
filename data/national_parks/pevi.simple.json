@@ -1,0 +1,71 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -82.81499453682267,
+          41.65436276615659
+        ],
+        [
+          -82.81361049128719,
+          41.65429284959237
+        ],
+        [
+          -82.81254075214122,
+          41.65435040962862
+        ],
+        [
+          -82.81132758369806,
+          41.6560917799268
+        ],
+        [
+          -82.81068927241947,
+          41.65693806105514
+        ],
+        [
+          -82.80830904476092,
+          41.65528345983836
+        ],
+        [
+          -82.80804604596246,
+          41.65510062728445
+        ],
+        [
+          -82.81089779058496,
+          41.653490267673455
+        ],
+        [
+          -82.81186451436285,
+          41.65287711184939
+        ],
+        [
+          -82.81409609924312,
+          41.65293974684097
+        ],
+        [
+          -82.81449860437857,
+          41.65294113972224
+        ],
+        [
+          -82.81499453682267,
+          41.65436276615659
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "OH",
+    "REGION": "MW",
+    "UNIT_CODE": "PEVI",
+    "UNIT_NAME": "Perry's Victory and International Peace Memorial",
+    "DATE_EDIT": "20100901",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/PEVI/Metadata/pevi_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/PEVI_metadata.xml",
+    "PARKNAME": "Perry's Victory and International Peace Memorial",
+    "GNIS_ID": ""
+  }
+}

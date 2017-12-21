@@ -1,0 +1,63 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -81.3129443162058,
+          29.8971618885577
+        ],
+        [
+          -81.3140373930919,
+          29.898899877492
+        ],
+        [
+          -81.3141914808724,
+          29.8991552190232
+        ],
+        [
+          -81.3117141260917,
+          29.8993838695684
+        ],
+        [
+          -81.3113918621112,
+          29.8994083765339
+        ],
+        [
+          -81.3108095860604,
+          29.8974854031488
+        ],
+        [
+          -81.3107009601518,
+          29.8972130521886
+        ],
+        [
+          -81.3108695684213,
+          29.8956246411584
+        ],
+        [
+          -81.3110268513017,
+          29.8956137419968
+        ],
+        [
+          -81.3129443162058,
+          29.8971618885577
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Monument",
+    "STATE": "FL",
+    "REGION": "SE",
+    "UNIT_CODE": "CASA",
+    "UNIT_NAME": "Castillo de San Marcos National Monument",
+    "DATE_EDIT": "20050228",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/CASA/Metadata/casa_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/CASA_metadata.xml",
+    "PARKNAME": "Castillo de San Marcos",
+    "GNIS_ID": ""
+  }
+}

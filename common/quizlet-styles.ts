@@ -108,7 +108,7 @@ styles.incorrect = quizlet => (feature: ol.Feature | ol.render.Feature, res: num
                         color: color(theme.black),
                     }),
                     stroke: new ol.style.Stroke({
-                        color: color(theme.black),
+                        color: color(theme.incorrectBorderColor),
                         width: theme.borderWidth,
                     }),
                 }),

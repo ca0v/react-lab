@@ -1,0 +1,65 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -92.2978523420698,
+          34.73576926386561
+        ],
+        [
+          -92.2978523420698,
+          34.73576926386561
+        ]
+      ],
+      [
+        [
+          -92.2978523420698,
+          34.73576926386561
+        ],
+        [
+          -92.30243441182702,
+          34.73588202381135
+        ],
+        [
+          -92.30263898091775,
+          34.735885999697544
+        ],
+        [
+          -92.30255156605689,
+          34.73771137219097
+        ],
+        [
+          -92.30254448247837,
+          34.73788018879984
+        ],
+        [
+          -92.29771132026295,
+          34.73857774655069
+        ],
+        [
+          -92.29771287192148,
+          34.73872775261364
+        ],
+        [
+          -92.2978523420698,
+          34.73576926386561
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "AR",
+    "REGION": "MW",
+    "UNIT_CODE": "CHSC",
+    "UNIT_NAME": "Little Rock Central High School National Historic Site",
+    "DATE_EDIT": "20100517",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/CHSC/Metadata/chsc_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/CHSC_metadata.xml",
+    "PARKNAME": "Little Rock Central High School",
+    "GNIS_ID": ""
+  }
+}

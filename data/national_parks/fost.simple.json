@@ -1,0 +1,51 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -75.45437402301833,
+          43.20977964338234
+        ],
+        [
+          -75.45753831363241,
+          43.209474509219525
+        ],
+        [
+          -75.45784424399794,
+          43.20993804622808
+        ],
+        [
+          -75.45521625863053,
+          43.21164453944745
+        ],
+        [
+          -75.45492972814678,
+          43.21196473170794
+        ],
+        [
+          -75.45328222610955,
+          43.211175290816726
+        ],
+        [
+          -75.45437402301833,
+          43.20977964338234
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Monument",
+    "STATE": "NY",
+    "REGION": "NE",
+    "UNIT_CODE": "FOST",
+    "UNIT_NAME": "Fort Stanwix National Monument",
+    "DATE_EDIT": "20100708",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/FOST/Metadata/fost_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/FOST_metadata.xml",
+    "PARKNAME": "Fort Stanwix",
+    "GNIS_ID": ""
+  }
+}

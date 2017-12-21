@@ -1,0 +1,69 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -76.58602045072966,
+          39.41639795760141
+        ],
+        [
+          -76.58577393557444,
+          39.414216545483896
+        ],
+        [
+          -76.58961729758113,
+          39.41456686595759
+        ],
+        [
+          -76.59182111777795,
+          39.417330007124306
+        ],
+        [
+          -76.58577348254207,
+          39.419316149357385
+        ],
+        [
+          -76.58559738377761,
+          39.41929769803683
+        ],
+        [
+          -76.58602045072966,
+          39.41639795760141
+        ]
+      ],
+      [
+        [
+          -76.58478539987857,
+          39.42232401478416
+        ],
+        [
+          -76.58707009150724,
+          39.419169569330066
+        ],
+        [
+          -76.58814148724133,
+          39.4213083478854
+        ],
+        [
+          -76.58478539987857,
+          39.42232401478416
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "MD",
+    "REGION": "NE",
+    "UNIT_CODE": "HAMP",
+    "UNIT_NAME": "Hampton National Historic Site",
+    "DATE_EDIT": "20111122",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/HAMP/Metadata/hamp_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/HAMP_metadata.xml",
+    "PARKNAME": "Hampton",
+    "GNIS_ID": ""
+  }
+}

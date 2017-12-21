@@ -1,0 +1,55 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -72.58354889595397,
+          42.109364338179546
+        ],
+        [
+          -72.57956970938997,
+          42.11115992640042
+        ],
+        [
+          -72.57720335235189,
+          42.10807972394275
+        ],
+        [
+          -72.58165211926091,
+          42.10555985191415
+        ],
+        [
+          -72.58165486720904,
+          42.10555720546531
+        ],
+        [
+          -72.58179668717173,
+          42.10564517422102
+        ],
+        [
+          -72.5852137682408,
+          42.10776247585341
+        ],
+        [
+          -72.58354889595397,
+          42.109364338179546
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "MA",
+    "REGION": "NE",
+    "UNIT_CODE": "SPAR",
+    "UNIT_NAME": "Springfield Armory National Historic Site",
+    "DATE_EDIT": "20111018",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/SPAR/Metadata/spar_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/SPAR_metadata.xml",
+    "PARKNAME": "Springfield Armory",
+    "GNIS_ID": ""
+  }
+}

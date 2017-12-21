@@ -1,0 +1,47 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -73.82671276271947,
+          40.89328843740908
+        ],
+        [
+          -73.82460753680563,
+          40.89362441219981
+        ],
+        [
+          -73.82449230514638,
+          40.89358313966528
+        ],
+        [
+          -73.8251600083192,
+          40.89250545461877
+        ],
+        [
+          -73.8257962831687,
+          40.891782214345305
+        ],
+        [
+          -73.82671276271947,
+          40.89328843740908
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Historic Site",
+    "STATE": "NY",
+    "REGION": "NE",
+    "UNIT_CODE": "SAPA",
+    "UNIT_NAME": "Saint Paul's Church National Historic Site",
+    "DATE_EDIT": "20070209",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/SAPA/Metadata/sapa_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/SAPA_metadata.xml",
+    "PARKNAME": "Saint Paul's Church",
+    "GNIS_ID": ""
+  }
+}

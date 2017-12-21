@@ -1,0 +1,39 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -77.04776020425982,
+          38.89063490076671
+        ],
+        [
+          -77.04673524554238,
+          38.8912644365825
+        ],
+        [
+          -77.04667995586783,
+          38.89125739968824
+        ],
+        [
+          -77.04776020425982,
+          38.89063490076671
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "UNIT_TYPE": "National Memorial",
+    "STATE": "DC",
+    "REGION": "NC",
+    "UNIT_CODE": "VIVE",
+    "UNIT_NAME": "Vietnam Veterans Memorial",
+    "DATE_EDIT": "20111103",
+    "GIS_NOTES": "Lands - http://landsnet.nps.gov/tractsnet/documents/VIVE/Metadata/vive_metadata.xml",
+    "CREATED_BY": "Lands",
+    "METADATA": "http://nrdata.nps.gov/programs/Lands/VIVE_metadata.xml",
+    "PARKNAME": "Vietnam Veterans Memorial",
+    "GNIS_ID": ""
+  }
+}

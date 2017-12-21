@@ -4,7 +4,7 @@ import { Maplet } from './components/maplet';
 import { QuizletComponent } from "./components/quizlet";
 import { input, Dictionary } from "./common/common";
 import { Toolbar } from "./components/index";
-import { BingImagerySet } from "./components/openlayers";
+import { BingImagerySet, OtherImagerySet } from "./components/openlayers";
 
 import { Transform } from "./common/csv-importer";
 import { storage } from "./common/storage";
@@ -16,6 +16,20 @@ import { Loader as GeoJsonLoader } from "./components/packets/loaders/geojsonloa
 import packets = require("./components/packets/index");
 
 import * as ol from "openlayers";
+
+function defaultStyle(score: number): BingImagerySet | OtherImagerySet {
+    score = Math.floor(score / 500);
+    switch (score) {
+        case 0: return "CanvasDarkWithLabels";
+        case 1: return "AerialWithLabels";
+        case 2: return "Aerial";
+        case 3: return "WaterColorWithLabels";
+        case 4: return "WaterColor";
+        case 5: return "BlackWithLabels";
+        case 6: return "Black";
+        default: return "EsriAerial";
+    }
+}
 
 function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
     switch (packet.type) {
@@ -119,7 +133,7 @@ export class App extends Component<AppProps, AppState> {
             <title>React + Openlayers Lab</title>
             {!this.state.featureNameFieldName && <Toolbar>
                 {Object.keys(packets)
-                    .sort((a, b) => (storage.force(b).score - storage.force(a).score) || a.localeCompare(b) )
+                    .sort((a, b) => (storage.force(b).score - storage.force(a).score) || a.localeCompare(b))
                     .map(p => <button onClick={() => this.pickPacket(p)}>{p} ({storage.force(p).score})</button>)}
             </Toolbar>}
             {!!this.state.packetName && <QuizletComponent
@@ -134,7 +148,7 @@ export class App extends Component<AppProps, AppState> {
 
     getLayerStyle(score: number) {
         let packet = packets[this.state.packetName];
-        if (!packet || !packet.style) return "AerialWithLabels";
+        if (!packet || !packet.style) return defaultStyle(score);
         return packet.style(score);
     }
 }

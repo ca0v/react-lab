@@ -34,13 +34,14 @@ function addGeoJsonLayer(map: ol.Map, url: string) {
 
 
 export type Orientations = "portrait" | "landscape" | "full";
-export type BingImagerySet = "Aerial" | "AerialWithLabels" | "Birdseye" | "CanvasDark" | "CanvasLight" | "CanvasGray" | "Road" | "RoadOnDemand" | "BirdseyeV2WithLabels" | "Black";
+export type BingImagerySet = "Aerial" | "AerialWithLabels" | "Birdseye" | "CanvasDark" | "CanvasLight" | "CanvasGray" | "Road" | "RoadOnDemand" | "BirdseyeV2WithLabels";
+export type OtherImagerySet = "WaterColor" | "WaterColorWithLabels" | "Black" | "BlackWithLabels" | "EsriAerial" | "EsriAerialWithLabels" | "CanvasDarkWithLabels"
 
 interface OpenLayersProps {
     className?: string;
     setCenter?: (v: [number, number], z: number) => void;
     title?: string;
-    bingImagerySet?: BingImagerySet;
+    bingImagerySet?: BingImagerySet & OtherImagerySet;
     osm?: boolean;
     center?: [number, number];
     zoom?: number;
@@ -68,7 +69,7 @@ interface OpenLayersProps {
         geoJson?: string[];
         source?: ol.source.Vector[];
     };
-    onFeatureClick?: (args: { layer: ol.layer.Vector, feature: ol.Feature }) => void;
+    onFeatureClick?: (args: { layer: ol.layer.Vector, feature: ol.Feature, coordinate: ol.Coordinate }) => void;
     onClick?: (args: { coordinate: ol.Coordinate, map: ol.Map }) => void;
     onLayerAdd?: (args: { layer: ol.layer.Vector }) => void;
     trigger?: { message: string, args: any[] };
@@ -103,7 +104,18 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                 let source = bingLayerCache[layerType];
 
                 switch (layerType) {
+                    case "WaterColor":
+                    case "WaterColorWithLabels":
+                        {
+                            if (!source) {
+                                source = new ol.source.XYZ({
+                                    url: `http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg`,
+                                });
+                            }
+                            break;
+                        }
                     case "EsriAerial":
+                    case "EsriAerialWithLabels":
                         {
                             if (!source) {
                                 source = new ol.source.XYZ({
@@ -113,10 +125,16 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                             break;
                         }
                     case "Black":
+                    case "BlackWithLabels":
                         {
                             break;
                         }
-                    default:
+                    case "Aerial":
+                    case "AerialWithLabels":
+                    case "CanvasDark":
+                    case "CanvasLight":
+                    case "CanvasGray":
+                    case "Road":
                         {
                             if (!source) {
                                 source = bingLayerCache[layerType] = new ol.source.BingMaps({
@@ -124,6 +142,11 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                                     imagerySet: layerType
                                 });
                             }
+                            break;
+                        }
+                    default:
+                        {
+                            console.log(`unknown layer type: ${layerType}`);
                             break;
                         }
                 }
@@ -271,7 +294,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                                 if (features.length !== 1) return;
                                 let feature = features[0];
                                 if (feature instanceof ol.Feature) {
-                                    this.props.onFeatureClick({ layer: vector, feature: feature });
+                                    this.props.onFeatureClick({ layer: vector, feature: feature, coordinate: args.coordinate });
                                 }
                             }
                         });

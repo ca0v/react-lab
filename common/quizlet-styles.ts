@@ -19,6 +19,7 @@ const theme = {
     borderColor: [200, 100, 20, 1],
     hintBorderColor: [200, 20, 200, 1],
     noColor: [0, 0, 0, 0],
+    black: [0, 0, 0, 1],
     textScale: 1.8,
     textWidth: 2,
     borderWidth: 2,
@@ -104,15 +105,15 @@ styles.incorrect = quizlet => (feature: ol.Feature | ol.render.Feature, res: num
 
                 new ol.style.Style({
                     fill: new ol.style.Fill({
-                        color: color(theme.incorrectFillColor),
+                        color: color(theme.black),
                     }),
                     stroke: new ol.style.Stroke({
-                        color: color(theme.incorrectBorderColor),
+                        color: color(theme.black),
                         width: theme.borderWidth,
                     }),
                 }),
                 new ol.style.Style({
-                    text: new ol.style.Text({
+                    text: 1 ? undefined : new ol.style.Text({
                         text: feature.get(quizlet.props.featureNameFieldName),
                         scale: theme.textScale,
                         fill: new ol.style.Fill({

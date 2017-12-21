@@ -4,5 +4,5 @@ export = {
     type: "geojson",
     url: "./data/countries.json",
     name: "name",
-    filter: filterByContinent("South America")
+    filter: filterByContinent("South America"),
 };

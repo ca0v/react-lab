@@ -10,6 +10,7 @@ import { render } from "react-dom";
 import { Dictionary, debounce, distinct, EventDispatcher, shuffle, LocalStorage } from "../common/common";
 import { styles } from "../common/quizlet-styles";
 import { storage } from "../common/storage";
+import { explode } from "../effects/explode";
 
 import * as ol from "openlayers";
 
@@ -88,6 +89,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         });
 
         this.dispatcher.on("correct", (args: { feature: ol.Feature }) => {
+
             let answer = this.state.answer || "";
             if (!answer) return;
 
@@ -237,7 +239,8 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                 }}
                 onFeatureClick={(args: {
                     layer: ol.layer.Vector,
-                    feature: ol.Feature
+                    feature: ol.Feature,
+                    coordinate: ol.Coordinate,
                 }) => {
                     if (!this.state.answer) {
                         this.init();
@@ -245,6 +248,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                         this.dispatcher.trigger("correct", { feature: args.feature });
                     } else {
                         this.dispatcher.trigger("incorrect", { feature: args.feature });
+                        explode(args.layer, args.coordinate);
                     }
                 }}
             >
@@ -273,7 +277,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                 <button onClick={() => this.skip()}>Skip</button>
                 <button onClick={() => this.dispatcher.trigger("hint")}>Hint</button>
                 <button onClick={() => this.dispatcher.trigger("reload")}>🗙</button>
-                </div>
+            </div>
         </div >;
     }
 

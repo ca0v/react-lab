@@ -11,6 +11,7 @@ import { Dictionary, debounce, distinct, EventDispatcher, shuffle, LocalStorage 
 import { styles } from "../common/quizlet-styles";
 import { storage } from "../common/storage";
 import { explode } from "../effects/explode";
+import { AudioMedia } from "../effects/kaplunk";
 
 import * as ol from "openlayers";
 
@@ -93,6 +94,11 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             let answer = this.state.answer || "";
             if (!answer) return;
 
+            var boing = new AudioMedia({
+                source: "data/sound/switch-9.mp3"
+            });
+            boing.play(0);
+
             console.log("correct");
             let score = this.score(20);
 
@@ -138,6 +144,10 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             console.log("incorrect");
             this.score(-20);
 
+            new AudioMedia({
+                source: "data/sound/Bomb-SoundBible.com-891110113.mp3"
+            }).play(0);
+            
             let gameStorage = this.getStat();
             gameStorage.stats[answer].incorrect++;
             gameStorage.score = this.state.score;

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compress": "pushd built && uglifyjs index.js --source-map=index.js.map --in-source-map=index.js.map --output=index.js --compress --mangle && popd",
+    "compress": "pushd built && uglify index.js --source-map=index.js.map --in-source-map=index.js.map --output=index.js --compress --mangle && popd",
     "compile": "tsc || echo",
     "watch": "tsc -w",
     "build": "npm run compile && npm run compress",
@@ -30,6 +30,6 @@
     "live-server": "^1.2.0",
     "simplify-geojson": "^1.0.3",
     "typescript": "^2.7.0-dev.20171129",
-    "uglify": "^0.1.5"
+    "uglify-js": "^3.2.2"
   }
 }

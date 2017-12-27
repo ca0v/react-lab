@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ca0v/react-lab#readme",
   "devDependencies": {
+    "@types/material-ui": "^0.20.0",
     "@types/openlayers": "^4.3.11",
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",

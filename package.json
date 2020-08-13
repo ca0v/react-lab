@@ -11,7 +11,7 @@
     "build": "npm run compile && npm run compress",
     "post-install": "npm run build",
     "simplify": "forfiles /C \"cmd /c simplify-geojson @file > @fname.simple.json\"",
-    "dev": "live-server --port=5000 --wait=2000"
+    "dev": "live-server --port=5000 --wait=5000 --ignorePattern=/*\\.ts*/ --open=rawgit.html"
   },
   "author": "",
   "license": "MIT",

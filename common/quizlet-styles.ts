@@ -214,6 +214,9 @@ styles.indeterminate = (quizlet) => (
           color: color(showOutline ? theme.hintBorderColor : theme.borderColor),
           width: 2,
         }),
+        fill:new ol.style.Fill({
+          color: color(theme.black),
+        }),
       });
   }
 };

@@ -9,7 +9,7 @@
     "compile": "tsc || echo",
     "watch": "tsc -w",
     "build": "npm run compile && npm run compress",
-    "install": "npm run build",
+    "post-install": "npm run build",
     "simplify": "forfiles /C \"cmd /c simplify-geojson @file > @fname.simple.json\"",
     "dev": "live-server --port=5000 --wait=2000"
   },
@@ -25,12 +25,12 @@
   "homepage": "https://github.com/ca0v/react-lab#readme",
   "devDependencies": {
     "@types/material-ui": "^0.20.0",
-    "@types/openlayers": "^4.3.11",
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
-    "live-server": "^1.2.0",
+    "live-server": "^1.2.1",
+    "ol": "^6.4.3",
     "simplify-geojson": "^1.0.3",
-    "typescript": "^2.7.0-dev.20171129",
-    "uglify-js": "^3.2.2"
+    "terser": "^5.0.0",
+    "typescript": "^3.9.7"
   }
 }

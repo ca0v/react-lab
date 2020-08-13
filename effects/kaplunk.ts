@@ -1,10 +1,10 @@
+import Object from "@ol/Object";
+
 /*	Copyright (c) 2017 Jean-Marc VIGLINO, 
 	released under the CeCILL-B license (French BSD license)
 	(http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
 */
-import * as ol from "openlayers";
-
-export class Media extends ol.Object {
+export class Media extends Object {
 
     private media: any;
 

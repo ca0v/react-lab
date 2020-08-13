@@ -7,10 +7,57 @@ import {
 
 import { Toolbar } from "./index";
 import { debounce, Dictionary, EventDispatcher } from "../common/common";
-import * as ol from "openlayers";
+import Map from "@ol/Map";
+import VectorSource from "@ol/source/Vector";
+import VectorLayer from "@ol/layer/Vector";
+import Geometry from '@ol/geom/Geometry';
+import type GeometryType from '@ol/geom/GeometryType';
+import { GeoJSON } from '@ol/format';
+import View from '@ol/View';
+import { fromLonLat } from "@ol/proj";
+import * as interaction from "@ol/interaction";
+import type MapBrowserEvent from '@ol/MapBrowserEvent';
+import Feature from '@ol/Feature';
+import type Collection from '@ol/Collection';
+import type { Coordinate } from '@ol/coordinate';
+import BingMaps from "@ol/source/BingMaps";
+import XYZ from "@ol/source/XYZ";
+import OSM from "@ol/source/OSM";
+import TileLayer from "@ol/layer/Tile";
+import TileSource from '@ol/source/Tile';
+import { Extent, getCenter } from '@ol/extent';
+import Zoom from "@ol/control/Zoom";
+import ZoomSlider from "@ol/control/ZoomSlider";
+import FullScreen from "@ol/control/FullScreen";
+import MousePosition from "@ol/control/MousePosition";
+import Rotate from "@ol/control/Rotate";
+import ScaleLine from "@ol/control/ScaleLine";
+import ZoomToExtent from "@ol/control/ZoomToExtent";
 
-function addSourceLayer(map: ol.Map, source: ol.source.Vector) {
-    let vector = new ol.layer.Vector({
+const ol = {
+    interaction,
+    control: 
+    {
+        ScaleLine,
+        Rotate,
+        MousePosition,
+        FullScreen,
+        Zoom,
+        ZoomSlider,
+        ZoomToExtent,
+    },
+    source: {
+        XYZ,
+        OSM,
+        Vector: VectorSource
+    },
+    layer: {
+        Vector: VectorLayer
+    }
+};
+
+function addSourceLayer(map: Map, source: VectorSource<Geometry>) {
+    let vector = new VectorLayer({
         source: source
     });
     map.addLayer(vector);
@@ -18,12 +65,12 @@ function addSourceLayer(map: ol.Map, source: ol.source.Vector) {
     return vector;
 }
 
-function addGeoJsonLayer(map: ol.Map, url: string) {
+function addGeoJsonLayer(map: Map, url: string) {
     // how to access parent map to add layer...should be a inferred "props" of sorts
-    let vector = new ol.layer.Vector({
-        source: new ol.source.Vector({
+    let vector = new VectorLayer({
+        source: new VectorSource({
             url: url,
-            format: new ol.format.GeoJSON()
+            format: new GeoJSON()
         })
     });
 
@@ -46,7 +93,7 @@ interface OpenLayersProps {
     center?: [number, number];
     zoom?: number;
     orientation?: Orientations;
-    features?: ol.Collection<ol.Feature>;
+    features?: Collection<Feature<Geometry>>;
     allowPan?: boolean;
     allowZoom?: boolean;
     allowKeyboard?: boolean;
@@ -67,18 +114,18 @@ interface OpenLayersProps {
     };
     layers?: {
         geoJson?: string[];
-        source?: ol.source.Vector[];
+        source?: VectorSource<Geometry>[];
     };
-    onFeatureClick?: (args: { layer: ol.layer.Vector, feature: ol.Feature, coordinate: ol.Coordinate }) => void;
-    onClick?: (args: { coordinate: ol.Coordinate, map: ol.Map }) => void;
-    onLayerAdd?: (args: { layer: ol.layer.Vector }) => void;
+    onFeatureClick?: (args: { layer: VectorLayer, feature: Feature<Geometry>, coordinate: Coordinate }) => void;
+    onClick?: (args: { coordinate: Coordinate, map: Map }) => void;
+    onLayerAdd?: (args: { layer: VectorLayer }) => void;
     trigger?: { message: string, args: any[] };
 }
 
 interface OpenLayersState {
-    map?: ol.Map;
+    map?: Map;
     target: Element | null;
-    activeDrawingTool?: ol.geom.GeometryType;
+    activeDrawingTool?: string;
 }
 
 export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
@@ -92,16 +139,16 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         };
 
         {
-            let bingLayerCache: Dictionary<ol.source.BingMaps> = {};
-            let bingLayer: ol.layer.Tile;
+            let bingLayerCache: Dictionary<BingMaps> = {};
+            let bingLayer: TileLayer;
 
-            this.dispatcher.on("basemap-toggle", (args: { map: ol.Map }) => {
+            this.dispatcher.on("basemap-toggle", (args: { map: Map }) => {
                 let map = args.map || this.state.map;
                 let layerType = this.props.bingImagerySet;
                 if (!map) return;
                 if (!layerType) return;
 
-                let source = bingLayerCache[layerType];
+                let source = bingLayerCache[layerType] as TileSource;
 
                 switch (layerType) {
                     case "WaterColor":
@@ -139,7 +186,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                     case "Road":
                         {
                             if (!source) {
-                                source = bingLayerCache[layerType] = new ol.source.BingMaps({
+                                source = bingLayerCache[layerType] = new BingMaps({
                                     key: 'AuPHWkNxvxVAL_8Z4G8Pcq_eOKGm5eITH_cJMNAyYoIC1S_29_HhE893YrUUbIGl',
                                     imagerySet: layerType
                                 });
@@ -153,7 +200,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                         }
                 }
                 if (!bingLayer) {
-                    bingLayer = new ol.layer.Tile({ source: source });
+                    bingLayer = new TileLayer({ source: source });
                     map.getLayers().insertAt(0, bingLayer);
                 } else {
                     bingLayer.setSource(source);
@@ -165,7 +212,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
 
     trigger(message: string, args: any): void;
     trigger(message: "refresh", args: {}): void;
-    trigger(message: "extent", args: { extent: ol.Extent }): void;
+    trigger(message: "extent", args: { extent: Extent }): void;
     trigger(message: string, args: any) {
         let map = this.state.map;
         if (!map) return;
@@ -173,17 +220,17 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         switch (message) {
             case "refresh":
                 map.getLayers().getArray()
-                    .filter(l => l instanceof ol.layer.Vector)
+                    .filter(l => l instanceof VectorLayer)
                     .map((l: any) => l.getSource().changed())
                 break;
             case "extent":
-                let p: { extent: ol.Extent } = args;
+                let p: { extent: Extent } = args;
                 let view: any = map.getView();
                 let resolution = view.getResolutionForExtent(p.extent);
                 let zoom = view.getZoomForResolution(resolution);
                 //map.getView().fit(p.extent);
                 view.animate({
-                    center: ol.extent.getCenter(p.extent),
+                    center: getCenter(p.extent),
                     zoom: zoom,
                 })
                 break;
@@ -230,9 +277,9 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
     }
 
     componentDidMount() {
-        let map = new ol.Map({
-            view: new ol.View({
-                center: this.props.center || ol.proj.fromLonLat([0, 0]),
+        let map = new Map({
+            view: new View({
+                center: this.props.center || fromLonLat([0, 0]),
                 zoom: this.props.zoom || 0
             }),
             controls: [],
@@ -251,7 +298,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             map.addInteraction(new ol.interaction.KeyboardZoom());
         }
 
-        map.on("singleclick", (args: ol.MapBrowserEvent) => {
+        map.on("singleclick", (args: MapBrowserEvent<UIEvent>) => {
             this.props.onClick && this.props.onClick({
                 coordinate: args.coordinate,
                 map: map,
@@ -259,7 +306,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         });
 
         map.on("moveend", debounce(() => {
-            this.props.setCenter && this.props.setCenter(map.getView().getCenter(), map.getView().getZoom());
+            this.props.setCenter && this.props.setCenter(map.getView().getCenter() as [number, number], map.getView().getZoom());
         }, 50));
 
         this.setState((prev, prop) => ({
@@ -269,7 +316,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         if (this.props.bingImagerySet) {
             this.dispatcher.trigger("basemap-toggle", { map: map });
         } else if (this.props.osm !== false) {
-            map.addLayer(new ol.layer.Tile({ source: new ol.source.OSM() }));
+            map.addLayer(new TileLayer({ source: new ol.source.OSM() }));
         }
 
         if (this.props.features) {
@@ -289,13 +336,13 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                         this.props.onLayerAdd({ layer: vector });
                     }
                     if (this.props.onFeatureClick) {
-                        map.on("click", (args: ol.MapBrowserEvent) => {
+                        map.on("click", (args: MapBrowserEvent<UIEvent>) => {
                             if (this.props.onFeatureClick) {
                                 let features = map.getFeaturesAtPixel(args.pixel);
                                 if (!features) return;
                                 if (features.length !== 1) return;
                                 let feature = features[0];
-                                if (feature instanceof ol.Feature) {
+                                if (feature instanceof Feature) {
                                     this.props.onFeatureClick({ layer: vector, feature: feature, coordinate: args.coordinate });
                                 }
                             }
@@ -311,13 +358,13 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                         this.props.onLayerAdd({ layer: vector });
                     }
                     if (this.props.onFeatureClick) {
-                        map.on("click", (args: ol.MapBrowserEvent) => {
+                        map.on("click", (args: MapBrowserEvent<any>) => {
                             if (this.props.onFeatureClick) {
                                 let features = map.getFeaturesAtPixel(args.pixel);
                                 if (!features) return;
                                 if (features.length !== 1) return;
                                 let feature = features[0];
-                                if (feature instanceof ol.Feature) {
+                                if (feature instanceof Feature) {
                                     this.props.onFeatureClick({
                                         layer: vector,
                                         feature: feature,
@@ -385,13 +432,13 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
 
     }
 
-    draw(type: ol.geom.GeometryType) {
+    draw(type: string) {
         this.setState((prev) => ({
             activeDrawingTool: prev.activeDrawingTool === type ? null : type
         }));
     }
 
-    activateDrawTool(map: ol.Map) {
+    activateDrawTool(map: Map) {
         map.getInteractions().getArray().forEach(interaction => {
             if (interaction instanceof ol.interaction.Draw) {
                 interaction.setActive(interaction.get("type") === this.state.activeDrawingTool);
@@ -399,7 +446,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         });
     }
 
-    addDraw(map: ol.Map, type: ol.geom.GeometryType) {
+    addDraw(map: Map, type: string) {
         let source = new ol.source.Vector();
         let layer = new ol.layer.Vector({
             source: source
@@ -423,7 +470,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
         if (map) {
             map.setTarget(target);
             map.getView().animate({
-                center: this.props.center || ol.proj.fromLonLat([0, 0]),
+                center: this.props.center || fromLonLat([0, 0]),
                 zoom: this.props.zoom,
                 duration: 250
             });

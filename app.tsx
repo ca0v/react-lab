@@ -15,7 +15,12 @@ import { Loader as GeoJsonLoader } from "./components/packets/loaders/geojsonloa
 
 import packets = require("./components/packets/index");
 
-import * as ol from "openlayers";
+import Vector from "@ol/source/Vector";
+import type Geometry from '@ol/geom/Geometry';
+import Feature from '@ol/Feature';
+import Polygon from '@ol/geom/Polygon';
+import Point from '@ol/geom/Point';
+import * as olGeom from "@ol/geom";
 
 function defaultStyle(score: number): BingImagerySet | OtherImagerySet {
     score = Math.floor(score / 500);
@@ -31,7 +36,7 @@ function defaultStyle(score: number): BingImagerySet | OtherImagerySet {
     }
 }
 
-function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
+function populateLayerSource(source: Vector<Geometry>, packet: IPacket<any>) {
     switch (packet.type) {
         case "agsjson":
             {
@@ -43,15 +48,15 @@ function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
                     };
                     let geoType = typeMap[agsjson.geometryType];
                     let features = agsjson.features.map(f => {
-                        let feature = new ol.Feature();
+                        let feature = new Feature();
                         {
                             let geom: any;
                             switch (geoType) {
                                 case "Point":
-                                    geom = new ol.geom.Point([f.geometry.x, f.geometry.y], "XY");
+                                    geom = new Point([f.geometry.x, f.geometry.y], "XY");
                                     break;
                                 case "Polygon":
-                                    geom = new ol.geom.Polygon(f.geometry.rings, "XY");
+                                    geom = new Polygon(f.geometry.rings, "XY");
                                     break;
                             }
                             geom.transform("EPSG:4326", "EPSG:3857");
@@ -70,10 +75,10 @@ function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
                 let loader = new GeoJsonLoader<any>();
                 loader.load(packet, geojson => {
                     let features = geojson.features.map(f => {
-                        let feature = new ol.Feature();
+                        let feature = new Feature();
                         {
-                            let hack: any = ol.geom;
-                            let geom = new hack[f.geometry.type](f.geometry.coordinates, "XY");
+                            const hack: any = olGeom;
+                            const geom = new hack[f.geometry.type](f.geometry.coordinates, "XY");
                             geom.transform("EPSG:4326", "EPSG:3857");
                             feature.setGeometry(geom);
                         }
@@ -89,7 +94,7 @@ function populateLayerSource(source: ol.source.Vector, packet: IPacket<any>) {
 
 export interface AppState {
     orientation: "portrait" | "landscape";
-    source: ol.source.Vector;
+    source: Vector<Geometry>;
     featureNameFieldName: string;
     packetName: string;
     packetStyle: BingImagerySet;
@@ -106,7 +111,7 @@ export class App extends Component<AppProps, AppState> {
 
     constructor(props: AppProps) {
         super(props);
-        let vectorSource = new ol.source.Vector();
+        let vectorSource = new Vector();
         this.state = {
             orientation: "landscape",
             source: vectorSource,

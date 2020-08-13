@@ -12,11 +12,18 @@ import { styles } from "../common/quizlet-styles";
 import { storage } from "../common/storage";
 import { explode } from "../effects/explode";
 import { AudioMedia } from "../effects/kaplunk";
+import { getCenter, getHeight, getWidth } from "@ol/extent";
+import type { Extent } from "@ol/extent";
+import type Feature from "@ol/Feature";
+import type Geometry from "@ol/geom/Geometry";
+import type Vector from "@ol/layer/Vector";
+import type VectorSource from "@ol/source/Vector";
+import Collection from "@ol/Collection";
+import type {Coordinate} from "@ol/coordinate";
+import type Map from "@ol/Map";
 
-import * as ol from "openlayers";
-
-function scaleExtent(fullExtent: ol.Extent, scale = 1, center = ol.extent.getCenter(fullExtent)) {
-    let width = 0.5 * Math.max(ol.extent.getWidth(fullExtent), ol.extent.getHeight(fullExtent)) * scale;
+function scaleExtent(fullExtent: Extent, scale = 1, center = getCenter(fullExtent)) {
+    let width = 0.5 * Math.max(getWidth(fullExtent), getHeight(fullExtent)) * scale;
     return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
 }
 
@@ -24,7 +31,7 @@ export interface QuizletStates {
     answer?: string;
     center: [number, number];
     zoom: number;
-    features: ol.Collection<ol.Feature>;
+    features: Collection<Feature<Geometry>>;
     mapTrigger?: { message: string, args: any[] };
     hint?: number;
     answers: string[];
@@ -34,7 +41,7 @@ export interface QuizletStates {
 
 export interface QuizletProps {
     quizletName: string;
-    source: ol.source.Vector;
+    source: VectorSource<Geometry>;
     featureNameFieldName: string;
     questionsPerQuiz: number;
     getLayerStyle: (score: number) => BingImagerySet | OtherImagerySet;
@@ -53,7 +60,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             this.state = {
                 center: [0, 0],
                 zoom: 3,
-                features: new ol.Collection<ol.Feature>(),
+                features: new Collection<Feature<Geometry>>(),
                 answers: [],
                 score: score,
                 bingImagerySet: (props.getLayerStyle && props.getLayerStyle(score)) || (score > 1000 ? "Aerial" : "AerialWithLabels")
@@ -89,7 +96,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
         });
 
-        this.dispatcher.on("correct", (args: { feature: ol.Feature }) => {
+        this.dispatcher.on("correct", (args: { feature: Feature<Geometry> }) => {
 
             let answer = this.state.answer || "";
             if (!answer) return;
@@ -137,7 +144,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             }
         });
 
-        this.dispatcher.on("incorrect", (args: { feature: ol.Feature }) => {
+        this.dispatcher.on("incorrect", (args: { feature: Feature<Geometry> }) => {
             let answer = this.state.answer || "";
             if (!answer) return;
 
@@ -147,7 +154,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             new AudioMedia({
                 source: "data/sound/Bomb-SoundBible.com-891110113.mp3"
             }).play(0);
-            
+
             let gameStorage = this.getStat();
             gameStorage.stats[answer].incorrect++;
             gameStorage.score = this.state.score;
@@ -178,7 +185,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
             this.score(-5);
 
-            let center = ol.extent.getCenter(feature.getGeometry().getExtent());
+            let center = getCenter(feature.getGeometry().getExtent());
             this.setState(prev => ({
                 hint: (prev.hint || 0) + 1,
                 mapTrigger: {
@@ -232,7 +239,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                         zoom: zoom
                     }))
                 }}
-                onLayerAdd={(args: { layer: ol.layer.Vector }) => {
+                onLayerAdd={(args: { layer: Vector }) => {
                     let source = args.layer.getSource();
                     source.once("addfeature", debounce(() => {
                         let extent = source.getExtent();
@@ -248,9 +255,9 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     }, 500));
                 }}
                 onFeatureClick={(args: {
-                    layer: ol.layer.Vector,
-                    feature: ol.Feature,
-                    coordinate: ol.Coordinate,
+                    layer: Vector,
+                    feature: Feature<Geometry>,
+                    coordinate: Coordinate,
                 }) => {
                     if (!this.state.answer) {
                         this.init();
@@ -270,7 +277,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     allowZoom={true}
                     allowPan={true}
                     orientation="landscape"
-                    onClick={(args: { coordinate: ol.Coordinate, map: ol.Map }) => {
+                    onClick={(args: { coordinate: Coordinate, map: Map }) => {
                         this.setState(prev => ({
                             center: args.coordinate,
                             zoom: Math.max(prev.zoom, 5 + args.map.getView().getZoom()),
@@ -306,7 +313,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         return this.state.score;
     }
 
-    generate(features: ol.Feature[]) {
+    generate(features: Feature<Geometry>[]) {
         let fieldName = this.props.featureNameFieldName;
         let answers = features.map(f => f.get(fieldName));
         {
@@ -335,13 +342,13 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     }
 
     // return true if the feature matches the correct answer
-    test(feature: ol.Feature) {
+    test(feature: Feature<Geometry>) {
         let fieldName = this.props.featureNameFieldName;
         let result = feature.get(fieldName) === this.state.answer;
         return result;
     }
 
-    zoomToFeature(feature: ol.Feature, grow = 2) {
+    zoomToFeature(feature: Feature<Geometry>, grow = 2) {
 
         this.setState(prev => ({
             mapTrigger: {

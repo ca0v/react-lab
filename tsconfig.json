@@ -2,12 +2,14 @@
   "compilerOptions": {
     "baseUrl": "./",
     "allowJs": true,
-    "target": "es2015", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+    "target": "es2020", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
     "module": "amd", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "jsx": "react", /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     "jsxFactory": "create",
-    "sourceMap": true, /* Generates corresponding '.map' file. */
-    "outFile": "./built/index.js", /* Concatenate and emit output to single file. */
+    "sourceMap": true,
+    "inlineSources": true,
+    "inlineSourceMap": false,
+    "outFile": "./built/index.js",
     "strict": false,
     "paths": {
       "@ol/*": [

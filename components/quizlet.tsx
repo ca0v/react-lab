@@ -1,3 +1,5 @@
+import { player } from "../common/player";
+
 /**
 * Turns a vector layer into a geography quiz.
 * User is asked to click a feature.
@@ -173,6 +175,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             let answer = this.state.answer || "";
             if (!answer) return;
 
+            player.play({en: answer});
             console.log("hint");
 
             let gameStorage = this.getStat();

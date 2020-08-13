@@ -1,3 +1,4 @@
+import { player } from "./common/player";
 import * as React from 'react';
 import { PureComponent as Component, createElement as create } from 'react';
 import { Maplet } from './components/maplet';

@@ -219,15 +219,12 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
             const targetExtent = args.extent;
 
             if (extent.containsExtent(currentExtent, targetExtent)) return;
-
-            const scale = (10 * extent.getWidth(targetExtent)) / extent.getWidth(currentExtent);
-            const currentRes = view.getResolution();
-            const targetRes = currentRes * ((0.9 < scale && scale < 1.1) ? 1 : scale);
-            const targetZoom = view.getZoomForResolution(targetRes);
-
+            const finalExtent = extent.buffer(extent.extend(currentExtent, targetExtent), 0.2 * extent.getWidth(currentExtent));
+            const resolution = view.getResolutionForExtent(finalExtent);
+            const zoom = view.getZoomForResolution(resolution);
             view.animate({
-                center: extent.getCenter(targetExtent),
-                zoom: targetZoom,
+                zoom,
+                center: extent.getCenter(finalExtent)
             });
         });
 

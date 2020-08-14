@@ -59019,13 +59019,12 @@ define("components/openlayers", ["require", "exports", "react", "components/inde
                 const targetExtent = args.extent;
                 if (extent.containsExtent(currentExtent, targetExtent))
                     return;
-                const scale = (10 * extent.getWidth(targetExtent)) / extent.getWidth(currentExtent);
-                const currentRes = view.getResolution();
-                const targetRes = currentRes * ((0.9 < scale && scale < 1.1) ? 1 : scale);
-                const targetZoom = view.getZoomForResolution(targetRes);
+                const finalExtent = extent.buffer(extent.extend(currentExtent, targetExtent), 0.2 * extent.getWidth(currentExtent));
+                const resolution = view.getResolutionForExtent(finalExtent);
+                const zoom = view.getZoomForResolution(resolution);
                 view.animate({
-                    center: extent.getCenter(targetExtent),
-                    zoom: targetZoom,
+                    zoom,
+                    center: extent.getCenter(finalExtent)
                 });
             });
         }
@@ -59867,8 +59866,15 @@ define("fun/computeDistanceHint", ["require", "exports", "fun/computeDistanceVec
     exports.computeDistanceHint = void 0;
     function computeDistanceHint(f1, f2) {
         const [dx, dy] = computeDistanceVector_1.computeDistanceVector(f1, f2);
-        const distance = Math.round(Math.sqrt(dx * dx + dy * dy) / 1000).toPrecision(3);
-        return `${distance} km`;
+        const km = Math.round(Math.sqrt(dx * dx + dy * dy) / 1000);
+        const length = Math.ceil(Math.log10(km));
+        let answer = km;
+        const sigDig = 2;
+        if (length > sigDig) {
+            const multi = Math.pow(10, length - sigDig);
+            answer = Math.round(km / multi) * multi;
+        }
+        return `${answer} km`;
     }
     exports.computeDistanceHint = computeDistanceHint;
 });

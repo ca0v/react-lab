@@ -284,10 +284,12 @@
       "../common/storage.ts",
       "../effects/explode.ts",
       "../effects/kaplunk.ts",
+      "../fun/computeDistanceVector.ts",
+      "../fun/computeDistanceHint.ts",
+      "../fun/computeDirectionHint.ts",
+      "../fun/scaleExtent.ts",
       "../components/quizlet.tsx",
       "../components/packets/common.ts",
-      "../components/packets/loaders/agsjsonloader.ts",
-      "../components/packets/loaders/geojsonloader.ts",
       "../components/packets/continents_world.ts",
       "../components/packets/countries_europe.ts",
       "../components/packets/countries_africa.ts",
@@ -302,6 +304,9 @@
       "../data/national_parks/dir.ts",
       "../components/packets/national_parks.ts",
       "../components/packets/index.ts",
+      "../components/packets/loaders/agsjsonloader.ts",
+      "../components/packets/loaders/geojsonloader.ts",
+      "../fun/populateLayerSource.ts",
       "../app.tsx",
       "../index.tsx"
     ],
@@ -309,7 +314,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 2655839,
+          "end": 2659476,
           "kind": "text"
         }
       ]

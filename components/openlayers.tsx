@@ -11,7 +11,6 @@ import Map from "@ol/Map";
 import VectorSource from "@ol/source/Vector";
 import VectorLayer from "@ol/layer/Vector";
 import Geometry from '@ol/geom/Geometry';
-import type GeometryType from '@ol/geom/GeometryType';
 import { GeoJSON } from '@ol/format';
 import View from '@ol/View';
 import { fromLonLat } from "@ol/proj";
@@ -25,7 +24,8 @@ import XYZ from "@ol/source/XYZ";
 import OSM from "@ol/source/OSM";
 import TileLayer from "@ol/layer/Tile";
 import TileSource from '@ol/source/Tile';
-import { Extent, getCenter } from '@ol/extent';
+import type { Extent } from '@ol/extent';
+import * as extent from '@ol/extent';
 import Zoom from "@ol/control/Zoom";
 import ZoomSlider from "@ol/control/ZoomSlider";
 import FullScreen from "@ol/control/FullScreen";
@@ -36,7 +36,7 @@ import ZoomToExtent from "@ol/control/ZoomToExtent";
 
 const ol = {
     interaction,
-    control: 
+    control:
     {
         ScaleLine,
         Rotate,
@@ -208,6 +208,29 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
 
             });
         }
+
+        this.dispatcher.on("ensure-extent-visible", (args: { extent: Extent }) => {
+            const map = this.state.map;
+            if (!map) return;
+            const view = map.getView();
+
+            // get the current extent
+            const currentExtent = view.calculateExtent() as Extent;
+            const targetExtent = args.extent;
+
+            if (extent.containsExtent(currentExtent, targetExtent)) return;
+
+            const scale = (10 * extent.getWidth(targetExtent)) / extent.getWidth(currentExtent);
+            const currentRes = view.getResolution();
+            const targetRes = currentRes * ((0.9 < scale && scale < 1.1) ? 1 : scale);
+            const targetZoom = view.getZoomForResolution(targetRes);
+
+            view.animate({
+                center: extent.getCenter(targetExtent),
+                zoom: targetZoom,
+            });
+        });
+
     }
 
     trigger(message: string, args: any): void;
@@ -230,10 +253,12 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                 let zoom = view.getZoomForResolution(resolution);
                 //map.getView().fit(p.extent);
                 view.animate({
-                    center: getCenter(p.extent),
+                    center: extent.getCenter(p.extent),
                     zoom: zoom,
                 })
                 break;
+            default:
+                this.dispatcher.trigger(message, args);
         }
     }
 
@@ -277,7 +302,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
     }
 
     componentDidMount() {
-        let map = new Map({
+        const map = new Map({
             view: new View({
                 center: this.props.center || fromLonLat([0, 0]),
                 zoom: this.props.zoom || 0

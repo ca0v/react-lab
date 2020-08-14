@@ -58891,7 +58891,7 @@ define("node_modules/ol/src/layer/Tile", ["require", "exports", "node_modules/ol
     }
     exports.default = TileLayer;
 });
-define("components/openlayers", ["require", "exports", "react", "components/index", "common/common", "node_modules/ol/src/Map", "node_modules/ol/src/source/Vector", "node_modules/ol/src/layer/Vector", "node_modules/ol/src/format", "node_modules/ol/src/View", "node_modules/ol/src/proj", "node_modules/ol/src/interaction", "node_modules/ol/src/Feature", "node_modules/ol/src/source/BingMaps", "node_modules/ol/src/source/XYZ", "node_modules/ol/src/source/OSM", "node_modules/ol/src/layer/Tile", "node_modules/ol/src/extent", "node_modules/ol/src/control/Zoom", "node_modules/ol/src/control/ZoomSlider", "node_modules/ol/src/control/FullScreen", "node_modules/ol/src/control/MousePosition", "node_modules/ol/src/control/Rotate", "node_modules/ol/src/control/ScaleLine", "node_modules/ol/src/control/ZoomToExtent"], function (require, exports, react_3, index_1, common_1, Map_1, Vector_1, Vector_2, format_1, View_1, proj_1, interaction, Feature_1, BingMaps_1, XYZ_1, OSM_1, Tile_1, extent_1, Zoom_1, ZoomSlider_1, FullScreen_1, MousePosition_1, Rotate_1, ScaleLine_1, ZoomToExtent_1) {
+define("components/openlayers", ["require", "exports", "react", "components/index", "common/common", "node_modules/ol/src/Map", "node_modules/ol/src/source/Vector", "node_modules/ol/src/layer/Vector", "node_modules/ol/src/format", "node_modules/ol/src/View", "node_modules/ol/src/proj", "node_modules/ol/src/interaction", "node_modules/ol/src/Feature", "node_modules/ol/src/source/BingMaps", "node_modules/ol/src/source/XYZ", "node_modules/ol/src/source/OSM", "node_modules/ol/src/layer/Tile", "node_modules/ol/src/extent", "node_modules/ol/src/control/Zoom", "node_modules/ol/src/control/ZoomSlider", "node_modules/ol/src/control/FullScreen", "node_modules/ol/src/control/MousePosition", "node_modules/ol/src/control/Rotate", "node_modules/ol/src/control/ScaleLine", "node_modules/ol/src/control/ZoomToExtent"], function (require, exports, react_3, index_1, common_1, Map_1, Vector_1, Vector_2, format_1, View_1, proj_1, interaction, Feature_1, BingMaps_1, XYZ_1, OSM_1, Tile_1, extent, Zoom_1, ZoomSlider_1, FullScreen_1, MousePosition_1, Rotate_1, ScaleLine_1, ZoomToExtent_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OpenLayers = void 0;
@@ -59009,6 +59009,25 @@ define("components/openlayers", ["require", "exports", "react", "components/inde
                     }
                 });
             }
+            this.dispatcher.on("ensure-extent-visible", (args) => {
+                const map = this.state.map;
+                if (!map)
+                    return;
+                const view = map.getView();
+                // get the current extent
+                const currentExtent = view.calculateExtent();
+                const targetExtent = args.extent;
+                if (extent.containsExtent(currentExtent, targetExtent))
+                    return;
+                const scale = (10 * extent.getWidth(targetExtent)) / extent.getWidth(currentExtent);
+                const currentRes = view.getResolution();
+                const targetRes = currentRes * ((0.9 < scale && scale < 1.1) ? 1 : scale);
+                const targetZoom = view.getZoomForResolution(targetRes);
+                view.animate({
+                    center: extent.getCenter(targetExtent),
+                    zoom: targetZoom,
+                });
+            });
         }
         trigger(message, args) {
             let map = this.state.map;
@@ -59027,10 +59046,12 @@ define("components/openlayers", ["require", "exports", "react", "components/inde
                     let zoom = view.getZoomForResolution(resolution);
                     //map.getView().fit(p.extent);
                     view.animate({
-                        center: extent_1.getCenter(p.extent),
+                        center: extent.getCenter(p.extent),
                         zoom: zoom,
                     });
                     break;
+                default:
+                    this.dispatcher.trigger(message, args);
             }
         }
         render() {
@@ -59057,7 +59078,7 @@ define("components/openlayers", ["require", "exports", "react", "components/inde
                 this.props.children);
         }
         componentDidMount() {
-            let map = new Map_1.default({
+            const map = new Map_1.default({
                 view: new View_1.default({
                     center: this.props.center || proj_1.fromLonLat([0, 0]),
                     zoom: this.props.zoom || 0
@@ -59478,7 +59499,7 @@ define("common/storage", ["require", "exports", "common/common"], function (requ
  * see also, https://github.com/Viglino/ol3-ext/blob/gh-pages/featureanimation/featureanimation.js
  * creates an explosion animation
  */
-define("effects/explode", ["require", "exports", "node_modules/ol/src/Map", "node_modules/ol/src/Feature", "node_modules/ol/src/geom/Point", "node_modules/ol/src/extent", "node_modules/ol/src/Observable", "node_modules/ol/src/Object", "node_modules/ol/src/easing", "node_modules/ol/src/color"], function (require, exports, Map_2, Feature_2, Point_1, extent_2, Observable_1, Object_1, easing_1, color_1) {
+define("effects/explode", ["require", "exports", "node_modules/ol/src/Map", "node_modules/ol/src/Feature", "node_modules/ol/src/geom/Point", "node_modules/ol/src/extent", "node_modules/ol/src/Observable", "node_modules/ol/src/Object", "node_modules/ol/src/easing", "node_modules/ol/src/color"], function (require, exports, Map_2, Feature_2, Point_1, extent_1, Observable_1, Object_1, easing_1, color_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.explode = exports.ExplodeAnimation = exports.FeatureAnimation = exports.animateFeature = void 0;
@@ -59521,7 +59542,7 @@ define("effects/explode", ["require", "exports", "node_modules/ol/src/Map", "nod
             geom: feature.getGeometry(),
             typeGeom: feature.getGeometry().getType(),
             bbox: feature.getGeometry().getExtent(),
-            coord: extent_2.getCenter(feature.getGeometry().getExtent()),
+            coord: extent_1.getCenter(feature.getGeometry().getExtent()),
             style: flashStyle,
             context: null,
         };
@@ -59829,49 +59850,87 @@ define("effects/kaplunk", ["require", "exports", "node_modules/ol/src/Object"], 
     }
     exports.AudioMedia = AudioMedia;
 });
-define("components/quizlet", ["require", "exports", "common/player", "components/openlayers", "react", "common/common", "common/quizlet-styles", "common/storage", "effects/explode", "effects/kaplunk", "node_modules/ol/src/extent", "node_modules/ol/src/Collection"], function (require, exports, player_1, openlayers_1, react_4, common_3, quizlet_styles_1, storage_1, explode_1, kaplunk_1, extent_3, Collection_1) {
+define("fun/computeDistanceVector", ["require", "exports", "node_modules/ol/src/extent"], function (require, exports, extent_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.QuizletComponent = void 0;
+    exports.computeDistanceVector = void 0;
     function computeDistanceVector(f1, f2) {
-        const p1 = (extent_3.getCenter(f1.getGeometry().getExtent()));
-        const p2 = (extent_3.getCenter(f2.getGeometry().getExtent()));
+        const p1 = extent_2.getCenter(f1.getGeometry().getExtent());
+        const p2 = extent_2.getCenter(f2.getGeometry().getExtent());
         return [p1[0] - p2[0], p1[1] - p2[1]];
     }
+    exports.computeDistanceVector = computeDistanceVector;
+});
+define("fun/computeDistanceHint", ["require", "exports", "fun/computeDistanceVector"], function (require, exports, computeDistanceVector_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.computeDistanceHint = void 0;
     function computeDistanceHint(f1, f2) {
-        const [dx, dy] = computeDistanceVector(f1, f2);
+        const [dx, dy] = computeDistanceVector_1.computeDistanceVector(f1, f2);
         const distance = Math.round(Math.sqrt(dx * dx + dy * dy) / 1000).toPrecision(3);
         return `${distance} km`;
     }
+    exports.computeDistanceHint = computeDistanceHint;
+});
+define("fun/computeDirectionHint", ["require", "exports", "fun/computeDistanceVector"], function (require, exports, computeDistanceVector_2) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.computeDirectionHint = void 0;
     function computeDirectionHint(f1, f2) {
-        const [dx, dy] = computeDistanceVector(f1, f2);
+        const [dx, dy] = computeDistanceVector_2.computeDistanceVector(f1, f2);
         const direction = (360 + Math.round((180 / Math.PI) * Math.atan2(dy, dx))) % 360;
         const quadrant = Math.round(direction / 22.5);
         switch (quadrant) {
             case 16:
-            case 0: return "east";
+            case 0:
+                return "east";
             case 1:
             case 3:
-            case 2: return "north-east";
-            case 4: return "north";
+            case 2:
+                return "north-east";
+            case 4:
+                return "north";
             case 5:
             case 7:
-            case 6: return "north-west";
-            case 8: return "west";
+            case 6:
+                return "north-west";
+            case 8:
+                return "west";
             case 9:
             case 11:
-            case 10: return "south-west";
-            case 12: return "south";
+            case 10:
+                return "south-west";
+            case 12:
+                return "south";
             case 13:
             case 15:
-            case 14: return "south-east";
-            default: return "some place else";
+            case 14:
+                return "south-east";
+            default:
+                return "some place else";
         }
     }
+    exports.computeDirectionHint = computeDirectionHint;
+});
+define("fun/scaleExtent", ["require", "exports", "node_modules/ol/src/extent"], function (require, exports, extent_3) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.scaleExtent = void 0;
     function scaleExtent(fullExtent, scale = 1, center = extent_3.getCenter(fullExtent)) {
         let width = 0.5 * Math.max(extent_3.getWidth(fullExtent), extent_3.getHeight(fullExtent)) * scale;
-        return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
+        return [
+            center[0] - width,
+            center[1] - width,
+            center[0] + width,
+            center[1] + width,
+        ];
     }
+    exports.scaleExtent = scaleExtent;
+});
+define("components/quizlet", ["require", "exports", "common/player", "components/openlayers", "react", "common/common", "common/quizlet-styles", "common/storage", "effects/explode", "effects/kaplunk", "node_modules/ol/src/extent", "node_modules/ol/src/Collection", "fun/computeDistanceHint", "fun/computeDirectionHint", "fun/scaleExtent"], function (require, exports, player_1, openlayers_1, react_4, common_3, quizlet_styles_1, storage_1, explode_1, kaplunk_1, extent_4, Collection_1, computeDistanceHint_1, computeDirectionHint_1, scaleExtent_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.QuizletComponent = void 0;
     class QuizletComponent extends react_4.PureComponent {
         constructor(props) {
             super(props);
@@ -59893,7 +59952,7 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                         this.dispatcher.trigger("hint");
                         break;
                     case "S":
-                        this.skip();
+                        this.dispatcher.trigger("skip");
                         break;
                 }
             });
@@ -59945,7 +60004,7 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                                 mapTrigger: {
                                     message: "extent",
                                     args: {
-                                        extent: scaleExtent(this.props.source.getExtent())
+                                        extent: scaleExtent_1.scaleExtent(this.props.source.getExtent())
                                     }
                                 }
                             }));
@@ -59963,8 +60022,8 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 // new AudioMedia({
                 //     source: "data/sound/Bomb-SoundBible.com-891110113.mp3",
                 // }).play(0);
-                const distanceHint = computeDistanceHint(this.find(), args.feature);
-                const directionHint = computeDirectionHint(this.find(), args.feature);
+                const distanceHint = computeDistanceHint_1.computeDistanceHint(this.find(), args.feature);
+                const directionHint = computeDirectionHint_1.computeDirectionHint(this.find(), args.feature);
                 this.dispatcher.trigger("play", { en: `That is ${this.getFeatureName(args.feature)}, you are looking for ${answer} which is ${distanceHint} away.  Look ${directionHint}.` });
                 let gameStorage = this.getStat();
                 gameStorage.stats[answer].incorrect++;
@@ -59978,6 +60037,7 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                     this.state.features.push(feature);
                 }
             });
+            this.dispatcher.on("skip", () => this.skip());
             this.dispatcher.on("hint", () => {
                 let answer = this.state.answer || "";
                 if (!answer)
@@ -59991,13 +60051,13 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 if (!feature)
                     return;
                 this.score(-5);
-                let center = extent_3.getCenter(feature.getGeometry().getExtent());
+                let center = extent_4.getCenter(feature.getGeometry().getExtent());
                 this.setState(prev => ({
                     hint: (prev.hint || 0) + 1,
                     mapTrigger: {
                         message: "extent",
                         args: {
-                            extent: scaleExtent(this.props.source.getExtent(), 1 / ((prev.hint || 0) + 3), center)
+                            extent: scaleExtent_1.scaleExtent(this.props.source.getExtent(), 1 / ((prev.hint || 0) + 3), center)
                         }
                     }
                 }));
@@ -60022,8 +60082,24 @@ define("components/quizlet", ["require", "exports", "common/player", "components
         componentDidUpdate(prevProp, prevState) {
             this.dispatcher.trigger("update");
             if (prevState.answer !== this.state.answer) {
+                this.panAnswerIntoView();
                 this.dispatcher.trigger("play", { en: this.state.answer });
             }
+        }
+        panAnswerIntoView() {
+            const feature = this.find();
+            if (!feature)
+                return;
+            const extent = feature.getGeometry().getExtent();
+            const panToExtent = scaleExtent_1.scaleExtent(extent, 8);
+            this.setState(prev => ({
+                mapTrigger: {
+                    message: "ensure-extent-visible",
+                    args: {
+                        extent: extent
+                    }
+                }
+            }));
         }
         componentDidMount() {
         }
@@ -60046,7 +60122,7 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                                 mapTrigger: {
                                     message: "extent",
                                     args: {
-                                        extent: scaleExtent(extent)
+                                        extent: scaleExtent_1.scaleExtent(extent)
                                     }
                                 }
                             }));
@@ -60082,7 +60158,7 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 react_4.createElement("br", null),
                 " ",
                 react_4.createElement("div", { className: "score" },
-                    react_4.createElement("button", { onClick: () => this.skip() }, "Skip"),
+                    react_4.createElement("button", { onClick: () => this.dispatcher.trigger("skip") }, "Skip"),
                     react_4.createElement("button", { onClick: () => this.dispatcher.trigger("hint") }, "Hint"),
                     react_4.createElement("button", { onClick: () => this.dispatcher.trigger("reload") }, "\uD83D\uDDD9")));
         }
@@ -60139,7 +60215,7 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 mapTrigger: {
                     message: "extent",
                     args: {
-                        extent: scaleExtent(feature.getGeometry().getExtent(), grow)
+                        extent: scaleExtent_1.scaleExtent(feature.getGeometry().getExtent(), grow)
                     }
                 }
             }));
@@ -60206,87 +60282,6 @@ define("components/packets/common", ["require", "exports", "node_modules/ol/src/
         });
     }
     exports.filterByContinent = filterByContinent;
-});
-define("components/packets/loaders/agsjsonloader", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Loader = void 0;
-    class Loader {
-        load(url, cb) {
-            let client = new XMLHttpRequest();
-            client.open("GET", url, true);
-            client.onloadend = () => {
-                cb(JSON.parse(client.responseText));
-            };
-            client.send();
-        }
-    }
-    exports.Loader = Loader;
-});
-define("components/packets/loaders/geojsonloader", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Loader = void 0;
-    function load(url) {
-        return new Promise((resolve, reject) => {
-            let client = new XMLHttpRequest();
-            client.open("GET", url, true);
-            client.onloadend = () => {
-                let json = JSON.parse(client.responseText);
-                resolve(json);
-            };
-            client.send();
-        });
-    }
-    class Loader {
-        load(packet, cb) {
-            if (Array.isArray(packet.url)) {
-                this.multiload(packet, cb);
-                return;
-            }
-            load(packet.url).then(async (geoJson) => {
-                if (packet.filter) {
-                    const filter = await packet.filter;
-                    geoJson.features = geoJson.features.filter(f => filter(f, packet.score || 0));
-                }
-                if (packet.weight) {
-                    geoJson.features.forEach(f => f.properties.weight = packet.weight ? packet.weight(f) : 1);
-                }
-                cb(geoJson);
-            });
-        }
-        multiload(packet, cb) {
-            if (!Array.isArray(packet.url)) {
-                this.load(packet, cb);
-                return;
-            }
-            let promises = packet.url.map(url => load(url));
-            Promise.all(promises).then(async (data) => {
-                let allGeoJson;
-                allGeoJson = {
-                    features: [],
-                    type: "FeatureCollection",
-                };
-                data.forEach(geoJson => {
-                    if (Array.isArray(geoJson.features)) {
-                        allGeoJson.features = allGeoJson.features.concat(geoJson.features);
-                    }
-                    else {
-                        allGeoJson.features.push(geoJson);
-                    }
-                });
-                if (packet.filter) {
-                    const filter = await packet.filter;
-                    allGeoJson.features = allGeoJson.features.filter(f => filter(f, packet.score || 0));
-                }
-                if (packet.weight) {
-                    allGeoJson.features.forEach(f => f.properties.weight = packet.weight ? packet.weight(f) : 1);
-                }
-                cb(allGeoJson);
-            });
-        }
-    }
-    exports.Loader = Loader;
 });
 define("components/packets/continents_world", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -60857,7 +60852,149 @@ define("components/packets/index", ["require", "exports", "components/packets/co
     }
     return packets;
 });
-define("app", ["require", "exports", "react", "components/quizlet", "components/index", "common/storage", "components/packets/loaders/agsjsonloader", "components/packets/loaders/geojsonloader", "components/packets/index", "node_modules/ol/src/source/Vector", "node_modules/ol/src/Feature", "node_modules/ol/src/geom/Polygon", "node_modules/ol/src/geom/Point", "node_modules/ol/src/geom"], function (require, exports, react_5, quizlet_1, index_2, storage_2, agsjsonloader_1, geojsonloader_1, packets, Vector_3, Feature_3, Polygon_1, Point_2, olGeom) {
+define("components/packets/loaders/agsjsonloader", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Loader = void 0;
+    class Loader {
+        load(url, cb) {
+            let client = new XMLHttpRequest();
+            client.open("GET", url, true);
+            client.onloadend = () => {
+                cb(JSON.parse(client.responseText));
+            };
+            client.send();
+        }
+    }
+    exports.Loader = Loader;
+});
+define("components/packets/loaders/geojsonloader", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Loader = void 0;
+    function load(url) {
+        return new Promise((resolve, reject) => {
+            let client = new XMLHttpRequest();
+            client.open("GET", url, true);
+            client.onloadend = () => {
+                let json = JSON.parse(client.responseText);
+                resolve(json);
+            };
+            client.send();
+        });
+    }
+    class Loader {
+        load(packet, cb) {
+            if (Array.isArray(packet.url)) {
+                this.multiload(packet, cb);
+                return;
+            }
+            load(packet.url).then(async (geoJson) => {
+                if (packet.filter) {
+                    const filter = await packet.filter;
+                    geoJson.features = geoJson.features.filter(f => filter(f, packet.score || 0));
+                }
+                if (packet.weight) {
+                    geoJson.features.forEach(f => f.properties.weight = packet.weight ? packet.weight(f) : 1);
+                }
+                cb(geoJson);
+            });
+        }
+        multiload(packet, cb) {
+            if (!Array.isArray(packet.url)) {
+                this.load(packet, cb);
+                return;
+            }
+            let promises = packet.url.map(url => load(url));
+            Promise.all(promises).then(async (data) => {
+                let allGeoJson;
+                allGeoJson = {
+                    features: [],
+                    type: "FeatureCollection",
+                };
+                data.forEach(geoJson => {
+                    if (Array.isArray(geoJson.features)) {
+                        allGeoJson.features = allGeoJson.features.concat(geoJson.features);
+                    }
+                    else {
+                        allGeoJson.features.push(geoJson);
+                    }
+                });
+                if (packet.filter) {
+                    const filter = await packet.filter;
+                    allGeoJson.features = allGeoJson.features.filter(f => filter(f, packet.score || 0));
+                }
+                if (packet.weight) {
+                    allGeoJson.features.forEach(f => f.properties.weight = packet.weight ? packet.weight(f) : 1);
+                }
+                cb(allGeoJson);
+            });
+        }
+    }
+    exports.Loader = Loader;
+});
+define("fun/populateLayerSource", ["require", "exports", "components/packets/loaders/agsjsonloader", "components/packets/loaders/geojsonloader", "node_modules/ol/src/Feature", "node_modules/ol/src/geom/Polygon", "node_modules/ol/src/geom/Point", "node_modules/ol/src/geom"], function (require, exports, agsjsonloader_1, geojsonloader_1, Feature_3, Polygon_1, Point_2, olGeom) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.populateLayerSource = void 0;
+    function populateLayerSource(source, packet) {
+        switch (packet.type) {
+            case "agsjson": {
+                let loader = new agsjsonloader_1.Loader();
+                if (Array.isArray(packet.url))
+                    throw "expecting a single url";
+                loader.load(packet.url, (agsjson) => {
+                    let typeMap = {
+                        esriGeometryPolygon: "Polygon",
+                        esriGeometryPoint: "Point",
+                    };
+                    let geoType = typeMap[agsjson.geometryType];
+                    let features = agsjson.features.map((f) => {
+                        let feature = new Feature_3.default();
+                        {
+                            let geom;
+                            switch (geoType) {
+                                case "Point":
+                                    geom = new Point_2.default([f.geometry.x, f.geometry.y], "XY");
+                                    break;
+                                case "Polygon":
+                                    geom = new Polygon_1.default(f.geometry.rings, "XY");
+                                    break;
+                            }
+                            geom.transform("EPSG:4326", "EPSG:3857");
+                            feature.setGeometry(geom);
+                        }
+                        feature.setProperties(f.attributes);
+                        return feature;
+                    });
+                    source.addFeatures(features);
+                });
+                break;
+            }
+            case "multigeojson":
+            case "geojson": {
+                let loader = new geojsonloader_1.Loader();
+                loader.load(packet, (geojson) => {
+                    let features = geojson.features.map((f) => {
+                        let feature = new Feature_3.default();
+                        {
+                            const hack = olGeom;
+                            const geom = new hack[f.geometry.type](f.geometry.coordinates, "XY");
+                            geom.transform("EPSG:4326", "EPSG:3857");
+                            feature.setGeometry(geom);
+                        }
+                        feature.setProperties(f.properties);
+                        return feature;
+                    });
+                    source.addFeatures(features);
+                });
+                break;
+            }
+        }
+    }
+    exports.populateLayerSource = populateLayerSource;
+});
+define("app", ["require", "exports", "react", "components/quizlet", "components/index", "common/storage", "components/packets/index", "node_modules/ol/src/source/Vector", "fun/populateLayerSource"], function (require, exports, react_5, quizlet_1, index_2, storage_2, packets, Vector_3, populateLayerSource_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.App = void 0;
@@ -60872,63 +61009,6 @@ define("app", ["require", "exports", "react", "components/quizlet", "components/
             case 5: return "BlackWithLabels";
             case 6: return "Black";
             default: return "EsriAerial";
-        }
-    }
-    function populateLayerSource(source, packet) {
-        switch (packet.type) {
-            case "agsjson":
-                {
-                    let loader = new agsjsonloader_1.Loader();
-                    if (Array.isArray(packet.url))
-                        throw "expecting a single url";
-                    loader.load(packet.url, agsjson => {
-                        let typeMap = {
-                            "esriGeometryPolygon": "Polygon",
-                            "esriGeometryPoint": "Point",
-                        };
-                        let geoType = typeMap[agsjson.geometryType];
-                        let features = agsjson.features.map(f => {
-                            let feature = new Feature_3.default();
-                            {
-                                let geom;
-                                switch (geoType) {
-                                    case "Point":
-                                        geom = new Point_2.default([f.geometry.x, f.geometry.y], "XY");
-                                        break;
-                                    case "Polygon":
-                                        geom = new Polygon_1.default(f.geometry.rings, "XY");
-                                        break;
-                                }
-                                geom.transform("EPSG:4326", "EPSG:3857");
-                                feature.setGeometry(geom);
-                            }
-                            feature.setProperties(f.attributes);
-                            return feature;
-                        });
-                        source.addFeatures(features);
-                    });
-                    break;
-                }
-            case "multigeojson":
-            case "geojson":
-                {
-                    let loader = new geojsonloader_1.Loader();
-                    loader.load(packet, geojson => {
-                        let features = geojson.features.map(f => {
-                            let feature = new Feature_3.default();
-                            {
-                                const hack = olGeom;
-                                const geom = new hack[f.geometry.type](f.geometry.coordinates, "XY");
-                                geom.transform("EPSG:4326", "EPSG:3857");
-                                feature.setGeometry(geom);
-                            }
-                            feature.setProperties(f.properties);
-                            return feature;
-                        });
-                        source.addFeatures(features);
-                    });
-                    break;
-                }
         }
     }
     class App extends react_5.PureComponent {
@@ -60951,7 +61031,7 @@ define("app", ["require", "exports", "react", "components/quizlet", "components/
                 featureNameFieldName: packet.name,
                 packetStyle: packet.style || "AerialWithLabels"
             }));
-            populateLayerSource(this.state.source, packet);
+            populateLayerSource_1.populateLayerSource(this.state.source, packet);
         }
         render() {
             return react_5.createElement("div", { className: "app" },

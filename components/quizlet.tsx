@@ -13,8 +13,7 @@ import { styles } from "../common/quizlet-styles";
 import { storage } from "../common/storage";
 import { explode } from "../effects/explode";
 import { AudioMedia } from "../effects/kaplunk";
-import { getCenter, getHeight, getWidth } from "@ol/extent";
-import type { Extent } from "@ol/extent";
+import { getCenter } from "@ol/extent";
 import type Feature from "@ol/Feature";
 import type Geometry from "@ol/geom/Geometry";
 import type Vector from "@ol/layer/Vector";
@@ -22,51 +21,11 @@ import type VectorSource from "@ol/source/Vector";
 import Collection from "@ol/Collection";
 import type { Coordinate } from "@ol/coordinate";
 import type Map from "@ol/Map";
+import { computeDistanceHint } from "../fun/computeDistanceHint";
+import { computeDirectionHint } from "../fun/computeDirectionHint";
+import { scaleExtent } from "../fun/scaleExtent";
 
-function computeDistanceVector(f1: Feature<Geometry>, f2: Feature<Geometry>) {
-    const p1 = (getCenter(f1.getGeometry().getExtent()));
-    const p2 = (getCenter(f2.getGeometry().getExtent()))
-    return [p1[0] - p2[0], p1[1] - p2[1]];
-}
-
-function computeDistanceHint(f1: Feature<Geometry>, f2: Feature<Geometry>) {
-    const [dx, dy] = computeDistanceVector(f1, f2);
-    const distance = Math.round(Math.sqrt(dx * dx + dy * dy) / 1000).toPrecision(3);
-    return `${distance} km`;
-}
-
-function computeDirectionHint(f1: Feature<Geometry>, f2: Feature<Geometry>) {
-    const [dx, dy] = computeDistanceVector(f1, f2);
-    const direction = (360 + Math.round((180 / Math.PI) * Math.atan2(dy, dx))) % 360;
-    const quadrant = Math.round(direction / 22.5);
-    switch (quadrant) {
-        case 16:
-        case 0: return "east";
-        case 1:
-        case 3:
-        case 2: return "north-east";
-        case 4: return "north";
-        case 5:
-        case 7:
-        case 6: return "north-west";
-        case 8: return "west";
-        case 9:
-        case 11:
-        case 10: return "south-west";
-        case 12: return "south";
-        case 13:
-        case 15:
-        case 14: return "south-east";
-        default: return "some place else";
-    }
-}
-
-function scaleExtent(fullExtent: Extent, scale = 1, center = getCenter(fullExtent)) {
-    let width = 0.5 * Math.max(getWidth(fullExtent), getHeight(fullExtent)) * scale;
-    return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
-}
-
-export interface QuizletStates {
+interface QuizletStates {
     answer?: string;
     center: [number, number];
     zoom: number;
@@ -78,7 +37,7 @@ export interface QuizletStates {
     bingImagerySet: BingImagerySet | OtherImagerySet;
 }
 
-export interface QuizletProps {
+interface QuizletProps {
     quizletName: string;
     source: VectorSource<Geometry>;
     featureNameFieldName: string;
@@ -109,7 +68,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
         document.addEventListener("keypress", (args) => {
             switch (args.key.toUpperCase()) {
                 case "H": this.dispatcher.trigger("hint"); break;
-                case "S": this.skip(); break;
+                case "S": this.dispatcher.trigger("skip"); break;
             }
         });
 
@@ -212,6 +171,8 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             }
         });
 
+        this.dispatcher.on("skip", () => this.skip());
+
         this.dispatcher.on("hint", () => {
             let answer = this.state.answer || "";
             if (!answer) return;
@@ -265,8 +226,25 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
     componentDidUpdate(prevProp: QuizletProps, prevState: QuizletStates) {
         this.dispatcher.trigger("update");
         if (prevState.answer !== this.state.answer) {
+            this.panAnswerIntoView();
             this.dispatcher.trigger("play", { en: this.state.answer });
         }
+    }
+    panAnswerIntoView() {
+        const feature = this.find();
+        if (!feature) return;
+
+        const extent = feature.getGeometry().getExtent();
+        const panToExtent = scaleExtent(extent, 8);
+
+        this.setState(prev => ({
+            mapTrigger: {
+                message: "ensure-extent-visible",
+                args: {
+                    extent: extent
+                }
+            }
+        } as any));
     }
 
     componentDidMount() {
@@ -345,7 +323,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             <div className="score">Find<label>{this.state.answer}</label></div>
             {!!this.state.answers.length && <div className="score">Remaining<label>{(1 + this.state.answers.length) || "?"}</label></div>}
             <br /> <div className="score">
-                <button onClick={() => this.skip()}>Skip</button>
+                <button onClick={() => this.dispatcher.trigger("skip")}>Skip</button>
                 <button onClick={() => this.dispatcher.trigger("hint")}>Hint</button>
                 <button onClick={() => this.dispatcher.trigger("reload")}>🗙</button>
             </div>

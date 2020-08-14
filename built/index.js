@@ -50542,7 +50542,7 @@ define("node_modules/ol/src/format/KML", ["require", "exports", "node_modules/ol
     }
     exports.default = KML;
 });
-define("ieee754", ["require", "exports"], function (require, exports) {
+define("assets/ieee754", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.write = exports.read = void 0;
@@ -50628,7 +50628,7 @@ define("ieee754", ["require", "exports"], function (require, exports) {
     }
     exports.write = write;
 });
-define("pbf", ["require", "exports", "ieee754"], function (require, exports, ieee754_1) {
+define("assets/pbf", ["require", "exports", "assets/ieee754"], function (require, exports, ieee754_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.write = exports.read = exports.Pbf = void 0;
@@ -51363,7 +51363,7 @@ define("pbf", ["require", "exports", "ieee754"], function (require, exports, iee
  * @module ol/format/MVT
  */
 //FIXME Implement projection handling
-define("node_modules/ol/src/format/MVT", ["require", "exports", "node_modules/ol/src/format/Feature", "node_modules/ol/src/format/FormatType", "node_modules/ol/src/geom/GeometryLayout", "node_modules/ol/src/geom/GeometryType", "node_modules/ol/src/geom/LineString", "node_modules/ol/src/geom/MultiLineString", "node_modules/ol/src/geom/MultiPoint", "node_modules/ol/src/geom/MultiPolygon", "pbf", "node_modules/ol/src/geom/Point", "node_modules/ol/src/geom/Polygon", "node_modules/ol/src/proj/Projection", "node_modules/ol/src/render/Feature", "node_modules/ol/src/proj/Units", "node_modules/ol/src/asserts", "node_modules/ol/src/proj", "node_modules/ol/src/geom/flat/orient"], function (require, exports, Feature_js_20, FormatType_js_5, GeometryLayout_js_13, GeometryType_js_28, LineString_js_10, MultiLineString_js_8, MultiPoint_js_7, MultiPolygon_js_7, pbf_1, Point_js_11, Polygon_js_15, Projection_js_4, Feature_js_21, Units_js_10, asserts_js_25, proj_js_28, orient_js_4) {
+define("node_modules/ol/src/format/MVT", ["require", "exports", "node_modules/ol/src/format/Feature", "node_modules/ol/src/format/FormatType", "node_modules/ol/src/geom/GeometryLayout", "node_modules/ol/src/geom/GeometryType", "node_modules/ol/src/geom/LineString", "node_modules/ol/src/geom/MultiLineString", "node_modules/ol/src/geom/MultiPoint", "node_modules/ol/src/geom/MultiPolygon", "assets/pbf", "node_modules/ol/src/geom/Point", "node_modules/ol/src/geom/Polygon", "node_modules/ol/src/proj/Projection", "node_modules/ol/src/render/Feature", "node_modules/ol/src/proj/Units", "node_modules/ol/src/asserts", "node_modules/ol/src/proj", "node_modules/ol/src/geom/flat/orient"], function (require, exports, Feature_js_20, FormatType_js_5, GeometryLayout_js_13, GeometryType_js_28, LineString_js_10, MultiLineString_js_8, MultiPoint_js_7, MultiPolygon_js_7, pbf_1, Point_js_11, Polygon_js_15, Projection_js_4, Feature_js_21, Units_js_10, asserts_js_25, proj_js_28, orient_js_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     /**

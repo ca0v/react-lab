@@ -228,8 +228,8 @@
       "../node_modules/ol/src/source/IIIF.js",
       "../node_modules/ol/src/format/IIIFInfo.js",
       "../node_modules/ol/src/format/KML.js",
-      "../ieee754.js",
-      "../pbf.js",
+      "../assets/ieee754.js",
+      "../assets/pbf.js",
       "../node_modules/ol/src/format/MVT.js",
       "../node_modules/ol/src/format/XML.js",
       "../node_modules/ol/src/format/XLink.js",
@@ -309,7 +309,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 2655811,
+          "end": 2655839,
           "kind": "text"
         }
       ]

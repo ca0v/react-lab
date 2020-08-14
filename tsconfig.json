@@ -18,18 +18,27 @@
     "paths": {
       "@ol/*": [
         "./node_modules/ol/src/*"
-      ],      
-      "rbush/rbush.js":["./node_modules/rbush/index.js"],
-      "quickselect":["./node_modules/quickselect/index.js"],
+      ],
+      "rbush/rbush.js": [
+        "./node_modules/rbush/index.js"
+      ],
+      "quickselect": [
+        "./node_modules/quickselect/index.js"
+      ],
+      "csstype": [
+        "./node_modules/csstype/index.d.ts"
+      ],
       "pbf": [
-        "./pbf.js"
-      ],      
+        "assets/pbf.js"
+      ],
       "ieee754": [
-        "./ieee754.js"
+        "assets/ieee754.js"
       ],
     }
   },
-  "files": ["./index.tsx"],
+  "files": [
+    "./index.tsx"
+  ],
   "exclude": [
     "./built/*"
   ],

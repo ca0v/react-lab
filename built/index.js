@@ -60185,7 +60185,7 @@ define("components/packets/common", ["require", "exports", "node_modules/ol/src/
     async function filterByContinent(name) {
         let continents = null;
         return new Promise(async (good, bad) => {
-            const data = await fetch("../../data/continents.json");
+            const data = await fetch("./data/continents.json");
             continents = await data.json();
             let europe = continents.features.filter((f) => f.properties.CONTINENT === name)[0];
             if (!europe)

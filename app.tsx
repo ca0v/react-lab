@@ -1,13 +1,9 @@
-import { player } from "./common/player";
-import * as React from 'react';
 import { PureComponent as Component, createElement as create } from 'react';
-import { Maplet } from './components/maplet';
 import { QuizletComponent } from "./components/quizlet";
-import { input, Dictionary } from "./common/common";
+import { Dictionary } from "./common/common";
 import { Toolbar } from "./components/index";
 import { BingImagerySet, OtherImagerySet } from "./components/openlayers";
 
-import { Transform } from "./common/csv-importer";
 import { storage } from "./common/storage";
 
 import { IPacket } from "./components/packets/common";

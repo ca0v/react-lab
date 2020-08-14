@@ -19,9 +19,10 @@ export class Loader<T extends { weight: number }> {
             this.multiload(packet, cb);
             return;
         }
-        load<IGeoJson<T>>(packet.url).then(geoJson => {
+        load<IGeoJson<T>>(packet.url).then(async geoJson => {
             if (packet.filter) {
-                geoJson.features = geoJson.features.filter(f => !packet.filter || packet.filter(f, packet.score || 0));
+                const filter = await packet.filter;
+                geoJson.features = geoJson.features.filter(f => filter(f, packet.score || 0));
             }
             if (packet.weight) {
                 geoJson.features.forEach(f => f.properties.weight = packet.weight ? packet.weight(f) : 1);
@@ -38,7 +39,7 @@ export class Loader<T extends { weight: number }> {
         }
         let promises = packet.url.map(url => load<IGeoJsonFeature<T> & IGeoJson<T>>(url));
 
-        Promise.all(promises).then(data => {
+        Promise.all(promises).then(async data => {
             let allGeoJson: IGeoJson<T>;
             allGeoJson = {
                 features: [],
@@ -53,7 +54,8 @@ export class Loader<T extends { weight: number }> {
                 }
             });
             if (packet.filter) {
-                allGeoJson.features = allGeoJson.features.filter(f => !packet.filter || packet.filter(f, packet.score || 0));
+                const filter = await packet.filter;
+                allGeoJson.features = allGeoJson.features.filter(f => filter(f, packet.score || 0));
             }
             if (packet.weight) {
                 allGeoJson.features.forEach(f => f.properties.weight = packet.weight ? packet.weight(f) : 1);

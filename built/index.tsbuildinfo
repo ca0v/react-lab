@@ -279,15 +279,12 @@
       "../node_modules/ol/src/renderer/canvas/TileLayer.js",
       "../node_modules/ol/src/layer/Tile.js",
       "../components/openlayers.tsx",
-      "../components/maplet.tsx",
       "../node_modules/ol/src/geom.js",
       "../common/quizlet-styles.ts",
       "../common/storage.ts",
       "../effects/explode.ts",
       "../effects/kaplunk.ts",
       "../components/quizlet.tsx",
-      "../common/csv-importer.ts",
-      "../data/continents.ts",
       "../components/packets/common.ts",
       "../components/packets/loaders/agsjsonloader.ts",
       "../components/packets/loaders/geojsonloader.ts",
@@ -312,7 +309,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 7232841,
+          "end": 2651422,
           "kind": "text"
         }
       ]

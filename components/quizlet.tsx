@@ -21,7 +21,7 @@ import type Geometry from "@ol/geom/Geometry";
 import type Vector from "@ol/layer/Vector";
 import type VectorSource from "@ol/source/Vector";
 import Collection from "@ol/Collection";
-import type {Coordinate} from "@ol/coordinate";
+import type { Coordinate } from "@ol/coordinate";
 import type Map from "@ol/Map";
 
 function scaleExtent(fullExtent: Extent, scale = 1, center = getCenter(fullExtent)) {
@@ -153,9 +153,10 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             console.log("incorrect");
             this.score(-20);
 
-            new AudioMedia({
-                source: "data/sound/Bomb-SoundBible.com-891110113.mp3"
-            }).play(0);
+            // new AudioMedia({
+            //     source: "data/sound/Bomb-SoundBible.com-891110113.mp3",
+            // }).play(0);
+            player.play({ en: "Sorry" });
 
             let gameStorage = this.getStat();
             gameStorage.stats[answer].incorrect++;
@@ -175,7 +176,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             let answer = this.state.answer || "";
             if (!answer) return;
 
-            player.play({en: answer});
+            player.play({ en: answer });
             console.log("hint");
 
             let gameStorage = this.getStat();

@@ -1,11 +1,14 @@
-import continents = require("../../data/continents");
+declare var requirejs;
+
 import * as geom from "@ol/geom";
 import * as extent from "@ol/extent";
 import type { Polygon } from "@ol/geom";
 
+type Continents = any;
+
 const ol = {
   geom,
-  extent
+  extent,
 };
 
 import { BingImagerySet, OtherImagerySet } from "../openlayers";
@@ -25,7 +28,7 @@ export interface IPacket<T> {
   name: string; // primaryFieldName
   style?: (score: number) => BingImagerySet | OtherImagerySet;
   weight?: (d: IGeoJsonFeature<T>) => number;
-  filter?: (d: IGeoJsonFeature<T>, score: number) => boolean;
+  filter?: Promise<(d: IGeoJsonFeature<T>, score: number) => boolean>;
   score?: number;
 }
 
@@ -40,18 +43,32 @@ function asGeom(geometry: { type: string; coordinates: any }) {
   return geom;
 }
 
-export function filterByContinent(name: string) {
-  let europe = continents.features.filter(
-    (f) => f.properties.CONTINENT === name
-  )[0];
-  if (!europe) return null;
-  let geom: Polygon = asGeom(europe.geometry);
-  let bbox = geom.getExtent();
-  return (f: IGeoJsonFeature<any>) => {
-    let countryGeom: Polygon = asGeom(f.geometry);
-    let country = countryGeom.getExtent();
-    return (
-      ol.extent.intersects(bbox, country) && geom.intersectsExtent(country)
-    );
-  };
+export async function filterByContinent(name: string) {
+  let continents: Continents | null = null;
+
+  return new Promise<(g: IGeoJsonFeature<any>) => boolean>(
+    async (good, bad) => {
+      const data = await fetch("../../data/continents.json");
+      continents = await data.json();
+      let europe = continents.features.filter(
+        (f) => f.properties.CONTINENT === name
+      )[0];
+      if (!europe) return bad("unknown continent");
+
+      const continent: Polygon = asGeom(europe.geometry);
+      const filter = (f: IGeoJsonFeature<any>) => {
+        const country: Polygon = asGeom(f.geometry);
+        const points = country.getFlatCoordinates();
+        let count = 0;
+        for (let i = 0; i < points.length; i += 2) {
+          const [x, y] = [points[i], points[i + 1]];
+          count += continent.containsXY(x, y) ? 1 : 0;
+        }
+        // at least half are within continent
+        return count > points.length / 2 / 4;
+      };
+
+      good(filter);
+    }
+  );
 }

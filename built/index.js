@@ -92,7 +92,7 @@ define("common/common", ["require", "exports", "react"], function (require, expo
     }
     exports.dump = dump;
     // https://davidwalsh.name/javascript-debounce-function
-    exports.debounce = (func, wait = 200) => {
+    let debounce = (func, wait = 200) => {
         let timeout;
         return () => {
             let later = () => {
@@ -103,6 +103,7 @@ define("common/common", ["require", "exports", "react"], function (require, expo
             timeout = setTimeout(later, wait);
         };
     };
+    exports.debounce = debounce;
     function shuffle(array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
         // While there remain elements to shuffle...
@@ -160,7 +161,7 @@ define("common/common", ["require", "exports", "react"], function (require, expo
     exports.input = input;
     class EventDispatcher {
         on(event, callback) {
-            this.events = this.events || [];
+            this.events = this.events || {};
             this.events[event] = this.events[event] || [];
             this.events[event].push(callback);
         }
@@ -14250,7 +14251,7 @@ define("node_modules/ol/src/css", ["require", "exports"], function (require, exp
      * @param {string} fontSpec The CSS font property.
      * @return {FontParameters} The font parameters (or null if the input spec is invalid).
      */
-    exports.getFontParameters = function (fontSpec) {
+    const getFontParameters = function (fontSpec) {
         const match = fontSpec.match(fontRegEx);
         if (!match) {
             return null;
@@ -14271,6 +14272,7 @@ define("node_modules/ol/src/css", ["require", "exports"], function (require, exp
         style.families = style.family.split(/,\s?/);
         return style;
     };
+    exports.getFontParameters = getFontParameters;
 });
 define("node_modules/ol/src/Overlay", ["require", "exports", "node_modules/ol/src/Object", "node_modules/ol/src/MapEventType", "node_modules/ol/src/OverlayPositioning", "node_modules/ol/src/css", "node_modules/ol/src/extent", "node_modules/ol/src/events", "node_modules/ol/src/dom"], function (require, exports, Object_js_8, MapEventType_js_2, OverlayPositioning_js_1, css_js_1, extent_js_17, events_js_7, dom_js_3) {
     "use strict";
@@ -27667,7 +27669,7 @@ define("node_modules/ol/src/control/ZoomToExtent", ["require", "exports", "node_
 define("node_modules/ol/src/control", ["require", "exports", "node_modules/ol/src/control/Attribution", "node_modules/ol/src/Collection", "node_modules/ol/src/control/Rotate", "node_modules/ol/src/control/Zoom", "node_modules/ol/src/control/Attribution", "node_modules/ol/src/control/Control", "node_modules/ol/src/control/FullScreen", "node_modules/ol/src/control/MousePosition", "node_modules/ol/src/control/OverviewMap", "node_modules/ol/src/control/Rotate", "node_modules/ol/src/control/ScaleLine", "node_modules/ol/src/control/Zoom", "node_modules/ol/src/control/ZoomSlider", "node_modules/ol/src/control/ZoomToExtent"], function (require, exports, Attribution_js_1, Collection_js_3, Rotate_js_1, Zoom_js_1, Attribution_js_2, Control_js_10, FullScreen_js_1, MousePosition_js_1, OverviewMap_js_1, Rotate_js_2, ScaleLine_js_1, Zoom_js_2, ZoomSlider_js_1, ZoomToExtent_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.defaults = void 0;
+    exports.defaults = exports.ZoomToExtent = exports.ZoomSlider = exports.Zoom = exports.ScaleLine = exports.Rotate = exports.OverviewMap = exports.MousePosition = exports.FullScreen = exports.Control = exports.Attribution = void 0;
     Object.defineProperty(exports, "Attribution", { enumerable: true, get: function () { return Attribution_js_2.default; } });
     Object.defineProperty(exports, "Control", { enumerable: true, get: function () { return Control_js_10.default; } });
     Object.defineProperty(exports, "FullScreen", { enumerable: true, get: function () { return FullScreen_js_1.default; } });
@@ -28037,12 +28039,13 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if only the alt key is pressed.
      * @api
      */
-    exports.altKeyOnly = function (mapBrowserEvent) {
+    const altKeyOnly = function (mapBrowserEvent) {
         const originalEvent = /** @type {KeyboardEvent|MouseEvent|TouchEvent} */ (mapBrowserEvent.originalEvent);
         return (originalEvent.altKey &&
             !(originalEvent.metaKey || originalEvent.ctrlKey) &&
             !originalEvent.shiftKey);
     };
+    exports.altKeyOnly = altKeyOnly;
     /**
      * Return `true` if only the alt-key and shift-key is pressed, `false` otherwise
      * (e.g. when additionally the platform-modifier-key is pressed).
@@ -28051,12 +28054,13 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if only the alt and shift keys are pressed.
      * @api
      */
-    exports.altShiftKeysOnly = function (mapBrowserEvent) {
+    const altShiftKeysOnly = function (mapBrowserEvent) {
         const originalEvent = /** @type {KeyboardEvent|MouseEvent|TouchEvent} */ (mapBrowserEvent.originalEvent);
         return (originalEvent.altKey &&
             !(originalEvent.metaKey || originalEvent.ctrlKey) &&
             originalEvent.shiftKey);
     };
+    exports.altShiftKeysOnly = altShiftKeysOnly;
     /**
      * Return `true` if the map has the focus. This condition requires a map target
      * element with a `tabindex` attribute, e.g. `<div id="map" tabindex="1">`.
@@ -28065,20 +28069,22 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} The map has the focus.
      * @api
      */
-    exports.focus = function (event) {
+    const focus = function (event) {
         return event.target.getTargetElement().contains(document.activeElement);
     };
+    exports.focus = focus;
     /**
      * Return `true` if the map has the focus or no 'tabindex' attribute set.
      *
      * @param {import("../MapBrowserEvent.js").default} event Map browser event.
      * @return {boolean} The map container has the focus or no 'tabindex' attribute.
      */
-    exports.focusWithTabindex = function (event) {
+    const focusWithTabindex = function (event) {
         return event.map.getTargetElement().hasAttribute('tabindex')
             ? exports.focus(event)
             : true;
     };
+    exports.focusWithTabindex = focusWithTabindex;
     /**
      * Return always true.
      *
@@ -28094,9 +28100,10 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if the event is a map `click` event.
      * @api
      */
-    exports.click = function (mapBrowserEvent) {
+    const click = function (mapBrowserEvent) {
         return mapBrowserEvent.type == MapBrowserEventType_js_5.default.CLICK;
     };
+    exports.click = click;
     /**
      * Return `true` if the event has an "action"-producing mouse button.
      *
@@ -28106,10 +28113,11 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Map browser event.
      * @return {boolean} The result.
      */
-    exports.mouseActionButton = function (mapBrowserEvent) {
+    const mouseActionButton = function (mapBrowserEvent) {
         const originalEvent = /** @type {MouseEvent} */ (mapBrowserEvent.originalEvent);
         return originalEvent.button == 0 && !(has_js_7.WEBKIT && has_js_7.MAC && originalEvent.ctrlKey);
     };
+    exports.mouseActionButton = mouseActionButton;
     /**
      * Return always false.
      *
@@ -28126,9 +28134,10 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if the browser event is a `pointermove` event.
      * @api
      */
-    exports.pointerMove = function (mapBrowserEvent) {
+    const pointerMove = function (mapBrowserEvent) {
         return mapBrowserEvent.type == 'pointermove';
     };
+    exports.pointerMove = pointerMove;
     /**
      * Return `true` if the event is a map `singleclick` event, `false` otherwise.
      *
@@ -28136,9 +28145,10 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if the event is a map `singleclick` event.
      * @api
      */
-    exports.singleClick = function (mapBrowserEvent) {
+    const singleClick = function (mapBrowserEvent) {
         return mapBrowserEvent.type == MapBrowserEventType_js_5.default.SINGLECLICK;
     };
+    exports.singleClick = singleClick;
     /**
      * Return `true` if the event is a map `dblclick` event, `false` otherwise.
      *
@@ -28146,9 +28156,10 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if the event is a map `dblclick` event.
      * @api
      */
-    exports.doubleClick = function (mapBrowserEvent) {
+    const doubleClick = function (mapBrowserEvent) {
         return mapBrowserEvent.type == MapBrowserEventType_js_5.default.DBLCLICK;
     };
+    exports.doubleClick = doubleClick;
     /**
      * Return `true` if no modifier key (alt-, shift- or platform-modifier-key) is
      * pressed.
@@ -28157,12 +28168,13 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True only if there no modifier keys are pressed.
      * @api
      */
-    exports.noModifierKeys = function (mapBrowserEvent) {
+    const noModifierKeys = function (mapBrowserEvent) {
         const originalEvent = /** @type {KeyboardEvent|MouseEvent|TouchEvent} */ (mapBrowserEvent.originalEvent);
         return (!originalEvent.altKey &&
             !(originalEvent.metaKey || originalEvent.ctrlKey) &&
             !originalEvent.shiftKey);
     };
+    exports.noModifierKeys = noModifierKeys;
     /**
      * Return `true` if only the platform-modifier-key (the meta-key on Mac,
      * ctrl-key otherwise) is pressed, `false` otherwise (e.g. when additionally
@@ -28172,12 +28184,13 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if only the platform modifier key is pressed.
      * @api
      */
-    exports.platformModifierKeyOnly = function (mapBrowserEvent) {
+    const platformModifierKeyOnly = function (mapBrowserEvent) {
         const originalEvent = /** @type {KeyboardEvent|MouseEvent|TouchEvent} */ (mapBrowserEvent.originalEvent);
         return (!originalEvent.altKey &&
             (has_js_7.MAC ? originalEvent.metaKey : originalEvent.ctrlKey) &&
             !originalEvent.shiftKey);
     };
+    exports.platformModifierKeyOnly = platformModifierKeyOnly;
     /**
      * Return `true` if only the shift-key is pressed, `false` otherwise (e.g. when
      * additionally the alt-key is pressed).
@@ -28186,12 +28199,13 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if only the shift key is pressed.
      * @api
      */
-    exports.shiftKeyOnly = function (mapBrowserEvent) {
+    const shiftKeyOnly = function (mapBrowserEvent) {
         const originalEvent = /** @type {KeyboardEvent|MouseEvent|TouchEvent} */ (mapBrowserEvent.originalEvent);
         return (!originalEvent.altKey &&
             !(originalEvent.metaKey || originalEvent.ctrlKey) &&
             originalEvent.shiftKey);
     };
+    exports.shiftKeyOnly = shiftKeyOnly;
     /**
      * Return `true` if the target element is not editable, i.e. not a `<input>`-,
      * `<select>`- or `<textarea>`-element, `false` otherwise.
@@ -28200,11 +28214,12 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True only if the target element is not editable.
      * @api
      */
-    exports.targetNotEditable = function (mapBrowserEvent) {
+    const targetNotEditable = function (mapBrowserEvent) {
         const originalEvent = /** @type {KeyboardEvent|MouseEvent|TouchEvent} */ (mapBrowserEvent.originalEvent);
         const tagName = /** @type {Element} */ (originalEvent.target).tagName;
         return tagName !== 'INPUT' && tagName !== 'SELECT' && tagName !== 'TEXTAREA';
     };
+    exports.targetNotEditable = targetNotEditable;
     /**
      * Return `true` if the event originates from a mouse device.
      *
@@ -28212,13 +28227,14 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if the event originates from a mouse device.
      * @api
      */
-    exports.mouseOnly = function (mapBrowserEvent) {
+    const mouseOnly = function (mapBrowserEvent) {
         const pointerEvent = /** @type {import("../MapBrowserEvent").default} */ (mapBrowserEvent)
             .originalEvent;
         asserts_js_15.assert(pointerEvent !== undefined, 56); // mapBrowserEvent must originate from a pointer event
         // see http://www.w3.org/TR/pointerevents/#widl-PointerEvent-pointerType
         return pointerEvent.pointerType == 'mouse';
     };
+    exports.mouseOnly = mouseOnly;
     /**
      * Return `true` if the event originates from a touchable device.
      *
@@ -28226,13 +28242,14 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if the event originates from a touchable device.
      * @api
      */
-    exports.touchOnly = function (mapBrowserEvent) {
+    const touchOnly = function (mapBrowserEvent) {
         const pointerEvt = /** @type {import("../MapBrowserEvent").default} */ (mapBrowserEvent)
             .originalEvent;
         asserts_js_15.assert(pointerEvt !== undefined, 56); // mapBrowserEvent must originate from a pointer event
         // see http://www.w3.org/TR/pointerevents/#widl-PointerEvent-pointerType
         return pointerEvt.pointerType === 'touch';
     };
+    exports.touchOnly = touchOnly;
     /**
      * Return `true` if the event originates from a digital pen.
      *
@@ -28240,13 +28257,14 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if the event originates from a digital pen.
      * @api
      */
-    exports.penOnly = function (mapBrowserEvent) {
+    const penOnly = function (mapBrowserEvent) {
         const pointerEvt = /** @type {import("../MapBrowserEvent").default} */ (mapBrowserEvent)
             .originalEvent;
         asserts_js_15.assert(pointerEvt !== undefined, 56); // mapBrowserEvent must originate from a pointer event
         // see http://www.w3.org/TR/pointerevents/#widl-PointerEvent-pointerType
         return pointerEvt.pointerType === 'pen';
     };
+    exports.penOnly = penOnly;
     /**
      * Return `true` if the event originates from a primary pointer in
      * contact with the surface or if the left mouse button is pressed.
@@ -28256,12 +28274,13 @@ define("node_modules/ol/src/events/condition", ["require", "exports", "node_modu
      * @return {boolean} True if the event originates from a primary pointer.
      * @api
      */
-    exports.primaryAction = function (mapBrowserEvent) {
+    const primaryAction = function (mapBrowserEvent) {
         const pointerEvent = /** @type {import("../MapBrowserEvent").default} */ (mapBrowserEvent)
             .originalEvent;
         asserts_js_15.assert(pointerEvent !== undefined, 56); // mapBrowserEvent must originate from a pointer event
         return pointerEvent.isPrimary && pointerEvent.button === 0;
     };
+    exports.primaryAction = primaryAction;
 });
 /**
  * @module ol/Kinetic
@@ -35536,6 +35555,7 @@ define("node_modules/ol/src/style/Icon", ["require", "exports", "node_modules/ol
 define("node_modules/ol/src/style", ["require", "exports", "node_modules/ol/src/style/Circle", "node_modules/ol/src/style/Fill", "node_modules/ol/src/style/Icon", "node_modules/ol/src/style/IconImage", "node_modules/ol/src/style/Image", "node_modules/ol/src/style/RegularShape", "node_modules/ol/src/style/Stroke", "node_modules/ol/src/style/Style", "node_modules/ol/src/style/Text"], function (require, exports, Circle_js_2, Fill_js_3, Icon_js_1, IconImage_js_2, Image_js_4, RegularShape_js_2, Stroke_js_2, Style_js_2, Text_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Text = exports.Style = exports.Stroke = exports.RegularShape = exports.Image = exports.IconImage = exports.Icon = exports.Fill = exports.Circle = void 0;
     Object.defineProperty(exports, "Circle", { enumerable: true, get: function () { return Circle_js_2.default; } });
     Object.defineProperty(exports, "Fill", { enumerable: true, get: function () { return Fill_js_3.default; } });
     Object.defineProperty(exports, "Icon", { enumerable: true, get: function () { return Icon_js_1.default; } });
@@ -40302,7 +40322,7 @@ define("node_modules/ol/src/interaction/Translate", ["require", "exports", "node
 define("node_modules/ol/src/interaction", ["require", "exports", "node_modules/ol/src/Collection", "node_modules/ol/src/interaction/DoubleClickZoom", "node_modules/ol/src/interaction/DragPan", "node_modules/ol/src/interaction/DragRotate", "node_modules/ol/src/interaction/DragZoom", "node_modules/ol/src/interaction/KeyboardPan", "node_modules/ol/src/interaction/KeyboardZoom", "node_modules/ol/src/Kinetic", "node_modules/ol/src/interaction/MouseWheelZoom", "node_modules/ol/src/interaction/PinchRotate", "node_modules/ol/src/interaction/PinchZoom", "node_modules/ol/src/interaction/DoubleClickZoom", "node_modules/ol/src/interaction/DragAndDrop", "node_modules/ol/src/interaction/DragBox", "node_modules/ol/src/interaction/DragPan", "node_modules/ol/src/interaction/DragRotate", "node_modules/ol/src/interaction/DragRotateAndZoom", "node_modules/ol/src/interaction/DragZoom", "node_modules/ol/src/interaction/Draw", "node_modules/ol/src/interaction/Extent", "node_modules/ol/src/interaction/Interaction", "node_modules/ol/src/interaction/KeyboardPan", "node_modules/ol/src/interaction/KeyboardZoom", "node_modules/ol/src/interaction/Modify", "node_modules/ol/src/interaction/MouseWheelZoom", "node_modules/ol/src/interaction/PinchRotate", "node_modules/ol/src/interaction/PinchZoom", "node_modules/ol/src/interaction/Pointer", "node_modules/ol/src/interaction/Select", "node_modules/ol/src/interaction/Snap", "node_modules/ol/src/interaction/Translate"], function (require, exports, Collection_js_8, DoubleClickZoom_js_1, DragPan_js_1, DragRotate_js_1, DragZoom_js_1, KeyboardPan_js_1, KeyboardZoom_js_1, Kinetic_js_1, MouseWheelZoom_js_1, PinchRotate_js_1, PinchZoom_js_1, DoubleClickZoom_js_2, DragAndDrop_js_1, DragBox_js_2, DragPan_js_2, DragRotate_js_2, DragRotateAndZoom_js_1, DragZoom_js_2, Draw_js_1, Extent_js_1, Interaction_js_8, KeyboardPan_js_2, KeyboardZoom_js_2, Modify_js_1, MouseWheelZoom_js_2, PinchRotate_js_2, PinchZoom_js_2, Pointer_js_12, Select_js_1, Snap_js_1, Translate_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.defaults = void 0;
+    exports.defaults = exports.Translate = exports.Snap = exports.Select = exports.Pointer = exports.PinchZoom = exports.PinchRotate = exports.MouseWheelZoom = exports.Modify = exports.KeyboardZoom = exports.KeyboardPan = exports.Interaction = exports.Extent = exports.Draw = exports.DragZoom = exports.DragRotateAndZoom = exports.DragRotate = exports.DragPan = exports.DragBox = exports.DragAndDrop = exports.DoubleClickZoom = void 0;
     Object.defineProperty(exports, "DoubleClickZoom", { enumerable: true, get: function () { return DoubleClickZoom_js_2.default; } });
     Object.defineProperty(exports, "DragAndDrop", { enumerable: true, get: function () { return DragAndDrop_js_1.default; } });
     Object.defineProperty(exports, "DragBox", { enumerable: true, get: function () { return DragBox_js_2.default; } });
@@ -56950,6 +56970,7 @@ define("node_modules/ol/src/format/WMTSCapabilities", ["require", "exports", "no
 define("node_modules/ol/src/format", ["require", "exports", "node_modules/ol/src/format/EsriJSON", "node_modules/ol/src/format/GeoJSON", "node_modules/ol/src/format/GML", "node_modules/ol/src/format/GPX", "node_modules/ol/src/format/IGC", "node_modules/ol/src/format/IIIFInfo", "node_modules/ol/src/format/KML", "node_modules/ol/src/format/MVT", "node_modules/ol/src/format/OWS", "node_modules/ol/src/format/Polyline", "node_modules/ol/src/format/TopoJSON", "node_modules/ol/src/format/WFS", "node_modules/ol/src/format/WKT", "node_modules/ol/src/format/WMSCapabilities", "node_modules/ol/src/format/WMSGetFeatureInfo", "node_modules/ol/src/format/WMTSCapabilities"], function (require, exports, EsriJSON_js_1, GeoJSON_js_1, GML_js_1, GPX_js_1, IGC_js_1, IIIFInfo_js_2, KML_js_1, MVT_js_1, OWS_js_2, Polyline_js_1, TopoJSON_js_1, WFS_js_1, WKT_js_1, WMSCapabilities_js_1, WMSGetFeatureInfo_js_1, WMTSCapabilities_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.WMTSCapabilities = exports.WMSGetFeatureInfo = exports.WMSCapabilities = exports.WKT = exports.WFS = exports.TopoJSON = exports.Polyline = exports.OWS = exports.MVT = exports.KML = exports.IIIFInfo = exports.IGC = exports.GPX = exports.GML = exports.GeoJSON = exports.EsriJSON = void 0;
     Object.defineProperty(exports, "EsriJSON", { enumerable: true, get: function () { return EsriJSON_js_1.default; } });
     Object.defineProperty(exports, "GeoJSON", { enumerable: true, get: function () { return GeoJSON_js_1.default; } });
     Object.defineProperty(exports, "GML", { enumerable: true, get: function () { return GML_js_1.default; } });
@@ -59231,6 +59252,7 @@ define("components/openlayers", ["require", "exports", "react", "components/inde
 define("node_modules/ol/src/geom", ["require", "exports", "node_modules/ol/src/geom/Circle", "node_modules/ol/src/geom/Geometry", "node_modules/ol/src/geom/GeometryCollection", "node_modules/ol/src/geom/LinearRing", "node_modules/ol/src/geom/LineString", "node_modules/ol/src/geom/MultiLineString", "node_modules/ol/src/geom/MultiPoint", "node_modules/ol/src/geom/MultiPolygon", "node_modules/ol/src/geom/Point", "node_modules/ol/src/geom/Polygon", "node_modules/ol/src/geom/SimpleGeometry"], function (require, exports, Circle_js_4, Geometry_js_3, GeometryCollection_js_4, LinearRing_js_4, LineString_js_14, MultiLineString_js_11, MultiPoint_js_10, MultiPolygon_js_10, Point_js_14, Polygon_js_18, SimpleGeometry_js_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.SimpleGeometry = exports.Polygon = exports.Point = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeometryCollection = exports.Geometry = exports.Circle = void 0;
     Object.defineProperty(exports, "Circle", { enumerable: true, get: function () { return Circle_js_4.default; } });
     Object.defineProperty(exports, "Geometry", { enumerable: true, get: function () { return Geometry_js_3.default; } });
     Object.defineProperty(exports, "GeometryCollection", { enumerable: true, get: function () { return GeometryCollection_js_4.default; } });
@@ -59268,6 +59290,7 @@ define("common/quizlet-styles", ["require", "exports", "node_modules/ol/src/styl
         hintBorderColor: [200, 20, 200, 1],
         noColor: [0, 0, 0, 0],
         black: [0, 0, 0, 1],
+        translucentBlack: [0, 0, 0, 0.3],
         textScale: 1.8,
         textWidth: 2,
         borderWidth: 2,
@@ -59339,7 +59362,7 @@ define("common/quizlet-styles", ["require", "exports", "node_modules/ol/src/styl
                 return [
                     new ol.style.Style({
                         fill: new ol.style.Fill({
-                            color: color(theme.black),
+                            color: color(theme.translucentBlack),
                         }),
                         stroke: new ol.style.Stroke({
                             color: color(theme.incorrectBorderColor),
@@ -59421,10 +59444,10 @@ define("common/quizlet-styles", ["require", "exports", "node_modules/ol/src/styl
                         }),
                     stroke: new ol.style.Stroke({
                         color: color(showOutline ? theme.hintBorderColor : theme.borderColor),
-                        width: 2,
+                        width: 2 + (isCurrentFeature ? Math.max(0, hint) : 0),
                     }),
                     fill: new ol.style.Fill({
-                        color: color(theme.black),
+                        color: (isCurrentFeature && hint) ? color(theme.hintBorderColor) : color(theme.black),
                     }),
                 });
         }
@@ -59810,6 +59833,41 @@ define("components/quizlet", ["require", "exports", "common/player", "components
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.QuizletComponent = void 0;
+    function computeDistanceVector(f1, f2) {
+        const p1 = (extent_3.getCenter(f1.getGeometry().getExtent()));
+        const p2 = (extent_3.getCenter(f2.getGeometry().getExtent()));
+        return [p1[0] - p2[0], p1[1] - p2[1]];
+    }
+    function computeDistanceHint(f1, f2) {
+        const [dx, dy] = computeDistanceVector(f1, f2);
+        const distance = Math.round(Math.sqrt(dx * dx + dy * dy) / 1000).toPrecision(3);
+        return `${distance} km`;
+    }
+    function computeDirectionHint(f1, f2) {
+        const [dx, dy] = computeDistanceVector(f1, f2);
+        const direction = (360 + Math.round((180 / Math.PI) * Math.atan2(dy, dx))) % 360;
+        const quadrant = Math.round(direction / 22.5);
+        switch (quadrant) {
+            case 16:
+            case 0: return "east";
+            case 1:
+            case 3:
+            case 2: return "north-east";
+            case 4: return "north";
+            case 5:
+            case 7:
+            case 6: return "north-west";
+            case 8: return "west";
+            case 9:
+            case 11:
+            case 10: return "south-west";
+            case 12: return "south";
+            case 13:
+            case 15:
+            case 14: return "south-east";
+            default: return "some place else";
+        }
+    }
     function scaleExtent(fullExtent, scale = 1, center = extent_3.getCenter(fullExtent)) {
         let width = 0.5 * Math.max(extent_3.getWidth(fullExtent), extent_3.getHeight(fullExtent)) * scale;
         return [center[0] - width, center[1] - width, center[0] + width, center[1] + width];
@@ -59878,12 +59936,12 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                     this.state.features.push(feature);
                     let options = ["AerialWithLabels", "Aerial", "CanvasDark", "CanvasLight", "CanvasGray", "Road"];
                     let bingImagerySet = (props.getLayerStyle && props.getLayerStyle(score)) || (options[Math.floor(this.state.score / 1000) % options.length]);
-                    this.setState(prev => ({
+                    this.setState(() => ({
                         bingImagerySet: bingImagerySet
                     }));
                     if (!this.next()) {
                         setTimeout(() => {
-                            this.setState(prev => ({
+                            this.setState(() => ({
                                 mapTrigger: {
                                     message: "extent",
                                     args: {
@@ -59905,7 +59963,9 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 // new AudioMedia({
                 //     source: "data/sound/Bomb-SoundBible.com-891110113.mp3",
                 // }).play(0);
-                player_1.player.play({ en: "Sorry" });
+                const distanceHint = computeDistanceHint(this.find(), args.feature);
+                const directionHint = computeDirectionHint(this.find(), args.feature);
+                this.dispatcher.trigger("play", { en: `That is ${this.getFeatureName(args.feature)}, you are looking for ${answer} which is ${distanceHint} away.  Look ${directionHint}.` });
                 let gameStorage = this.getStat();
                 gameStorage.stats[answer].incorrect++;
                 gameStorage.score = this.state.score;
@@ -59922,8 +59982,7 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 let answer = this.state.answer || "";
                 if (!answer)
                     return;
-                player_1.player.play({ en: answer });
-                console.log("hint");
+                this.dispatcher.trigger("play", { en: answer });
                 let gameStorage = this.getStat();
                 gameStorage.stats[answer].hint++;
                 gameStorage.score = this.state.score;
@@ -59944,6 +60003,9 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 }));
             });
             this.dispatcher.on("reload", () => location.reload());
+            this.dispatcher.on("play", args => player_1.player.play(args));
+            this.dispatcher.on("update", () => {
+            });
         }
         getStat() {
             let answer = this.state.answer || "";
@@ -59959,6 +60021,11 @@ define("components/quizlet", ["require", "exports", "common/player", "components
         }
         componentDidUpdate(prevProp, prevState) {
             this.dispatcher.trigger("update");
+            if (prevState.answer !== this.state.answer) {
+                this.dispatcher.trigger("play", { en: this.state.answer });
+            }
+        }
+        componentDidMount() {
         }
         render() {
             return react_4.createElement("div", { className: "quizlet" },
@@ -60061,9 +60128,11 @@ define("components/quizlet", ["require", "exports", "common/player", "components
         }
         // return true if the feature matches the correct answer
         test(feature) {
-            let fieldName = this.props.featureNameFieldName;
-            let result = feature.get(fieldName) === this.state.answer;
-            return result;
+            return this.getFeatureName(feature) === this.state.answer;
+        }
+        // return true if the feature matches the correct answer
+        getFeatureName(feature) {
+            return feature.get(this.props.featureNameFieldName);
         }
         zoomToFeature(feature, grow = 2) {
             this.setState(prev => ({
@@ -60810,6 +60879,8 @@ define("app", ["require", "exports", "react", "components/quizlet", "components/
             case "agsjson":
                 {
                     let loader = new agsjsonloader_1.Loader();
+                    if (Array.isArray(packet.url))
+                        throw "expecting a single url";
                     loader.load(packet.url, agsjson => {
                         let typeMap = {
                             "esriGeometryPolygon": "Polygon",

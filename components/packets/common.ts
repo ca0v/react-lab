@@ -24,11 +24,11 @@ export interface IGeoJsonFeature<T> {
 
 export interface IPacket<T> {
   type: string;
-  url: string;
+  url: string | string[];
   name: string; // primaryFieldName
   style?: (score: number) => BingImagerySet | OtherImagerySet;
   weight?: (d: IGeoJsonFeature<T>) => number;
-  filter?: Promise<(d: IGeoJsonFeature<T>, score: number) => boolean>;
+  filter?: (Promise<(d: IGeoJsonFeature<T>, score: number) => boolean>) | ((d: IGeoJsonFeature<T>, score: number) => boolean);
   score?: number;
 }
 

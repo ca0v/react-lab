@@ -1,5 +1,6 @@
 import { Dictionary } from "../common/common";
-import Style from "@ol/style/Style";
+import type { StyleFunction } from "@ol/style/Style";
+import Style  from "@ol/style/Style";
 import Fill from "@ol/style/Fill";
 import Stroke from "@ol/style/Stroke";
 import Circle from "@ol/style/Circle";
@@ -33,6 +34,7 @@ const theme = {
   hintBorderColor: [200, 20, 200, 1],
   noColor: [0, 0, 0, 0],
   black: [0, 0, 0, 1],
+  translucentBlack: [0, 0, 0, 0.3],
   textScale: 1.8,
   textWidth: 2,
   borderWidth: 2,
@@ -50,7 +52,7 @@ export let styles: Dictionary<(quizlet: {
     hint?: number;
     answer?: string;
   };
-}) => ol.StyleFunction> = {};
+}) => StyleFunction> = {};
 
 styles.correct = (quizlet) => (
   feature: Feature | RenderFeature,
@@ -84,7 +86,7 @@ styles.correct = (quizlet) => (
 };
 
 styles.incorrect = (quizlet) => (
-  feature: ol.Feature | ol.render.Feature,
+  feature: Feature | RenderFeature,
   res: number
 ) => {
   if (!quizlet.props.featureNameFieldName) return new ol.style.Style();
@@ -122,7 +124,7 @@ styles.incorrect = (quizlet) => (
       return [
         new ol.style.Style({
           fill: new ol.style.Fill({
-            color: color(theme.black),
+            color: color(theme.translucentBlack),
           }),
           stroke: new ol.style.Stroke({
             color: color(theme.incorrectBorderColor),
@@ -212,10 +214,10 @@ styles.indeterminate = (quizlet) => (
               }),
         stroke: new ol.style.Stroke({
           color: color(showOutline ? theme.hintBorderColor : theme.borderColor),
-          width: 2,
+          width: 2 + (isCurrentFeature ? Math.max(0, hint) : 0),
         }),
         fill:new ol.style.Fill({
-          color: color(theme.black),
+          color: (isCurrentFeature && hint) ? color(theme.hintBorderColor) : color(theme.black),
         }),
       });
   }

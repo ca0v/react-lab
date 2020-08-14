@@ -1,4 +1,6 @@
-export = {
+import { IPacket } from "./common";
+
+export = <IPacket<any>>{
     type: "geojson",
     url: "./data/continents.json",
     name: "CONTINENT",

@@ -96,7 +96,7 @@ export class EventDispatcher<T> {
     events: Dictionary<Array<(data: T | null) => void>>;
 
     on(event: string, callback: (data: T | null) => void) {
-        this.events = this.events || [];
+        this.events = this.events || {};
         this.events[event] = this.events[event] || [];
         this.events[event].push(callback);
     }

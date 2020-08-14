@@ -23,9 +23,9 @@ export class Media extends Object {
         if (options.loop) this.setLoop(options.loop);
 
         // Dispatch media event as ol3 event
-        this.media.addEventListener('canplaythrough', () => this.dispatchEvent({ type: 'ready' }), false);
+        this.media.addEventListener('canplaythrough', () => this.dispatchEvent(<any>{ type: 'ready' }), false);
         ["load", "play", "pause", "ended"]
-            .forEach(event => this.media.addEventListener(event, (e: any) => this.dispatchEvent({ type: e.type }), false));
+            .forEach(event => this.media.addEventListener(event, (e: any) => this.dispatchEvent(<any>{ type: e.type }), false));
     }
 
     play(start: number) {

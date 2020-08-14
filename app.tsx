@@ -38,6 +38,7 @@ function populateLayerSource(source: Vector<Geometry>, packet: IPacket<any>) {
         case "agsjson":
             {
                 let loader = new JsonLoader();
+                if (Array.isArray(packet.url)) throw "expecting a single url";
                 loader.load(packet.url, agsjson => {
                     let typeMap: Dictionary<"Polygon" | "Point"> = {
                         "esriGeometryPolygon": "Polygon",
@@ -126,7 +127,7 @@ export class App extends Component<AppProps, AppState> {
             packetName: packetName,
             featureNameFieldName: packet.name,
             packetStyle: packet.style || "AerialWithLabels"
-        }));
+        } as any));
 
         populateLayerSource(this.state.source, packet);
     }

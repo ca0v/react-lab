@@ -8,8 +8,7 @@ import { player } from "../common/player";
 */
 import { OpenLayers, BingImagerySet, OtherImagerySet } from './openlayers';
 import { PureComponent as Component, createElement as create } from 'react';
-import { render } from "react-dom";
-import { Dictionary, debounce, distinct, EventDispatcher, shuffle, LocalStorage } from "../common/common";
+import { debounce, EventDispatcher, shuffle, } from "../common/common";
 import { styles } from "../common/quizlet-styles";
 import { storage } from "../common/storage";
 import { explode } from "../effects/explode";
@@ -23,6 +22,44 @@ import type VectorSource from "@ol/source/Vector";
 import Collection from "@ol/Collection";
 import type { Coordinate } from "@ol/coordinate";
 import type Map from "@ol/Map";
+
+function computeDistanceVector(f1: Feature<Geometry>, f2: Feature<Geometry>) {
+    const p1 = (getCenter(f1.getGeometry().getExtent()));
+    const p2 = (getCenter(f2.getGeometry().getExtent()))
+    return [p1[0] - p2[0], p1[1] - p2[1]];
+}
+
+function computeDistanceHint(f1: Feature<Geometry>, f2: Feature<Geometry>) {
+    const [dx, dy] = computeDistanceVector(f1, f2);
+    const distance = Math.round(Math.sqrt(dx * dx + dy * dy) / 1000).toPrecision(3);
+    return `${distance} km`;
+}
+
+function computeDirectionHint(f1: Feature<Geometry>, f2: Feature<Geometry>) {
+    const [dx, dy] = computeDistanceVector(f1, f2);
+    const direction = (360 + Math.round((180 / Math.PI) * Math.atan2(dy, dx))) % 360;
+    const quadrant = Math.round(direction / 22.5);
+    switch (quadrant) {
+        case 16:
+        case 0: return "east";
+        case 1:
+        case 3:
+        case 2: return "north-east";
+        case 4: return "north";
+        case 5:
+        case 7:
+        case 6: return "north-west";
+        case 8: return "west";
+        case 9:
+        case 11:
+        case 10: return "south-west";
+        case 12: return "south";
+        case 13:
+        case 15:
+        case 14: return "south-east";
+        default: return "some place else";
+    }
+}
 
 function scaleExtent(fullExtent: Extent, scale = 1, center = getCenter(fullExtent)) {
     let width = 0.5 * Math.max(getWidth(fullExtent), getHeight(fullExtent)) * scale;
@@ -126,20 +163,20 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
                 let options = ["AerialWithLabels", "Aerial", "CanvasDark", "CanvasLight", "CanvasGray", "Road"];
                 let bingImagerySet = (props.getLayerStyle && props.getLayerStyle(score)) || (options[Math.floor(this.state.score / 1000) % options.length]);
-                this.setState(prev => ({
+                this.setState(() => ({
                     bingImagerySet: bingImagerySet
-                }));
+                } as any));
 
                 if (!this.next()) {
                     setTimeout(() => {
-                        this.setState(prev => ({
+                        this.setState(() => ({
                             mapTrigger: {
                                 message: "extent",
                                 args: {
                                     extent: scaleExtent(this.props.source.getExtent())
                                 }
                             }
-                        }));
+                        } as any));
                         this.init();
                     }, 1000);
                 }
@@ -156,7 +193,10 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             // new AudioMedia({
             //     source: "data/sound/Bomb-SoundBible.com-891110113.mp3",
             // }).play(0);
-            player.play({ en: "Sorry" });
+
+            const distanceHint = computeDistanceHint(this.find(), args.feature);
+            const directionHint = computeDirectionHint(this.find(), args.feature);
+            this.dispatcher.trigger("play", { en: `That is ${this.getFeatureName(args.feature)}, you are looking for ${answer} which is ${distanceHint} away.  Look ${directionHint}.` });
 
             let gameStorage = this.getStat();
             gameStorage.stats[answer].incorrect++;
@@ -176,8 +216,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
             let answer = this.state.answer || "";
             if (!answer) return;
 
-            player.play({ en: answer });
-            console.log("hint");
+            this.dispatcher.trigger("play", { en: answer });
 
             let gameStorage = this.getStat();
             gameStorage.stats[answer].hint++;
@@ -198,10 +237,15 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                         extent: scaleExtent(this.props.source.getExtent(), 1 / ((prev.hint || 0) + 3), center)
                     }
                 }
-            }));
+            } as any));
         });
 
         this.dispatcher.on("reload", () => location.reload());
+
+        this.dispatcher.on("play", args => player.play(args));
+
+        this.dispatcher.on("update", () => {
+        });
     }
 
     private getStat() {
@@ -220,6 +264,12 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
     componentDidUpdate(prevProp: QuizletProps, prevState: QuizletStates) {
         this.dispatcher.trigger("update");
+        if (prevState.answer !== this.state.answer) {
+            this.dispatcher.trigger("play", { en: this.state.answer });
+        }
+    }
+
+    componentDidMount() {
     }
 
     render() {
@@ -254,7 +304,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                                     extent: scaleExtent(extent)
                                 }
                             }
-                        }));
+                        } as any));
                         this.init();
                     }, 500));
                 }}
@@ -285,7 +335,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                         this.setState(prev => ({
                             center: args.coordinate,
                             zoom: Math.max(prev.zoom, 5 + args.map.getView().getZoom()),
-                        }))
+                        } as any));
                     }}
                     layers={{ geoJson: ["./data/countries.json"] }}
                     features={this.state.features}>
@@ -347,9 +397,12 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
 
     // return true if the feature matches the correct answer
     test(feature: Feature<Geometry>) {
-        let fieldName = this.props.featureNameFieldName;
-        let result = feature.get(fieldName) === this.state.answer;
-        return result;
+        return this.getFeatureName(feature) === this.state.answer;
+    }
+
+    // return true if the feature matches the correct answer
+    private getFeatureName(feature: Feature<Geometry>) {
+        return feature.get(this.props.featureNameFieldName);
     }
 
     zoomToFeature(feature: Feature<Geometry>, grow = 2) {
@@ -361,7 +414,7 @@ export class QuizletComponent extends Component<QuizletProps, QuizletStates> {
                     extent: scaleExtent(feature.getGeometry().getExtent(), grow)
                 }
             }
-        }));
+        } as any));
     }
 
     next() {

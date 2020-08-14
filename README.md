@@ -15,5 +15,11 @@ Typescript + TSX + React + RequireJS
 * [master](https://rawgit.com/ca0v/react-lab/master/rawgit.html)
 
 ## Known Issues
-The current react typings have errors so tsc reports errors.  If you fix them don't run npm install again or your fixes will get wiped out.
+The current react typings have errors so tsc reports errors.  If you fix them don't run npm install again or your fixes will get wiped out (now you tell mez).
 
+## Things to Do
+* Host vector tiles for offline capabilities
+* Build react into the main package file
+* Make it fun and personal (mom's voice)
+* Keep analyics on past performance to predict final scores
+* Update to latest react typings

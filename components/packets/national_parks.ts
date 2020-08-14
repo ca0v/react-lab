@@ -1,9 +1,10 @@
 import parksDir = require("../../data/national_parks/dir");
 import { shuffle } from "../../common/common";
+import type { IPacket } from "./common";
 
 let parks = shuffle(parksDir.split("\n").map(v => v.trim()).filter(v => !!v));//.map(v => v.substring(0, v.length - 4) + "simple.json");
 
-export = {
+export = <IPacket<any>>{
     type: "multigeojson",
     url: parks.map(p => `./data/national_parks/${p}`),
     name: "UNIT_NAME",

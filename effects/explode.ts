@@ -96,7 +96,7 @@ export function animateFeature(
       }
       // newt step
       else if (step < fanim.length - 1) {
-        fanim[step].dispatchEvent({ type: "animationend", feature: feature });
+        fanim[step].dispatchEvent(<any>{ type: "animationend", feature: feature });
         step++;
         nb = 0;
         event.extent = false;

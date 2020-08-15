@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mocha Test Runner</title>
+    <link rel="stylesheet" href="../built/test/mocha.css">
+</head>
+
+<body>
+    <div id="mocha"></div>
+    <script src="../built/require.js"></script>
+    <script src="../built/test/index.js"></script>
+    <script>
+        require(["../built/test/mocha.js", "index"], (mocha, test) => {
+            mocha.setup("bdd");
+            test.run();
+            mocha.run();
+        });
+    </script>
+</body>
+
+</html>

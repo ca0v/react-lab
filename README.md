@@ -14,7 +14,8 @@ Typescript + TSX + React + RequireJS
 
 ## All Examples
 
-- [master](https://rawgit.com/ca0v/react-lab/master/rawgit.html)
+- [geography quiz](https://rawgit.com/ca0v/react-lab/master/rawgit.html)
+- [run tests](https://rawgit.com/ca0v/react-lab/master/test/index.html)
 
 ## Known Issues
 

@@ -60307,22 +60307,32 @@ define("components/packets/countries_europe", ["require", "exports", "components
         filter: common_4.filterByContinent("Europe")
     };
 });
-define("components/packets/countries_africa", ["require", "exports", "components/packets/common"], function (require, exports, common_5) {
+define("components/packets/countries_asia", ["require", "exports", "components/packets/common"], function (require, exports, common_5) {
     "use strict";
     return {
+        title: "Asian Countries",
         type: "geojson",
         url: "./data/countries.json",
         name: "name",
-        filter: common_5.filterByContinent("Africa")
+        filter: common_5.filterByContinent("Asia")
     };
 });
-define("components/packets/countries_southamerica", ["require", "exports", "components/packets/common"], function (require, exports, common_6) {
+define("components/packets/countries_africa", ["require", "exports", "components/packets/common"], function (require, exports, common_6) {
     "use strict";
     return {
         type: "geojson",
         url: "./data/countries.json",
         name: "name",
-        filter: common_6.filterByContinent("South America"),
+        filter: common_6.filterByContinent("Africa")
+    };
+});
+define("components/packets/countries_southamerica", ["require", "exports", "components/packets/common"], function (require, exports, common_7) {
+    "use strict";
+    return {
+        type: "geojson",
+        url: "./data/countries.json",
+        name: "name",
+        filter: common_7.filterByContinent("South America"),
     };
 });
 define("components/packets/countries_world", ["require", "exports"], function (require, exports) {
@@ -60408,9 +60418,9 @@ Taiwan.json
 Turkey.json
 Vanuatu.json`;
 });
-define("components/packets/volcanoes", ["require", "exports", "data/volcanoes/dir", "common/common"], function (require, exports, volcanoesDir, common_7) {
+define("components/packets/volcanoes", ["require", "exports", "data/volcanoes/dir", "common/common"], function (require, exports, volcanoesDir, common_8) {
     "use strict";
-    let volcanoes = common_7.shuffle(volcanoesDir.split("\n").map(v => v.trim()).filter(v => !!v));
+    let volcanoes = common_8.shuffle(volcanoesDir.split("\n").map(v => v.trim()).filter(v => !!v));
     return {
         type: "geojson",
         url: `./data/volcanoes/${volcanoes.pop()}`,
@@ -60767,9 +60777,9 @@ yuho.simple.json
 zion.simple.json
 `;
 });
-define("components/packets/national_parks", ["require", "exports", "data/national_parks/dir", "common/common"], function (require, exports, parksDir, common_8) {
+define("components/packets/national_parks", ["require", "exports", "data/national_parks/dir", "common/common"], function (require, exports, parksDir, common_9) {
     "use strict";
-    let parks = common_8.shuffle(parksDir.split("\n").map(v => v.trim()).filter(v => !!v)); //.map(v => v.substring(0, v.length - 4) + "simple.json");
+    let parks = common_9.shuffle(parksDir.split("\n").map(v => v.trim()).filter(v => !!v)); //.map(v => v.substring(0, v.length - 4) + "simple.json");
     return {
         type: "multigeojson",
         url: parks.map(p => `./data/national_parks/${p}`),
@@ -60779,10 +60789,11 @@ define("components/packets/national_parks", ["require", "exports", "data/nationa
         }
     };
 });
-define("components/packets/index", ["require", "exports", "components/packets/continents_world", "components/packets/countries_europe", "components/packets/countries_africa", "components/packets/countries_southamerica", "components/packets/countries_world", "components/packets/cities_world", "components/packets/lakes_usa", "components/packets/usstates_usa", "components/packets/cities_usa", "components/packets/volcanoes", "components/packets/national_parks"], function (require, exports, continentPacket, europeanCountriesPacket, africaCountriesPacket, southAmericaCountriesPacket, worldCountriesPacket, worldCitiesPacket, usaGreatLakesPacket, usaStatesPacket, usaCitiesPacket, volcanoesPacket, nationalParksPacket) {
+define("components/packets/index", ["require", "exports", "components/packets/continents_world", "components/packets/countries_europe", "components/packets/countries_asia", "components/packets/countries_africa", "components/packets/countries_southamerica", "components/packets/countries_world", "components/packets/cities_world", "components/packets/lakes_usa", "components/packets/usstates_usa", "components/packets/cities_usa", "components/packets/volcanoes", "components/packets/national_parks"], function (require, exports, continentPacket, europeanCountriesPacket, asianCountriesPacket, africaCountriesPacket, southAmericaCountriesPacket, worldCountriesPacket, worldCitiesPacket, usaGreatLakesPacket, usaStatesPacket, usaCitiesPacket, volcanoesPacket, nationalParksPacket) {
     "use strict";
     const packets = {
         "Continents": continentPacket,
+        "Asian Countries": asianCountriesPacket,
         "European Countries": europeanCountriesPacket,
         "African Countries": africaCountriesPacket,
         "South American Countries": southAmericaCountriesPacket,

@@ -292,6 +292,7 @@
       "../components/packets/common.ts",
       "../components/packets/continents_world.ts",
       "../components/packets/countries_europe.ts",
+      "../components/packets/countries_asia.ts",
       "../components/packets/countries_africa.ts",
       "../components/packets/countries_southamerica.ts",
       "../components/packets/countries_world.ts",
@@ -314,7 +315,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 2659653,
+          "end": 2660121,
           "kind": "text"
         }
       ]

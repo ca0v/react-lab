@@ -5,6 +5,7 @@ import { Dictionary, shuffle } from "../../common/common";
 
 import continentPacket = require("./continents_world");
 import europeanCountriesPacket = require("./countries_europe");
+import asianCountriesPacket = require("./countries_asia");
 import africaCountriesPacket = require("./countries_africa");
 import southAmericaCountriesPacket = require("./countries_southamerica");
 import worldCountriesPacket = require("./countries_world");
@@ -17,6 +18,7 @@ import nationalParksPacket = require("./national_parks");
 
 const packets: Dictionary<IPacket<any>> = {
     "Continents": continentPacket,
+    "Asian Countries": asianCountriesPacket,
     "European Countries": europeanCountriesPacket,
     "African Countries": africaCountriesPacket,
     "South American Countries": southAmericaCountriesPacket,

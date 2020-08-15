@@ -24986,18 +24986,14 @@ define("fun/computeDistanceVector", ["require", "exports", "node_modules/ol/src/
 define("test/index", ["require", "exports", "node_modules/ol/src/Feature", "node_modules/ol/src/geom", "fun/computeDistanceVector", "chai"], function (require, exports, Feature_1, geom_1, computeDistanceVector_1, chai_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.run = void 0;
-    function run() {
-        describe("describe", () => {
-            it("computeDistanceVector", () => {
-                const f1 = new Feature_1.default(new geom_1.Point([0, 0]));
-                const f2 = new Feature_1.default(new geom_1.Point([0, 1]));
-                const result = computeDistanceVector_1.computeDistanceVector(f1, f2);
-                chai_1.assert.equal(0, result[0], "x offset");
-                chai_1.assert.equal(-1, result[1], "y offset");
-            });
+    describe("describe", () => {
+        it("computeDistanceVector", () => {
+            const f1 = new Feature_1.default(new geom_1.Point([0, 0]));
+            const f2 = new Feature_1.default(new geom_1.Point([0, 1]));
+            const result = computeDistanceVector_1.computeDistanceVector(f1, f2);
+            chai_1.assert.equal(0, result[0], "x offset");
+            chai_1.assert.equal(-1, result[1], "y offset");
         });
-    }
-    exports.run = run;
+    });
 });
 //# sourceMappingURL=index.js.map

@@ -15,8 +15,7 @@
             define("mocha", mocha);
             define("chai", chai);
             mocha.setup("bdd");
-            require(["test/index"], (test) => {
-                test.run();
+            require(["test/index"], () => {
                 mocha.run();
             });
         });

@@ -4,13 +4,17 @@
   "description": "Typescript + TSX + React + RequireJS",
   "main": "index.js",
   "scripts": {
+    "build:test": "cd ./test && tsc -w",
+    "run:test": "live-server --port=5000 --wait=500 --ignorePattern=/*\\.ts*/ --open=test/index.html",
+    "test": "npm-run-all -p build:test run:test",
     "compile": "tsc",
     "watch": "tsc -w",
     "simplify": "forfiles /C \"cmd /c simplify-geojson @file > @fname.simple.json\"",
     "dev": "live-server --port=5000 --wait=5000 --ignorePattern=/*\\.ts*/ --open=rawgit.html",
     "copy:requirejs": "cp ./node_modules/requirejs/require.js ./built/",
     "copy:mocha": "cp ./node_modules/mocha/mocha.* ./built/test/",
-    "postinstall": "npm-run-all copy:requirejs copy:mocha"
+    "copy:chai": "cp ./node_modules/chai/chai.js ./built/test/",
+    "postinstall": "npm-run-all -p copy:requirejs copy:mocha copy:chai"
   },
   "author": "",
   "license": "MIT",
@@ -23,8 +27,11 @@
   },
   "homepage": "https://github.com/ca0v/react-lab#readme",
   "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.0.2",
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
+    "chai": "^4.2.0",
     "csstype": "^3.0.2",
     "live-server": "^1.2.1",
     "mocha": "^8.1.1",

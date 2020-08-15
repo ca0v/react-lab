@@ -11,10 +11,14 @@
     <script src="../built/require.js"></script>
     <script src="../built/test/index.js"></script>
     <script>
-        require(["../built/test/mocha.js", "index"], (mocha, test) => {
+        require(["../built/test/mocha.js", "../built/test/chai.js"], (mocha, chai) => {
+            define("mocha", mocha);
+            define("chai", chai);
             mocha.setup("bdd");
-            test.run();
-            mocha.run();
+            require(["test/index"], (test) => {
+                test.run();
+                mocha.run();
+            });
         });
     </script>
 </body>

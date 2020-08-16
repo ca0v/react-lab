@@ -2,6 +2,7 @@ import Feature from "@ol/Feature";
 import { Point } from "@ol/geom";
 import { computeDistanceVector } from "../fun/computeDistanceVector";
 import { assert } from "chai";
+import {PbfLab} from "./pbfTest";
 
 describe("describe", () => {
   it("computeDistanceVector", () => {
@@ -11,4 +12,10 @@ describe("describe", () => {
     assert.equal(0, result[0], "x offset");
     assert.equal(-1, result[1], "y offset");
   });
+
+  it("pbf", () => {
+    const lab =new PbfLab();
+    lab.run();
+  });
+  
 });

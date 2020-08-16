@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "incremental": true, /* Enable incremental compilation */
     "target": "ES2020", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
@@ -20,10 +21,25 @@
       "@ol/*": [
         "../node_modules/ol/src/*"
       ],
-    },
+      "rbush/rbush.js": [
+        "../node_modules/rbush/index.js"
+      ],
+      "quickselect": [
+        "../node_modules/quickselect/index.js"
+      ],
+      "csstype": [
+        "../node_modules/csstype/index.d.ts"
+      ],
+      "pbf": [
+        "../assets/pbf.js"
+      ],
+      "ieee754": [
+        "../assets/ieee754.js"
+      ]},
     "esModuleInterop": false, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     "skipLibCheck": true, /* Skip type checking of declaration files. */
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+    "skipDefaultLibCheck": true,
   },
   "files": [
     "index.ts"

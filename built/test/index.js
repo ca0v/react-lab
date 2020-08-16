@@ -24983,7 +24983,4586 @@ define("fun/computeDistanceVector", ["require", "exports", "node_modules/ol/src/
     }
     exports.computeDistanceVector = computeDistanceVector;
 });
-define("test/index", ["require", "exports", "node_modules/ol/src/Feature", "node_modules/ol/src/geom", "fun/computeDistanceVector", "chai"], function (require, exports, Feature_1, geom_1, computeDistanceVector_1, chai_1) {
+/**
+ * @module ol/format/FormatType
+ */
+define("node_modules/ol/src/format/FormatType", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @enum {string}
+     */
+    exports.default = {
+        ARRAY_BUFFER: 'arraybuffer',
+        JSON: 'json',
+        TEXT: 'text',
+        XML: 'xml',
+    };
+});
+define("node_modules/ol/src/format/Feature", ["require", "exports", "node_modules/ol/src/proj/Units", "node_modules/ol/src/util", "node_modules/ol/src/obj", "node_modules/ol/src/proj"], function (require, exports, Units_js_8, util_js_16, obj_js_11, proj_js_9) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.transformExtentWithOptions = exports.transformGeometryWithOptions = void 0;
+    /**
+     * @typedef {Object} ReadOptions
+     * @property {import("../proj.js").ProjectionLike} [dataProjection] Projection of the data we are reading.
+     * If not provided, the projection will be derived from the data (where possible) or
+     * the `dataProjection` of the format is assigned (where set). If the projection
+     * can not be derived from the data and if no `dataProjection` is set for a format,
+     * the features will not be reprojected.
+     * @property {import("../extent.js").Extent} [extent] Tile extent in map units of the tile being read.
+     * This is only required when reading data with tile pixels as geometry units. When configured,
+     * a `dataProjection` with `TILE_PIXELS` as `units` and the tile's pixel extent as `extent` needs to be
+     * provided.
+     * @property {import("../proj.js").ProjectionLike} [featureProjection] Projection of the feature geometries
+     * created by the format reader. If not provided, features will be returned in the
+     * `dataProjection`.
+     */
+    /**
+     * @typedef {Object} WriteOptions
+     * @property {import("../proj.js").ProjectionLike} [dataProjection] Projection of the data we are writing.
+     * If not provided, the `dataProjection` of the format is assigned (where set).
+     * If no `dataProjection` is set for a format, the features will be returned
+     * in the `featureProjection`.
+     * @property {import("../proj.js").ProjectionLike} [featureProjection] Projection of the feature geometries
+     * that will be serialized by the format writer. If not provided, geometries are assumed
+     * to be in the `dataProjection` if that is set; in other words, they are not transformed.
+     * @property {boolean} [rightHanded] When writing geometries, follow the right-hand
+     * rule for linear ring orientation.  This means that polygons will have counter-clockwise
+     * exterior rings and clockwise interior rings.  By default, coordinates are serialized
+     * as they are provided at construction.  If `true`, the right-hand rule will
+     * be applied.  If `false`, the left-hand rule will be applied (clockwise for
+     * exterior and counter-clockwise for interior rings).  Note that not all
+     * formats support this.  The GeoJSON format does use this property when writing
+     * geometries.
+     * @property {number} [decimals] Maximum number of decimal places for coordinates.
+     * Coordinates are stored internally as floats, but floating-point arithmetic can create
+     * coordinates with a large number of decimal places, not generally wanted on output.
+     * Set a number here to round coordinates. Can also be used to ensure that
+     * coordinates read in can be written back out with the same number of decimals.
+     * Default is no rounding.
+     */
+    /**
+     * @classdesc
+     * Abstract base class; normally only used for creating subclasses and not
+     * instantiated in apps.
+     * Base class for feature formats.
+     * {@link module:ol/format/Feature~FeatureFormat} subclasses provide the ability to decode and encode
+     * {@link module:ol/Feature~Feature} objects from a variety of commonly used geospatial
+     * file formats.  See the documentation for each format for more details.
+     *
+     * @abstract
+     * @api
+     */
+    class FeatureFormat {
+        constructor() {
+            /**
+             * @protected
+             * @type {import("../proj/Projection.js").default}
+             */
+            this.dataProjection = null;
+            /**
+             * @protected
+             * @type {import("../proj/Projection.js").default}
+             */
+            this.defaultFeatureProjection = null;
+        }
+        /**
+         * Adds the data projection to the read options.
+         * @param {Document|Element|Object|string} source Source.
+         * @param {ReadOptions=} opt_options Options.
+         * @return {ReadOptions|undefined} Options.
+         * @protected
+         */
+        getReadOptions(source, opt_options) {
+            let options;
+            if (opt_options) {
+                let dataProjection = opt_options.dataProjection
+                    ? proj_js_9.get(opt_options.dataProjection)
+                    : this.readProjection(source);
+                if (opt_options.extent &&
+                    dataProjection &&
+                    dataProjection.getUnits() === Units_js_8.default.TILE_PIXELS) {
+                    dataProjection = proj_js_9.get(dataProjection);
+                    dataProjection.setWorldExtent(opt_options.extent);
+                }
+                options = {
+                    dataProjection: dataProjection,
+                    featureProjection: opt_options.featureProjection,
+                };
+            }
+            return this.adaptOptions(options);
+        }
+        /**
+         * Sets the `dataProjection` on the options, if no `dataProjection`
+         * is set.
+         * @param {WriteOptions|ReadOptions|undefined} options
+         *     Options.
+         * @protected
+         * @return {WriteOptions|ReadOptions|undefined}
+         *     Updated options.
+         */
+        adaptOptions(options) {
+            return obj_js_11.assign({
+                dataProjection: this.dataProjection,
+                featureProjection: this.defaultFeatureProjection,
+            }, options);
+        }
+        /**
+         * @abstract
+         * @return {import("./FormatType.js").default} Format.
+         */
+        getType() {
+            return util_js_16.abstract();
+        }
+        /**
+         * Read a single feature from a source.
+         *
+         * @abstract
+         * @param {Document|Element|Object|string} source Source.
+         * @param {ReadOptions=} opt_options Read options.
+         * @return {import("../Feature.js").FeatureLike} Feature.
+         */
+        readFeature(source, opt_options) {
+            return util_js_16.abstract();
+        }
+        /**
+         * Read all features from a source.
+         *
+         * @abstract
+         * @param {Document|Element|ArrayBuffer|Object|string} source Source.
+         * @param {ReadOptions=} opt_options Read options.
+         * @return {Array<import("../Feature.js").FeatureLike>} Features.
+         */
+        readFeatures(source, opt_options) {
+            return util_js_16.abstract();
+        }
+        /**
+         * Read a single geometry from a source.
+         *
+         * @abstract
+         * @param {Document|Element|Object|string} source Source.
+         * @param {ReadOptions=} opt_options Read options.
+         * @return {import("../geom/Geometry.js").default} Geometry.
+         */
+        readGeometry(source, opt_options) {
+            return util_js_16.abstract();
+        }
+        /**
+         * Read the projection from a source.
+         *
+         * @abstract
+         * @param {Document|Element|Object|string} source Source.
+         * @return {import("../proj/Projection.js").default} Projection.
+         */
+        readProjection(source) {
+            return util_js_16.abstract();
+        }
+        /**
+         * Encode a feature in this format.
+         *
+         * @abstract
+         * @param {import("../Feature.js").default} feature Feature.
+         * @param {WriteOptions=} opt_options Write options.
+         * @return {string} Result.
+         */
+        writeFeature(feature, opt_options) {
+            return util_js_16.abstract();
+        }
+        /**
+         * Encode an array of features in this format.
+         *
+         * @abstract
+         * @param {Array<import("../Feature.js").default>} features Features.
+         * @param {WriteOptions=} opt_options Write options.
+         * @return {string} Result.
+         */
+        writeFeatures(features, opt_options) {
+            return util_js_16.abstract();
+        }
+        /**
+         * Write a single geometry in this format.
+         *
+         * @abstract
+         * @param {import("../geom/Geometry.js").default} geometry Geometry.
+         * @param {WriteOptions=} opt_options Write options.
+         * @return {string} Result.
+         */
+        writeGeometry(geometry, opt_options) {
+            return util_js_16.abstract();
+        }
+    }
+    exports.default = FeatureFormat;
+    /**
+     * @param {import("../geom/Geometry.js").default} geometry Geometry.
+     * @param {boolean} write Set to true for writing, false for reading.
+     * @param {(WriteOptions|ReadOptions)=} opt_options Options.
+     * @return {import("../geom/Geometry.js").default} Transformed geometry.
+     */
+    function transformGeometryWithOptions(geometry, write, opt_options) {
+        const featureProjection = opt_options
+            ? proj_js_9.get(opt_options.featureProjection)
+            : null;
+        const dataProjection = opt_options
+            ? proj_js_9.get(opt_options.dataProjection)
+            : null;
+        let transformed;
+        if (featureProjection &&
+            dataProjection &&
+            !proj_js_9.equivalent(featureProjection, dataProjection)) {
+            transformed = (write ? geometry.clone() : geometry).transform(write ? featureProjection : dataProjection, write ? dataProjection : featureProjection);
+        }
+        else {
+            transformed = geometry;
+        }
+        if (write &&
+            opt_options &&
+            /** @type {WriteOptions} */ (opt_options).decimals !== undefined) {
+            const power = Math.pow(10, 
+            /** @type {WriteOptions} */ (opt_options).decimals);
+            // if decimals option on write, round each coordinate appropriately
+            /**
+             * @param {Array<number>} coordinates Coordinates.
+             * @return {Array<number>} Transformed coordinates.
+             */
+            const transform = function (coordinates) {
+                for (let i = 0, ii = coordinates.length; i < ii; ++i) {
+                    coordinates[i] = Math.round(coordinates[i] * power) / power;
+                }
+                return coordinates;
+            };
+            if (transformed === geometry) {
+                transformed = geometry.clone();
+            }
+            transformed.applyTransform(transform);
+        }
+        return transformed;
+    }
+    exports.transformGeometryWithOptions = transformGeometryWithOptions;
+    /**
+     * @param {import("../extent.js").Extent} extent Extent.
+     * @param {ReadOptions=} opt_options Read options.
+     * @return {import("../extent.js").Extent} Transformed extent.
+     */
+    function transformExtentWithOptions(extent, opt_options) {
+        const featureProjection = opt_options
+            ? proj_js_9.get(opt_options.featureProjection)
+            : null;
+        const dataProjection = opt_options
+            ? proj_js_9.get(opt_options.dataProjection)
+            : null;
+        if (featureProjection &&
+            dataProjection &&
+            !proj_js_9.equivalent(featureProjection, dataProjection)) {
+            return proj_js_9.transformExtent(extent, dataProjection, featureProjection);
+        }
+        else {
+            return extent;
+        }
+    }
+    exports.transformExtentWithOptions = transformExtentWithOptions;
+});
+define("node_modules/quickselect/index", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    function quickselect(arr, k, left, right, compare) {
+        quickselectStep(arr, k, left || 0, right || (arr.length - 1), compare || defaultCompare);
+    }
+    exports.default = quickselect;
+    function quickselectStep(arr, k, left, right, compare) {
+        while (right > left) {
+            if (right - left > 600) {
+                var n = right - left + 1;
+                var m = k - left + 1;
+                var z = Math.log(n);
+                var s = 0.5 * Math.exp(2 * z / 3);
+                var sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
+                var newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
+                var newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
+                quickselectStep(arr, k, newLeft, newRight, compare);
+            }
+            var t = arr[k];
+            var i = left;
+            var j = right;
+            swap(arr, left, k);
+            if (compare(arr[right], t) > 0)
+                swap(arr, left, right);
+            while (i < j) {
+                swap(arr, i, j);
+                i++;
+                j--;
+                while (compare(arr[i], t) < 0)
+                    i++;
+                while (compare(arr[j], t) > 0)
+                    j--;
+            }
+            if (compare(arr[left], t) === 0)
+                swap(arr, left, j);
+            else {
+                j++;
+                swap(arr, j, right);
+            }
+            if (j <= k)
+                left = j + 1;
+            if (k <= j)
+                right = j - 1;
+        }
+    }
+    function swap(arr, i, j) {
+        var tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+    function defaultCompare(a, b) {
+        return a < b ? -1 : a > b ? 1 : 0;
+    }
+});
+define("node_modules/rbush/index", ["require", "exports", "node_modules/quickselect/index"], function (require, exports, quickselect_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class RBush {
+        constructor(maxEntries = 9) {
+            // max entries in a node is 9 by default; min node fill is 40% for best performance
+            this._maxEntries = Math.max(4, maxEntries);
+            this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
+            this.clear();
+        }
+        all() {
+            return this._all(this.data, []);
+        }
+        search(bbox) {
+            let node = this.data;
+            const result = [];
+            if (!intersects(bbox, node))
+                return result;
+            const toBBox = this.toBBox;
+            const nodesToSearch = [];
+            while (node) {
+                for (let i = 0; i < node.children.length; i++) {
+                    const child = node.children[i];
+                    const childBBox = node.leaf ? toBBox(child) : child;
+                    if (intersects(bbox, childBBox)) {
+                        if (node.leaf)
+                            result.push(child);
+                        else if (contains(bbox, childBBox))
+                            this._all(child, result);
+                        else
+                            nodesToSearch.push(child);
+                    }
+                }
+                node = nodesToSearch.pop();
+            }
+            return result;
+        }
+        collides(bbox) {
+            let node = this.data;
+            if (!intersects(bbox, node))
+                return false;
+            const nodesToSearch = [];
+            while (node) {
+                for (let i = 0; i < node.children.length; i++) {
+                    const child = node.children[i];
+                    const childBBox = node.leaf ? this.toBBox(child) : child;
+                    if (intersects(bbox, childBBox)) {
+                        if (node.leaf || contains(bbox, childBBox))
+                            return true;
+                        nodesToSearch.push(child);
+                    }
+                }
+                node = nodesToSearch.pop();
+            }
+            return false;
+        }
+        load(data) {
+            if (!(data && data.length))
+                return this;
+            if (data.length < this._minEntries) {
+                for (let i = 0; i < data.length; i++) {
+                    this.insert(data[i]);
+                }
+                return this;
+            }
+            // recursively build the tree with the given data from scratch using OMT algorithm
+            let node = this._build(data.slice(), 0, data.length - 1, 0);
+            if (!this.data.children.length) {
+                // save as is if tree is empty
+                this.data = node;
+            }
+            else if (this.data.height === node.height) {
+                // split root if trees have the same height
+                this._splitRoot(this.data, node);
+            }
+            else {
+                if (this.data.height < node.height) {
+                    // swap trees if inserted one is bigger
+                    const tmpNode = this.data;
+                    this.data = node;
+                    node = tmpNode;
+                }
+                // insert the small tree into the large tree at appropriate level
+                this._insert(node, this.data.height - node.height - 1, true);
+            }
+            return this;
+        }
+        insert(item) {
+            if (item)
+                this._insert(item, this.data.height - 1);
+            return this;
+        }
+        clear() {
+            this.data = createNode([]);
+            return this;
+        }
+        remove(item, equalsFn) {
+            if (!item)
+                return this;
+            let node = this.data;
+            const bbox = this.toBBox(item);
+            const path = [];
+            const indexes = [];
+            let i, parent, goingUp;
+            // depth-first iterative tree traversal
+            while (node || path.length) {
+                if (!node) { // go up
+                    node = path.pop();
+                    parent = path[path.length - 1];
+                    i = indexes.pop();
+                    goingUp = true;
+                }
+                if (node.leaf) { // check current node
+                    const index = findItem(item, node.children, equalsFn);
+                    if (index !== -1) {
+                        // item found, remove the item and condense tree upwards
+                        node.children.splice(index, 1);
+                        path.push(node);
+                        this._condense(path);
+                        return this;
+                    }
+                }
+                if (!goingUp && !node.leaf && contains(node, bbox)) { // go down
+                    path.push(node);
+                    indexes.push(i);
+                    i = 0;
+                    parent = node;
+                    node = node.children[0];
+                }
+                else if (parent) { // go right
+                    i++;
+                    node = parent.children[i];
+                    goingUp = false;
+                }
+                else
+                    node = null; // nothing found
+            }
+            return this;
+        }
+        toBBox(item) { return item; }
+        compareMinX(a, b) { return a.minX - b.minX; }
+        compareMinY(a, b) { return a.minY - b.minY; }
+        toJSON() { return this.data; }
+        fromJSON(data) {
+            this.data = data;
+            return this;
+        }
+        _all(node, result) {
+            const nodesToSearch = [];
+            while (node) {
+                if (node.leaf)
+                    result.push(...node.children);
+                else
+                    nodesToSearch.push(...node.children);
+                node = nodesToSearch.pop();
+            }
+            return result;
+        }
+        _build(items, left, right, height) {
+            const N = right - left + 1;
+            let M = this._maxEntries;
+            let node;
+            if (N <= M) {
+                // reached leaf level; return leaf
+                node = createNode(items.slice(left, right + 1));
+                calcBBox(node, this.toBBox);
+                return node;
+            }
+            if (!height) {
+                // target height of the bulk-loaded tree
+                height = Math.ceil(Math.log(N) / Math.log(M));
+                // target number of root entries to maximize storage utilization
+                M = Math.ceil(N / Math.pow(M, height - 1));
+            }
+            node = createNode([]);
+            node.leaf = false;
+            node.height = height;
+            // split the items into M mostly square tiles
+            const N2 = Math.ceil(N / M);
+            const N1 = N2 * Math.ceil(Math.sqrt(M));
+            multiSelect(items, left, right, N1, this.compareMinX);
+            for (let i = left; i <= right; i += N1) {
+                const right2 = Math.min(i + N1 - 1, right);
+                multiSelect(items, i, right2, N2, this.compareMinY);
+                for (let j = i; j <= right2; j += N2) {
+                    const right3 = Math.min(j + N2 - 1, right2);
+                    // pack each entry recursively
+                    node.children.push(this._build(items, j, right3, height - 1));
+                }
+            }
+            calcBBox(node, this.toBBox);
+            return node;
+        }
+        _chooseSubtree(bbox, node, level, path) {
+            while (true) {
+                path.push(node);
+                if (node.leaf || path.length - 1 === level)
+                    break;
+                let minArea = Infinity;
+                let minEnlargement = Infinity;
+                let targetNode;
+                for (let i = 0; i < node.children.length; i++) {
+                    const child = node.children[i];
+                    const area = bboxArea(child);
+                    const enlargement = enlargedArea(bbox, child) - area;
+                    // choose entry with the least area enlargement
+                    if (enlargement < minEnlargement) {
+                        minEnlargement = enlargement;
+                        minArea = area < minArea ? area : minArea;
+                        targetNode = child;
+                    }
+                    else if (enlargement === minEnlargement) {
+                        // otherwise choose one with the smallest area
+                        if (area < minArea) {
+                            minArea = area;
+                            targetNode = child;
+                        }
+                    }
+                }
+                node = targetNode || node.children[0];
+            }
+            return node;
+        }
+        _insert(item, level, isNode) {
+            const bbox = isNode ? item : this.toBBox(item);
+            const insertPath = [];
+            // find the best node for accommodating the item, saving all nodes along the path too
+            const node = this._chooseSubtree(bbox, this.data, level, insertPath);
+            // put the item into the node
+            node.children.push(item);
+            extend(node, bbox);
+            // split on node overflow; propagate upwards if necessary
+            while (level >= 0) {
+                if (insertPath[level].children.length > this._maxEntries) {
+                    this._split(insertPath, level);
+                    level--;
+                }
+                else
+                    break;
+            }
+            // adjust bboxes along the insertion path
+            this._adjustParentBBoxes(bbox, insertPath, level);
+        }
+        // split overflowed node into two
+        _split(insertPath, level) {
+            const node = insertPath[level];
+            const M = node.children.length;
+            const m = this._minEntries;
+            this._chooseSplitAxis(node, m, M);
+            const splitIndex = this._chooseSplitIndex(node, m, M);
+            const newNode = createNode(node.children.splice(splitIndex, node.children.length - splitIndex));
+            newNode.height = node.height;
+            newNode.leaf = node.leaf;
+            calcBBox(node, this.toBBox);
+            calcBBox(newNode, this.toBBox);
+            if (level)
+                insertPath[level - 1].children.push(newNode);
+            else
+                this._splitRoot(node, newNode);
+        }
+        _splitRoot(node, newNode) {
+            // split root node
+            this.data = createNode([node, newNode]);
+            this.data.height = node.height + 1;
+            this.data.leaf = false;
+            calcBBox(this.data, this.toBBox);
+        }
+        _chooseSplitIndex(node, m, M) {
+            let index;
+            let minOverlap = Infinity;
+            let minArea = Infinity;
+            for (let i = m; i <= M - m; i++) {
+                const bbox1 = distBBox(node, 0, i, this.toBBox);
+                const bbox2 = distBBox(node, i, M, this.toBBox);
+                const overlap = intersectionArea(bbox1, bbox2);
+                const area = bboxArea(bbox1) + bboxArea(bbox2);
+                // choose distribution with minimum overlap
+                if (overlap < minOverlap) {
+                    minOverlap = overlap;
+                    index = i;
+                    minArea = area < minArea ? area : minArea;
+                }
+                else if (overlap === minOverlap) {
+                    // otherwise choose distribution with minimum area
+                    if (area < minArea) {
+                        minArea = area;
+                        index = i;
+                    }
+                }
+            }
+            return index || M - m;
+        }
+        // sorts node children by the best axis for split
+        _chooseSplitAxis(node, m, M) {
+            const compareMinX = node.leaf ? this.compareMinX : compareNodeMinX;
+            const compareMinY = node.leaf ? this.compareMinY : compareNodeMinY;
+            const xMargin = this._allDistMargin(node, m, M, compareMinX);
+            const yMargin = this._allDistMargin(node, m, M, compareMinY);
+            // if total distributions margin value is minimal for x, sort by minX,
+            // otherwise it's already sorted by minY
+            if (xMargin < yMargin)
+                node.children.sort(compareMinX);
+        }
+        // total margin of all possible split distributions where each node is at least m full
+        _allDistMargin(node, m, M, compare) {
+            node.children.sort(compare);
+            const toBBox = this.toBBox;
+            const leftBBox = distBBox(node, 0, m, toBBox);
+            const rightBBox = distBBox(node, M - m, M, toBBox);
+            let margin = bboxMargin(leftBBox) + bboxMargin(rightBBox);
+            for (let i = m; i < M - m; i++) {
+                const child = node.children[i];
+                extend(leftBBox, node.leaf ? toBBox(child) : child);
+                margin += bboxMargin(leftBBox);
+            }
+            for (let i = M - m - 1; i >= m; i--) {
+                const child = node.children[i];
+                extend(rightBBox, node.leaf ? toBBox(child) : child);
+                margin += bboxMargin(rightBBox);
+            }
+            return margin;
+        }
+        _adjustParentBBoxes(bbox, path, level) {
+            // adjust bboxes along the given tree path
+            for (let i = level; i >= 0; i--) {
+                extend(path[i], bbox);
+            }
+        }
+        _condense(path) {
+            // go through the path, removing empty nodes and updating bboxes
+            for (let i = path.length - 1, siblings; i >= 0; i--) {
+                if (path[i].children.length === 0) {
+                    if (i > 0) {
+                        siblings = path[i - 1].children;
+                        siblings.splice(siblings.indexOf(path[i]), 1);
+                    }
+                    else
+                        this.clear();
+                }
+                else
+                    calcBBox(path[i], this.toBBox);
+            }
+        }
+    }
+    exports.default = RBush;
+    function findItem(item, items, equalsFn) {
+        if (!equalsFn)
+            return items.indexOf(item);
+        for (let i = 0; i < items.length; i++) {
+            if (equalsFn(item, items[i]))
+                return i;
+        }
+        return -1;
+    }
+    // calculate node's bbox from bboxes of its children
+    function calcBBox(node, toBBox) {
+        distBBox(node, 0, node.children.length, toBBox, node);
+    }
+    // min bounding rectangle of node children from k to p-1
+    function distBBox(node, k, p, toBBox, destNode) {
+        if (!destNode)
+            destNode = createNode(null);
+        destNode.minX = Infinity;
+        destNode.minY = Infinity;
+        destNode.maxX = -Infinity;
+        destNode.maxY = -Infinity;
+        for (let i = k; i < p; i++) {
+            const child = node.children[i];
+            extend(destNode, node.leaf ? toBBox(child) : child);
+        }
+        return destNode;
+    }
+    function extend(a, b) {
+        a.minX = Math.min(a.minX, b.minX);
+        a.minY = Math.min(a.minY, b.minY);
+        a.maxX = Math.max(a.maxX, b.maxX);
+        a.maxY = Math.max(a.maxY, b.maxY);
+        return a;
+    }
+    function compareNodeMinX(a, b) { return a.minX - b.minX; }
+    function compareNodeMinY(a, b) { return a.minY - b.minY; }
+    function bboxArea(a) { return (a.maxX - a.minX) * (a.maxY - a.minY); }
+    function bboxMargin(a) { return (a.maxX - a.minX) + (a.maxY - a.minY); }
+    function enlargedArea(a, b) {
+        return (Math.max(b.maxX, a.maxX) - Math.min(b.minX, a.minX)) *
+            (Math.max(b.maxY, a.maxY) - Math.min(b.minY, a.minY));
+    }
+    function intersectionArea(a, b) {
+        const minX = Math.max(a.minX, b.minX);
+        const minY = Math.max(a.minY, b.minY);
+        const maxX = Math.min(a.maxX, b.maxX);
+        const maxY = Math.min(a.maxY, b.maxY);
+        return Math.max(0, maxX - minX) *
+            Math.max(0, maxY - minY);
+    }
+    function contains(a, b) {
+        return a.minX <= b.minX &&
+            a.minY <= b.minY &&
+            b.maxX <= a.maxX &&
+            b.maxY <= a.maxY;
+    }
+    function intersects(a, b) {
+        return b.minX <= a.maxX &&
+            b.minY <= a.maxY &&
+            b.maxX >= a.minX &&
+            b.maxY >= a.minY;
+    }
+    function createNode(children) {
+        return {
+            children,
+            height: 1,
+            leaf: true,
+            minX: Infinity,
+            minY: Infinity,
+            maxX: -Infinity,
+            maxY: -Infinity
+        };
+    }
+    // sort an array so that items come in groups of n unsorted items, with groups sorted between each other;
+    // combines selection algorithm with binary divide & conquer approach
+    function multiSelect(arr, left, right, n, compare) {
+        const stack = [left, right];
+        while (stack.length) {
+            right = stack.pop();
+            left = stack.pop();
+            if (right - left <= n)
+                continue;
+            const mid = left + Math.ceil((right - left) / n / 2) * n;
+            quickselect_1.default(arr, mid, left, right, compare);
+            stack.push(left, mid, mid, right);
+        }
+    }
+});
+define("node_modules/ol/src/structs/RBush", ["require", "exports", "node_modules/rbush/index", "node_modules/ol/src/extent", "node_modules/ol/src/util", "node_modules/ol/src/obj"], function (require, exports, rbush_js_1, extent_js_30, util_js_17, obj_js_12) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @typedef {Object} Entry
+     * @property {number} minX
+     * @property {number} minY
+     * @property {number} maxX
+     * @property {number} maxY
+     * @property {Object} [value]
+     */
+    /**
+     * @classdesc
+     * Wrapper around the RBush by Vladimir Agafonkin.
+     * See https://github.com/mourner/rbush.
+     *
+     * @template T
+     */
+    class RBush {
+        /**
+         * @param {number=} opt_maxEntries Max entries.
+         */
+        constructor(opt_maxEntries) {
+            /**
+             * @private
+             */
+            this.rbush_ = new rbush_js_1.default(opt_maxEntries);
+            /**
+             * A mapping between the objects added to this rbush wrapper
+             * and the objects that are actually added to the internal rbush.
+             * @private
+             * @type {Object<string, Entry>}
+             */
+            this.items_ = {};
+        }
+        /**
+         * Insert a value into the RBush.
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @param {T} value Value.
+         */
+        insert(extent, value) {
+            /** @type {Entry} */
+            const item = {
+                minX: extent[0],
+                minY: extent[1],
+                maxX: extent[2],
+                maxY: extent[3],
+                value: value,
+            };
+            this.rbush_.insert(item);
+            this.items_[util_js_17.getUid(value)] = item;
+        }
+        /**
+         * Bulk-insert values into the RBush.
+         * @param {Array<import("../extent.js").Extent>} extents Extents.
+         * @param {Array<T>} values Values.
+         */
+        load(extents, values) {
+            const items = new Array(values.length);
+            for (let i = 0, l = values.length; i < l; i++) {
+                const extent = extents[i];
+                const value = values[i];
+                /** @type {Entry} */
+                const item = {
+                    minX: extent[0],
+                    minY: extent[1],
+                    maxX: extent[2],
+                    maxY: extent[3],
+                    value: value,
+                };
+                items[i] = item;
+                this.items_[util_js_17.getUid(value)] = item;
+            }
+            this.rbush_.load(items);
+        }
+        /**
+         * Remove a value from the RBush.
+         * @param {T} value Value.
+         * @return {boolean} Removed.
+         */
+        remove(value) {
+            const uid = util_js_17.getUid(value);
+            // get the object in which the value was wrapped when adding to the
+            // internal rbush. then use that object to do the removal.
+            const item = this.items_[uid];
+            delete this.items_[uid];
+            return this.rbush_.remove(item) !== null;
+        }
+        /**
+         * Update the extent of a value in the RBush.
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @param {T} value Value.
+         */
+        update(extent, value) {
+            const item = this.items_[util_js_17.getUid(value)];
+            const bbox = [item.minX, item.minY, item.maxX, item.maxY];
+            if (!extent_js_30.equals(bbox, extent)) {
+                this.remove(value);
+                this.insert(extent, value);
+            }
+        }
+        /**
+         * Return all values in the RBush.
+         * @return {Array<T>} All.
+         */
+        getAll() {
+            const items = this.rbush_.all();
+            return items.map(function (item) {
+                return item.value;
+            });
+        }
+        /**
+         * Return all values in the given extent.
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @return {Array<T>} All in extent.
+         */
+        getInExtent(extent) {
+            /** @type {Entry} */
+            const bbox = {
+                minX: extent[0],
+                minY: extent[1],
+                maxX: extent[2],
+                maxY: extent[3],
+            };
+            const items = this.rbush_.search(bbox);
+            return items.map(function (item) {
+                return item.value;
+            });
+        }
+        /**
+         * Calls a callback function with each value in the tree.
+         * If the callback returns a truthy value, this value is returned without
+         * checking the rest of the tree.
+         * @param {function(T): *} callback Callback.
+         * @return {*} Callback return value.
+         */
+        forEach(callback) {
+            return this.forEach_(this.getAll(), callback);
+        }
+        /**
+         * Calls a callback function with each value in the provided extent.
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @param {function(T): *} callback Callback.
+         * @return {*} Callback return value.
+         */
+        forEachInExtent(extent, callback) {
+            return this.forEach_(this.getInExtent(extent), callback);
+        }
+        /**
+         * @param {Array<T>} values Values.
+         * @param {function(T): *} callback Callback.
+         * @private
+         * @return {*} Callback return value.
+         */
+        forEach_(values, callback) {
+            let result;
+            for (let i = 0, l = values.length; i < l; i++) {
+                result = callback(values[i]);
+                if (result) {
+                    return result;
+                }
+            }
+            return result;
+        }
+        /**
+         * @return {boolean} Is empty.
+         */
+        isEmpty() {
+            return obj_js_12.isEmpty(this.items_);
+        }
+        /**
+         * Remove all values from the RBush.
+         */
+        clear() {
+            this.rbush_.clear();
+            this.items_ = {};
+        }
+        /**
+         * @param {import("../extent.js").Extent=} opt_extent Extent.
+         * @return {import("../extent.js").Extent} Extent.
+         */
+        getExtent(opt_extent) {
+            const data = this.rbush_.toJSON();
+            return extent_js_30.createOrUpdate(data.minX, data.minY, data.maxX, data.maxY, opt_extent);
+        }
+        /**
+         * @param {RBush} rbush R-Tree.
+         */
+        concat(rbush) {
+            this.rbush_.load(rbush.rbush_.all());
+            for (const i in rbush.items_) {
+                this.items_[i] = rbush.items_[i];
+            }
+        }
+    }
+    exports.default = RBush;
+});
+/**
+ * @module ol/source/VectorEventType
+ */
+define("node_modules/ol/src/source/VectorEventType", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @enum {string}
+     */
+    exports.default = {
+        /**
+         * Triggered when a feature is added to the source.
+         * @event module:ol/source/Vector.VectorSourceEvent#addfeature
+         * @api
+         */
+        ADDFEATURE: 'addfeature',
+        /**
+         * Triggered when a feature is updated.
+         * @event module:ol/source/Vector.VectorSourceEvent#changefeature
+         * @api
+         */
+        CHANGEFEATURE: 'changefeature',
+        /**
+         * Triggered when the clear method is called on the source.
+         * @event module:ol/source/Vector.VectorSourceEvent#clear
+         * @api
+         */
+        CLEAR: 'clear',
+        /**
+         * Triggered when a feature is removed from the source.
+         * See {@link module:ol/source/Vector#clear source.clear()} for exceptions.
+         * @event module:ol/source/Vector.VectorSourceEvent#removefeature
+         * @api
+         */
+        REMOVEFEATURE: 'removefeature',
+    };
+});
+/**
+ * @module ol/loadingstrategy
+ */
+define("node_modules/ol/src/loadingstrategy", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.tile = exports.bbox = exports.all = void 0;
+    /**
+     * Strategy function for loading all features with a single request.
+     * @param {import("./extent.js").Extent} extent Extent.
+     * @param {number} resolution Resolution.
+     * @return {Array<import("./extent.js").Extent>} Extents.
+     * @api
+     */
+    function all(extent, resolution) {
+        return [[-Infinity, -Infinity, Infinity, Infinity]];
+    }
+    exports.all = all;
+    /**
+     * Strategy function for loading features based on the view's extent and
+     * resolution.
+     * @param {import("./extent.js").Extent} extent Extent.
+     * @param {number} resolution Resolution.
+     * @return {Array<import("./extent.js").Extent>} Extents.
+     * @api
+     */
+    function bbox(extent, resolution) {
+        return [extent];
+    }
+    exports.bbox = bbox;
+    /**
+     * Creates a strategy function for loading features based on a tile grid.
+     * @param {import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
+     * @return {function(import("./extent.js").Extent, number): Array<import("./extent.js").Extent>} Loading strategy.
+     * @api
+     */
+    function tile(tileGrid) {
+        return (
+        /**
+         * @param {import("./extent.js").Extent} extent Extent.
+         * @param {number} resolution Resolution.
+         * @return {Array<import("./extent.js").Extent>} Extents.
+         */
+        function (extent, resolution) {
+            const z = tileGrid.getZForResolution(resolution);
+            const tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z);
+            /** @type {Array<import("./extent.js").Extent>} */
+            const extents = [];
+            /** @type {import("./tilecoord.js").TileCoord} */
+            const tileCoord = [z, 0, 0];
+            for (tileCoord[1] = tileRange.minX; tileCoord[1] <= tileRange.maxX; ++tileCoord[1]) {
+                for (tileCoord[2] = tileRange.minY; tileCoord[2] <= tileRange.maxY; ++tileCoord[2]) {
+                    extents.push(tileGrid.getTileCoordExtent(tileCoord));
+                }
+            }
+            return extents;
+        });
+    }
+    exports.tile = tile;
+});
+/**
+ * @module ol/source/Vector
+ */
+define("node_modules/ol/src/source/Vector", ["require", "exports", "node_modules/ol/src/Collection", "node_modules/ol/src/CollectionEventType", "node_modules/ol/src/events/Event", "node_modules/ol/src/events/EventType", "node_modules/ol/src/ObjectEventType", "node_modules/ol/src/structs/RBush", "node_modules/ol/src/source/Source", "node_modules/ol/src/source/State", "node_modules/ol/src/source/VectorEventType", "node_modules/ol/src/functions", "node_modules/ol/src/loadingstrategy", "node_modules/ol/src/asserts", "node_modules/ol/src/extent", "node_modules/ol/src/array", "node_modules/ol/src/util", "node_modules/ol/src/obj", "node_modules/ol/src/events", "node_modules/ol/src/featureloader"], function (require, exports, Collection_js_3, CollectionEventType_js_4, Event_js_7, EventType_js_19, ObjectEventType_js_4, RBush_js_1, Source_js_2, State_js_5, VectorEventType_js_1, functions_js_7, loadingstrategy_js_1, asserts_js_14, extent_js_31, array_js_15, util_js_18, obj_js_13, events_js_11, featureloader_js_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.VectorSourceEvent = void 0;
+    /**
+     * A function that takes an {@link module:ol/extent~Extent} and a resolution as arguments, and
+     * returns an array of {@link module:ol/extent~Extent} with the extents to load. Usually this
+     * is one of the standard {@link module:ol/loadingstrategy} strategies.
+     *
+     * @typedef {function(import("../extent.js").Extent, number): Array<import("../extent.js").Extent>} LoadingStrategy
+     * @api
+     */
+    /**
+     * @classdesc
+     * Events emitted by {@link module:ol/source/Vector} instances are instances of this
+     * type.
+     * @template {import("../geom/Geometry.js").default} Geometry
+     */
+    class VectorSourceEvent extends Event_js_7.default {
+        /**
+         * @param {string} type Type.
+         * @param {import("../Feature.js").default<Geometry>=} opt_feature Feature.
+         */
+        constructor(type, opt_feature) {
+            super(type);
+            /**
+             * The feature being added or removed.
+             * @type {import("../Feature.js").default<Geometry>|undefined}
+             * @api
+             */
+            this.feature = opt_feature;
+        }
+    }
+    exports.VectorSourceEvent = VectorSourceEvent;
+    /**
+     * @typedef {Object} Options
+     * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
+     * @property {Array<import("../Feature.js").default>|Collection<import("../Feature.js").default>} [features]
+     * Features. If provided as {@link module:ol/Collection}, the features in the source
+     * and the collection will stay in sync.
+     * @property {import("../format/Feature.js").default} [format] The feature format used by the XHR
+     * feature loader when `url` is set. Required if `url` is set, otherwise ignored.
+     * @property {import("../featureloader.js").FeatureLoader} [loader]
+     * The loader function used to load features, from a remote source for example.
+     * If this is not set and `url` is set, the source will create and use an XHR
+     * feature loader.
+     *
+     * Example:
+     *
+     * ```js
+     * import {Vector} from 'ol/source';
+     * import {GeoJSON} from 'ol/format';
+     * import {bbox} from 'ol/loadingstrategy';
+     *
+     * var vectorSource = new Vector({
+     *   format: new GeoJSON(),
+     *   loader: function(extent, resolution, projection) {
+     *      var proj = projection.getCode();
+     *      var url = 'https://ahocevar.com/geoserver/wfs?service=WFS&' +
+     *          'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
+     *          'outputFormat=application/json&srsname=' + proj + '&' +
+     *          'bbox=' + extent.join(',') + ',' + proj;
+     *      var xhr = new XMLHttpRequest();
+     *      xhr.open('GET', url);
+     *      var onError = function() {
+     *        vectorSource.removeLoadedExtent(extent);
+     *      }
+     *      xhr.onerror = onError;
+     *      xhr.onload = function() {
+     *        if (xhr.status == 200) {
+     *          vectorSource.addFeatures(
+     *              vectorSource.getFormat().readFeatures(xhr.responseText));
+     *        } else {
+     *          onError();
+     *        }
+     *      }
+     *      xhr.send();
+     *    },
+     *    strategy: bbox
+     *  });
+     * ```
+     * @property {boolean} [overlaps=true] This source may have overlapping geometries.
+     * Setting this to `false` (e.g. for sources with polygons that represent administrative
+     * boundaries or TopoJSON sources) allows the renderer to optimise fill and
+     * stroke operations.
+     * @property {LoadingStrategy} [strategy] The loading strategy to use.
+     * By default an {@link module:ol/loadingstrategy~all}
+     * strategy is used, a one-off strategy which loads all features at once.
+     * @property {string|import("../featureloader.js").FeatureUrlFunction} [url]
+     * Setting this option instructs the source to load features using an XHR loader
+     * (see {@link module:ol/featureloader~xhr}). Use a `string` and an
+     * {@link module:ol/loadingstrategy~all} for a one-off download of all features from
+     * the given URL. Use a {@link module:ol/featureloader~FeatureUrlFunction} to generate the url with
+     * other loading strategies.
+     * Requires `format` to be set as well.
+     * When default XHR feature loader is provided, the features will
+     * be transformed from the data projection to the view projection
+     * during parsing. If your remote data source does not advertise its projection
+     * properly, this transformation will be incorrect. For some formats, the
+     * default projection (usually EPSG:4326) can be overridden by setting the
+     * dataProjection constructor option on the format.
+     * Note that if a source contains non-feature data, such as a GeoJSON geometry
+     * or a KML NetworkLink, these will be ignored. Use a custom loader to load these.
+     * @property {boolean} [useSpatialIndex=true]
+     * By default, an RTree is used as spatial index. When features are removed and
+     * added frequently, and the total number of features is low, setting this to
+     * `false` may improve performance.
+     *
+     * Note that
+     * {@link module:ol/source/Vector~VectorSource#getFeaturesInExtent},
+     * {@link module:ol/source/Vector~VectorSource#getClosestFeatureToCoordinate} and
+     * {@link module:ol/source/Vector~VectorSource#getExtent} cannot be used when `useSpatialIndex` is
+     * set to `false`, and {@link module:ol/source/Vector~VectorSource#forEachFeatureInExtent} will loop
+     * through all features.
+     *
+     * When set to `false`, the features will be maintained in an
+     * {@link module:ol/Collection}, which can be retrieved through
+     * {@link module:ol/source/Vector~VectorSource#getFeaturesCollection}.
+     * @property {boolean} [wrapX=true] Wrap the world horizontally. For vector editing across the
+     * -180° and 180° meridians to work properly, this should be set to `false`. The
+     * resulting geometry coordinates will then exceed the world bounds.
+     */
+    /**
+     * @classdesc
+     * Provides a source of features for vector layers. Vector features provided
+     * by this source are suitable for editing. See {@link module:ol/source/VectorTile~VectorTile} for
+     * vector data that is optimized for rendering.
+     *
+     * @fires VectorSourceEvent
+     * @api
+     * @template {import("../geom/Geometry.js").default} Geometry
+     */
+    class VectorSource extends Source_js_2.default {
+        /**
+         * @param {Options=} opt_options Vector source options.
+         */
+        constructor(opt_options) {
+            const options = opt_options || {};
+            super({
+                attributions: options.attributions,
+                projection: undefined,
+                state: State_js_5.default.READY,
+                wrapX: options.wrapX !== undefined ? options.wrapX : true,
+            });
+            /**
+             * @private
+             * @type {import("../featureloader.js").FeatureLoader}
+             */
+            this.loader_ = functions_js_7.VOID;
+            /**
+             * @private
+             * @type {import("../format/Feature.js").default|undefined}
+             */
+            this.format_ = options.format;
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.overlaps_ = options.overlaps === undefined ? true : options.overlaps;
+            /**
+             * @private
+             * @type {string|import("../featureloader.js").FeatureUrlFunction|undefined}
+             */
+            this.url_ = options.url;
+            if (options.loader !== undefined) {
+                this.loader_ = options.loader;
+            }
+            else if (this.url_ !== undefined) {
+                asserts_js_14.assert(this.format_, 7); // `format` must be set when `url` is set
+                // create a XHR feature loader for "url" and "format"
+                this.loader_ = featureloader_js_1.xhr(this.url_, 
+                /** @type {import("../format/Feature.js").default} */ (this.format_));
+            }
+            /**
+             * @private
+             * @type {LoadingStrategy}
+             */
+            this.strategy_ =
+                options.strategy !== undefined ? options.strategy : loadingstrategy_js_1.all;
+            const useSpatialIndex = options.useSpatialIndex !== undefined ? options.useSpatialIndex : true;
+            /**
+             * @private
+             * @type {RBush<import("../Feature.js").default<Geometry>>}
+             */
+            this.featuresRtree_ = useSpatialIndex ? new RBush_js_1.default() : null;
+            /**
+             * @private
+             * @type {RBush<{extent: import("../extent.js").Extent}>}
+             */
+            this.loadedExtentsRtree_ = new RBush_js_1.default();
+            /**
+             * @private
+             * @type {!Object<string, import("../Feature.js").default<Geometry>>}
+             */
+            this.nullGeometryFeatures_ = {};
+            /**
+             * A lookup of features by id (the return from feature.getId()).
+             * @private
+             * @type {!Object<string, import("../Feature.js").default<Geometry>>}
+             */
+            this.idIndex_ = {};
+            /**
+             * A lookup of features by uid (using getUid(feature)).
+             * @private
+             * @type {!Object<string, import("../Feature.js").default<Geometry>>}
+             */
+            this.uidIndex_ = {};
+            /**
+             * @private
+             * @type {Object<string, Array<import("../events.js").EventsKey>>}
+             */
+            this.featureChangeKeys_ = {};
+            /**
+             * @private
+             * @type {Collection<import("../Feature.js").default<Geometry>>}
+             */
+            this.featuresCollection_ = null;
+            let collection, features;
+            if (Array.isArray(options.features)) {
+                features = options.features;
+            }
+            else if (options.features) {
+                collection = options.features;
+                features = collection.getArray();
+            }
+            if (!useSpatialIndex && collection === undefined) {
+                collection = new Collection_js_3.default(features);
+            }
+            if (features !== undefined) {
+                this.addFeaturesInternal(features);
+            }
+            if (collection !== undefined) {
+                this.bindFeaturesCollection_(collection);
+            }
+        }
+        /**
+         * Add a single feature to the source.  If you want to add a batch of features
+         * at once, call {@link module:ol/source/Vector~VectorSource#addFeatures #addFeatures()}
+         * instead. A feature will not be added to the source if feature with
+         * the same id is already there. The reason for this behavior is to avoid
+         * feature duplication when using bbox or tile loading strategies.
+         * Note: this also applies if an {@link module:ol/Collection} is used for features,
+         * meaning that if a feature with a duplicate id is added in the collection, it will
+         * be removed from it right away.
+         * @param {import("../Feature.js").default<Geometry>} feature Feature to add.
+         * @api
+         */
+        addFeature(feature) {
+            this.addFeatureInternal(feature);
+            this.changed();
+        }
+        /**
+         * Add a feature without firing a `change` event.
+         * @param {import("../Feature.js").default<Geometry>} feature Feature.
+         * @protected
+         */
+        addFeatureInternal(feature) {
+            const featureKey = util_js_18.getUid(feature);
+            if (!this.addToIndex_(featureKey, feature)) {
+                if (this.featuresCollection_) {
+                    this.featuresCollection_.remove(feature);
+                }
+                return;
+            }
+            this.setupChangeEvents_(featureKey, feature);
+            const geometry = feature.getGeometry();
+            if (geometry) {
+                const extent = geometry.getExtent();
+                if (this.featuresRtree_) {
+                    this.featuresRtree_.insert(extent, feature);
+                }
+            }
+            else {
+                this.nullGeometryFeatures_[featureKey] = feature;
+            }
+            this.dispatchEvent(new VectorSourceEvent(VectorEventType_js_1.default.ADDFEATURE, feature));
+        }
+        /**
+         * @param {string} featureKey Unique identifier for the feature.
+         * @param {import("../Feature.js").default<Geometry>} feature The feature.
+         * @private
+         */
+        setupChangeEvents_(featureKey, feature) {
+            this.featureChangeKeys_[featureKey] = [
+                events_js_11.listen(feature, EventType_js_19.default.CHANGE, this.handleFeatureChange_, this),
+                events_js_11.listen(feature, ObjectEventType_js_4.default.PROPERTYCHANGE, this.handleFeatureChange_, this),
+            ];
+        }
+        /**
+         * @param {string} featureKey Unique identifier for the feature.
+         * @param {import("../Feature.js").default<Geometry>} feature The feature.
+         * @return {boolean} The feature is "valid", in the sense that it is also a
+         *     candidate for insertion into the Rtree.
+         * @private
+         */
+        addToIndex_(featureKey, feature) {
+            let valid = true;
+            const id = feature.getId();
+            if (id !== undefined) {
+                if (!(id.toString() in this.idIndex_)) {
+                    this.idIndex_[id.toString()] = feature;
+                }
+                else {
+                    valid = false;
+                }
+            }
+            if (valid) {
+                asserts_js_14.assert(!(featureKey in this.uidIndex_), 30); // The passed `feature` was already added to the source
+                this.uidIndex_[featureKey] = feature;
+            }
+            return valid;
+        }
+        /**
+         * Add a batch of features to the source.
+         * @param {Array<import("../Feature.js").default<Geometry>>} features Features to add.
+         * @api
+         */
+        addFeatures(features) {
+            this.addFeaturesInternal(features);
+            this.changed();
+        }
+        /**
+         * Add features without firing a `change` event.
+         * @param {Array<import("../Feature.js").default<Geometry>>} features Features.
+         * @protected
+         */
+        addFeaturesInternal(features) {
+            const extents = [];
+            const newFeatures = [];
+            const geometryFeatures = [];
+            for (let i = 0, length = features.length; i < length; i++) {
+                const feature = features[i];
+                const featureKey = util_js_18.getUid(feature);
+                if (this.addToIndex_(featureKey, feature)) {
+                    newFeatures.push(feature);
+                }
+            }
+            for (let i = 0, length = newFeatures.length; i < length; i++) {
+                const feature = newFeatures[i];
+                const featureKey = util_js_18.getUid(feature);
+                this.setupChangeEvents_(featureKey, feature);
+                const geometry = feature.getGeometry();
+                if (geometry) {
+                    const extent = geometry.getExtent();
+                    extents.push(extent);
+                    geometryFeatures.push(feature);
+                }
+                else {
+                    this.nullGeometryFeatures_[featureKey] = feature;
+                }
+            }
+            if (this.featuresRtree_) {
+                this.featuresRtree_.load(extents, geometryFeatures);
+            }
+            for (let i = 0, length = newFeatures.length; i < length; i++) {
+                this.dispatchEvent(new VectorSourceEvent(VectorEventType_js_1.default.ADDFEATURE, newFeatures[i]));
+            }
+        }
+        /**
+         * @param {!Collection<import("../Feature.js").default<Geometry>>} collection Collection.
+         * @private
+         */
+        bindFeaturesCollection_(collection) {
+            let modifyingCollection = false;
+            this.addEventListener(VectorEventType_js_1.default.ADDFEATURE, 
+            /**
+             * @param {VectorSourceEvent<Geometry>} evt The vector source event
+             */
+            function (evt) {
+                if (!modifyingCollection) {
+                    modifyingCollection = true;
+                    collection.push(evt.feature);
+                    modifyingCollection = false;
+                }
+            });
+            this.addEventListener(VectorEventType_js_1.default.REMOVEFEATURE, 
+            /**
+             * @param {VectorSourceEvent<Geometry>} evt The vector source event
+             */
+            function (evt) {
+                if (!modifyingCollection) {
+                    modifyingCollection = true;
+                    collection.remove(evt.feature);
+                    modifyingCollection = false;
+                }
+            });
+            collection.addEventListener(CollectionEventType_js_4.default.ADD, 
+            /**
+             * @param {import("../Collection.js").CollectionEvent} evt The collection event
+             */
+            function (evt) {
+                if (!modifyingCollection) {
+                    modifyingCollection = true;
+                    this.addFeature(
+                    /** @type {import("../Feature.js").default<Geometry>} */ (evt.element));
+                    modifyingCollection = false;
+                }
+            }.bind(this));
+            collection.addEventListener(CollectionEventType_js_4.default.REMOVE, 
+            /**
+             * @param {import("../Collection.js").CollectionEvent} evt The collection event
+             */
+            function (evt) {
+                if (!modifyingCollection) {
+                    modifyingCollection = true;
+                    this.removeFeature(
+                    /** @type {import("../Feature.js").default<Geometry>} */ (evt.element));
+                    modifyingCollection = false;
+                }
+            }.bind(this));
+            this.featuresCollection_ = collection;
+        }
+        /**
+         * Remove all features from the source.
+         * @param {boolean=} opt_fast Skip dispatching of {@link module:ol/source/Vector.VectorSourceEvent#removefeature} events.
+         * @api
+         */
+        clear(opt_fast) {
+            if (opt_fast) {
+                for (const featureId in this.featureChangeKeys_) {
+                    const keys = this.featureChangeKeys_[featureId];
+                    keys.forEach(events_js_11.unlistenByKey);
+                }
+                if (!this.featuresCollection_) {
+                    this.featureChangeKeys_ = {};
+                    this.idIndex_ = {};
+                    this.uidIndex_ = {};
+                }
+            }
+            else {
+                if (this.featuresRtree_) {
+                    this.featuresRtree_.forEach(this.removeFeatureInternal.bind(this));
+                    for (const id in this.nullGeometryFeatures_) {
+                        this.removeFeatureInternal(this.nullGeometryFeatures_[id]);
+                    }
+                }
+            }
+            if (this.featuresCollection_) {
+                this.featuresCollection_.clear();
+            }
+            if (this.featuresRtree_) {
+                this.featuresRtree_.clear();
+            }
+            this.nullGeometryFeatures_ = {};
+            const clearEvent = new VectorSourceEvent(VectorEventType_js_1.default.CLEAR);
+            this.dispatchEvent(clearEvent);
+            this.changed();
+        }
+        /**
+         * Iterate through all features on the source, calling the provided callback
+         * with each one.  If the callback returns any "truthy" value, iteration will
+         * stop and the function will return the same value.
+         * Note: this function only iterate through the feature that have a defined geometry.
+         *
+         * @param {function(import("../Feature.js").default<Geometry>): T} callback Called with each feature
+         *     on the source.  Return a truthy value to stop iteration.
+         * @return {T|undefined} The return value from the last call to the callback.
+         * @template T
+         * @api
+         */
+        forEachFeature(callback) {
+            if (this.featuresRtree_) {
+                return this.featuresRtree_.forEach(callback);
+            }
+            else if (this.featuresCollection_) {
+                this.featuresCollection_.forEach(callback);
+            }
+        }
+        /**
+         * Iterate through all features whose geometries contain the provided
+         * coordinate, calling the callback with each feature.  If the callback returns
+         * a "truthy" value, iteration will stop and the function will return the same
+         * value.
+         *
+         * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
+         * @param {function(import("../Feature.js").default<Geometry>): T} callback Called with each feature
+         *     whose goemetry contains the provided coordinate.
+         * @return {T|undefined} The return value from the last call to the callback.
+         * @template T
+         */
+        forEachFeatureAtCoordinateDirect(coordinate, callback) {
+            const extent = [coordinate[0], coordinate[1], coordinate[0], coordinate[1]];
+            return this.forEachFeatureInExtent(extent, function (feature) {
+                const geometry = feature.getGeometry();
+                if (geometry.intersectsCoordinate(coordinate)) {
+                    return callback(feature);
+                }
+                else {
+                    return undefined;
+                }
+            });
+        }
+        /**
+         * Iterate through all features whose bounding box intersects the provided
+         * extent (note that the feature's geometry may not intersect the extent),
+         * calling the callback with each feature.  If the callback returns a "truthy"
+         * value, iteration will stop and the function will return the same value.
+         *
+         * If you are interested in features whose geometry intersects an extent, call
+         * the {@link module:ol/source/Vector~VectorSource#forEachFeatureIntersectingExtent #forEachFeatureIntersectingExtent()} method instead.
+         *
+         * When `useSpatialIndex` is set to false, this method will loop through all
+         * features, equivalent to {@link module:ol/source/Vector~VectorSource#forEachFeature #forEachFeature()}.
+         *
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @param {function(import("../Feature.js").default<Geometry>): T} callback Called with each feature
+         *     whose bounding box intersects the provided extent.
+         * @return {T|undefined} The return value from the last call to the callback.
+         * @template T
+         * @api
+         */
+        forEachFeatureInExtent(extent, callback) {
+            if (this.featuresRtree_) {
+                return this.featuresRtree_.forEachInExtent(extent, callback);
+            }
+            else if (this.featuresCollection_) {
+                this.featuresCollection_.forEach(callback);
+            }
+        }
+        /**
+         * Iterate through all features whose geometry intersects the provided extent,
+         * calling the callback with each feature.  If the callback returns a "truthy"
+         * value, iteration will stop and the function will return the same value.
+         *
+         * If you only want to test for bounding box intersection, call the
+         * {@link module:ol/source/Vector~VectorSource#forEachFeatureInExtent #forEachFeatureInExtent()} method instead.
+         *
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @param {function(import("../Feature.js").default<Geometry>): T} callback Called with each feature
+         *     whose geometry intersects the provided extent.
+         * @return {T|undefined} The return value from the last call to the callback.
+         * @template T
+         * @api
+         */
+        forEachFeatureIntersectingExtent(extent, callback) {
+            return this.forEachFeatureInExtent(extent, 
+            /**
+             * @param {import("../Feature.js").default<Geometry>} feature Feature.
+             * @return {T|undefined} The return value from the last call to the callback.
+             */
+            function (feature) {
+                const geometry = feature.getGeometry();
+                if (geometry.intersectsExtent(extent)) {
+                    const result = callback(feature);
+                    if (result) {
+                        return result;
+                    }
+                }
+            });
+        }
+        /**
+         * Get the features collection associated with this source. Will be `null`
+         * unless the source was configured with `useSpatialIndex` set to `false`, or
+         * with an {@link module:ol/Collection} as `features`.
+         * @return {Collection<import("../Feature.js").default<Geometry>>} The collection of features.
+         * @api
+         */
+        getFeaturesCollection() {
+            return this.featuresCollection_;
+        }
+        /**
+         * Get all features on the source in random order.
+         * @return {Array<import("../Feature.js").default<Geometry>>} Features.
+         * @api
+         */
+        getFeatures() {
+            let features;
+            if (this.featuresCollection_) {
+                features = this.featuresCollection_.getArray();
+            }
+            else if (this.featuresRtree_) {
+                features = this.featuresRtree_.getAll();
+                if (!obj_js_13.isEmpty(this.nullGeometryFeatures_)) {
+                    array_js_15.extend(features, obj_js_13.getValues(this.nullGeometryFeatures_));
+                }
+            }
+            return /** @type {Array<import("../Feature.js").default<Geometry>>} */ (features);
+        }
+        /**
+         * Get all features whose geometry intersects the provided coordinate.
+         * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
+         * @return {Array<import("../Feature.js").default<Geometry>>} Features.
+         * @api
+         */
+        getFeaturesAtCoordinate(coordinate) {
+            const features = [];
+            this.forEachFeatureAtCoordinateDirect(coordinate, function (feature) {
+                features.push(feature);
+            });
+            return features;
+        }
+        /**
+         * Get all features whose bounding box intersects the provided extent.  Note that this returns an array of
+         * all features intersecting the given extent in random order (so it may include
+         * features whose geometries do not intersect the extent).
+         *
+         * When `useSpatialIndex` is set to false, this method will return all
+         * features.
+         *
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @return {Array<import("../Feature.js").default<Geometry>>} Features.
+         * @api
+         */
+        getFeaturesInExtent(extent) {
+            if (this.featuresRtree_) {
+                return this.featuresRtree_.getInExtent(extent);
+            }
+            else if (this.featuresCollection_) {
+                return this.featuresCollection_.getArray();
+            }
+            else {
+                return [];
+            }
+        }
+        /**
+         * Get the closest feature to the provided coordinate.
+         *
+         * This method is not available when the source is configured with
+         * `useSpatialIndex` set to `false`.
+         * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
+         * @param {function(import("../Feature.js").default<Geometry>):boolean=} opt_filter Feature filter function.
+         *     The filter function will receive one argument, the {@link module:ol/Feature feature}
+         *     and it should return a boolean value. By default, no filtering is made.
+         * @return {import("../Feature.js").default<Geometry>} Closest feature.
+         * @api
+         */
+        getClosestFeatureToCoordinate(coordinate, opt_filter) {
+            // Find the closest feature using branch and bound.  We start searching an
+            // infinite extent, and find the distance from the first feature found.  This
+            // becomes the closest feature.  We then compute a smaller extent which any
+            // closer feature must intersect.  We continue searching with this smaller
+            // extent, trying to find a closer feature.  Every time we find a closer
+            // feature, we update the extent being searched so that any even closer
+            // feature must intersect it.  We continue until we run out of features.
+            const x = coordinate[0];
+            const y = coordinate[1];
+            let closestFeature = null;
+            const closestPoint = [NaN, NaN];
+            let minSquaredDistance = Infinity;
+            const extent = [-Infinity, -Infinity, Infinity, Infinity];
+            const filter = opt_filter ? opt_filter : functions_js_7.TRUE;
+            this.featuresRtree_.forEachInExtent(extent, 
+            /**
+             * @param {import("../Feature.js").default<Geometry>} feature Feature.
+             */
+            function (feature) {
+                if (filter(feature)) {
+                    const geometry = feature.getGeometry();
+                    const previousMinSquaredDistance = minSquaredDistance;
+                    minSquaredDistance = geometry.closestPointXY(x, y, closestPoint, minSquaredDistance);
+                    if (minSquaredDistance < previousMinSquaredDistance) {
+                        closestFeature = feature;
+                        // This is sneaky.  Reduce the extent that it is currently being
+                        // searched while the R-Tree traversal using this same extent object
+                        // is still in progress.  This is safe because the new extent is
+                        // strictly contained by the old extent.
+                        const minDistance = Math.sqrt(minSquaredDistance);
+                        extent[0] = x - minDistance;
+                        extent[1] = y - minDistance;
+                        extent[2] = x + minDistance;
+                        extent[3] = y + minDistance;
+                    }
+                }
+            });
+            return closestFeature;
+        }
+        /**
+         * Get the extent of the features currently in the source.
+         *
+         * This method is not available when the source is configured with
+         * `useSpatialIndex` set to `false`.
+         * @param {import("../extent.js").Extent=} opt_extent Destination extent. If provided, no new extent
+         *     will be created. Instead, that extent's coordinates will be overwritten.
+         * @return {import("../extent.js").Extent} Extent.
+         * @api
+         */
+        getExtent(opt_extent) {
+            return this.featuresRtree_.getExtent(opt_extent);
+        }
+        /**
+         * Get a feature by its identifier (the value returned by feature.getId()).
+         * Note that the index treats string and numeric identifiers as the same.  So
+         * `source.getFeatureById(2)` will return a feature with id `'2'` or `2`.
+         *
+         * @param {string|number} id Feature identifier.
+         * @return {import("../Feature.js").default<Geometry>} The feature (or `null` if not found).
+         * @api
+         */
+        getFeatureById(id) {
+            const feature = this.idIndex_[id.toString()];
+            return feature !== undefined ? feature : null;
+        }
+        /**
+         * Get a feature by its internal unique identifier (using `getUid`).
+         *
+         * @param {string} uid Feature identifier.
+         * @return {import("../Feature.js").default<Geometry>} The feature (or `null` if not found).
+         */
+        getFeatureByUid(uid) {
+            const feature = this.uidIndex_[uid];
+            return feature !== undefined ? feature : null;
+        }
+        /**
+         * Get the format associated with this source.
+         *
+         * @return {import("../format/Feature.js").default|undefined} The feature format.
+         * @api
+         */
+        getFormat() {
+            return this.format_;
+        }
+        /**
+         * @return {boolean} The source can have overlapping geometries.
+         */
+        getOverlaps() {
+            return this.overlaps_;
+        }
+        /**
+         * Get the url associated with this source.
+         *
+         * @return {string|import("../featureloader.js").FeatureUrlFunction|undefined} The url.
+         * @api
+         */
+        getUrl() {
+            return this.url_;
+        }
+        /**
+         * @param {Event} event Event.
+         * @private
+         */
+        handleFeatureChange_(event) {
+            const feature = /** @type {import("../Feature.js").default<Geometry>} */ (event.target);
+            const featureKey = util_js_18.getUid(feature);
+            const geometry = feature.getGeometry();
+            if (!geometry) {
+                if (!(featureKey in this.nullGeometryFeatures_)) {
+                    if (this.featuresRtree_) {
+                        this.featuresRtree_.remove(feature);
+                    }
+                    this.nullGeometryFeatures_[featureKey] = feature;
+                }
+            }
+            else {
+                const extent = geometry.getExtent();
+                if (featureKey in this.nullGeometryFeatures_) {
+                    delete this.nullGeometryFeatures_[featureKey];
+                    if (this.featuresRtree_) {
+                        this.featuresRtree_.insert(extent, feature);
+                    }
+                }
+                else {
+                    if (this.featuresRtree_) {
+                        this.featuresRtree_.update(extent, feature);
+                    }
+                }
+            }
+            const id = feature.getId();
+            if (id !== undefined) {
+                const sid = id.toString();
+                if (this.idIndex_[sid] !== feature) {
+                    this.removeFromIdIndex_(feature);
+                    this.idIndex_[sid] = feature;
+                }
+            }
+            else {
+                this.removeFromIdIndex_(feature);
+                this.uidIndex_[featureKey] = feature;
+            }
+            this.changed();
+            this.dispatchEvent(new VectorSourceEvent(VectorEventType_js_1.default.CHANGEFEATURE, feature));
+        }
+        /**
+         * Returns true if the feature is contained within the source.
+         * @param {import("../Feature.js").default<Geometry>} feature Feature.
+         * @return {boolean} Has feature.
+         * @api
+         */
+        hasFeature(feature) {
+            const id = feature.getId();
+            if (id !== undefined) {
+                return id in this.idIndex_;
+            }
+            else {
+                return util_js_18.getUid(feature) in this.uidIndex_;
+            }
+        }
+        /**
+         * @return {boolean} Is empty.
+         */
+        isEmpty() {
+            return this.featuresRtree_.isEmpty() && obj_js_13.isEmpty(this.nullGeometryFeatures_);
+        }
+        /**
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @param {number} resolution Resolution.
+         * @param {import("../proj/Projection.js").default} projection Projection.
+         */
+        loadFeatures(extent, resolution, projection) {
+            const loadedExtentsRtree = this.loadedExtentsRtree_;
+            const extentsToLoad = this.strategy_(extent, resolution);
+            this.loading = false;
+            for (let i = 0, ii = extentsToLoad.length; i < ii; ++i) {
+                const extentToLoad = extentsToLoad[i];
+                const alreadyLoaded = loadedExtentsRtree.forEachInExtent(extentToLoad, 
+                /**
+                 * @param {{extent: import("../extent.js").Extent}} object Object.
+                 * @return {boolean} Contains.
+                 */
+                function (object) {
+                    return extent_js_31.containsExtent(object.extent, extentToLoad);
+                });
+                if (!alreadyLoaded) {
+                    this.loader_.call(this, extentToLoad, resolution, projection);
+                    loadedExtentsRtree.insert(extentToLoad, { extent: extentToLoad.slice() });
+                    this.loading = this.loader_ !== functions_js_7.VOID;
+                }
+            }
+        }
+        refresh() {
+            this.clear(true);
+            this.loadedExtentsRtree_.clear();
+            super.refresh();
+        }
+        /**
+         * Remove an extent from the list of loaded extents.
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @api
+         */
+        removeLoadedExtent(extent) {
+            const loadedExtentsRtree = this.loadedExtentsRtree_;
+            let obj;
+            loadedExtentsRtree.forEachInExtent(extent, function (object) {
+                if (extent_js_31.equals(object.extent, extent)) {
+                    obj = object;
+                    return true;
+                }
+            });
+            if (obj) {
+                loadedExtentsRtree.remove(obj);
+            }
+        }
+        /**
+         * Remove a single feature from the source.  If you want to remove all features
+         * at once, use the {@link module:ol/source/Vector~VectorSource#clear #clear()} method
+         * instead.
+         * @param {import("../Feature.js").default<Geometry>} feature Feature to remove.
+         * @api
+         */
+        removeFeature(feature) {
+            const featureKey = util_js_18.getUid(feature);
+            if (featureKey in this.nullGeometryFeatures_) {
+                delete this.nullGeometryFeatures_[featureKey];
+            }
+            else {
+                if (this.featuresRtree_) {
+                    this.featuresRtree_.remove(feature);
+                }
+            }
+            this.removeFeatureInternal(feature);
+            this.changed();
+        }
+        /**
+         * Remove feature without firing a `change` event.
+         * @param {import("../Feature.js").default<Geometry>} feature Feature.
+         * @protected
+         */
+        removeFeatureInternal(feature) {
+            const featureKey = util_js_18.getUid(feature);
+            this.featureChangeKeys_[featureKey].forEach(events_js_11.unlistenByKey);
+            delete this.featureChangeKeys_[featureKey];
+            const id = feature.getId();
+            if (id !== undefined) {
+                delete this.idIndex_[id.toString()];
+            }
+            delete this.uidIndex_[featureKey];
+            this.dispatchEvent(new VectorSourceEvent(VectorEventType_js_1.default.REMOVEFEATURE, feature));
+        }
+        /**
+         * Remove a feature from the id index.  Called internally when the feature id
+         * may have changed.
+         * @param {import("../Feature.js").default<Geometry>} feature The feature.
+         * @return {boolean} Removed the feature from the index.
+         * @private
+         */
+        removeFromIdIndex_(feature) {
+            let removed = false;
+            for (const id in this.idIndex_) {
+                if (this.idIndex_[id] === feature) {
+                    delete this.idIndex_[id];
+                    removed = true;
+                    break;
+                }
+            }
+            return removed;
+        }
+        /**
+         * Set the new loader of the source. The next render cycle will use the
+         * new loader.
+         * @param {import("../featureloader.js").FeatureLoader} loader The loader to set.
+         * @api
+         */
+        setLoader(loader) {
+            this.loader_ = loader;
+        }
+        /**
+         * Points the source to a new url. The next render cycle will use the new url.
+         * @param {string|import("../featureloader.js").FeatureUrlFunction} url Url.
+         * @api
+         */
+        setUrl(url) {
+            asserts_js_14.assert(this.format_, 7); // `format` must be set when `url` is set
+            this.setLoader(featureloader_js_1.xhr(url, this.format_));
+        }
+    }
+    exports.default = VectorSource;
+});
+define("node_modules/ol/src/featureloader", ["require", "exports", "node_modules/ol/src/format/FormatType", "node_modules/ol/src/functions"], function (require, exports, FormatType_js_1, functions_js_8) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.setWithCredentials = exports.xhr = exports.loadFeaturesXhr = void 0;
+    /**
+     *
+     * @type {boolean}
+     * @private
+     */
+    let withCredentials = false;
+    /**
+     * {@link module:ol/source/Vector} sources use a function of this type to
+     * load features.
+     *
+     * This function takes an {@link module:ol/extent~Extent} representing the area to be loaded,
+     * a `{number}` representing the resolution (map units per pixel) and an
+     * {@link module:ol/proj/Projection} for the projection  as
+     * arguments. `this` within the function is bound to the
+     * {@link module:ol/source/Vector} it's called from.
+     *
+     * The function is responsible for loading the features and adding them to the
+     * source.
+     * @typedef {function(this:(import("./source/Vector").default|import("./VectorTile.js").default), import("./extent.js").Extent, number,
+     *                    import("./proj/Projection.js").default): void} FeatureLoader
+     * @api
+     */
+    /**
+     * {@link module:ol/source/Vector} sources use a function of this type to
+     * get the url to load features from.
+     *
+     * This function takes an {@link module:ol/extent~Extent} representing the area
+     * to be loaded, a `{number}` representing the resolution (map units per pixel)
+     * and an {@link module:ol/proj/Projection} for the projection  as
+     * arguments and returns a `{string}` representing the URL.
+     * @typedef {function(import("./extent.js").Extent, number, import("./proj/Projection.js").default): string} FeatureUrlFunction
+     * @api
+     */
+    /**
+     * @param {string|FeatureUrlFunction} url Feature URL service.
+     * @param {import("./format/Feature.js").default} format Feature format.
+     * @param {function(this:import("./VectorTile.js").default, Array<import("./Feature.js").default>, import("./proj/Projection.js").default, import("./extent.js").Extent): void|function(this:import("./source/Vector").default, Array<import("./Feature.js").default>): void} success
+     *     Function called with the loaded features and optionally with the data
+     *     projection. Called with the vector tile or source as `this`.
+     * @param {function(this:import("./VectorTile.js").default): void|function(this:import("./source/Vector").default): void} failure
+     *     Function called when loading failed. Called with the vector tile or
+     *     source as `this`.
+     * @return {FeatureLoader} The feature loader.
+     */
+    function loadFeaturesXhr(url, format, success, failure) {
+        return (
+        /**
+         * @param {import("./extent.js").Extent} extent Extent.
+         * @param {number} resolution Resolution.
+         * @param {import("./proj/Projection.js").default} projection Projection.
+         * @this {import("./source/Vector").default|import("./VectorTile.js").default}
+         */
+        function (extent, resolution, projection) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', typeof url === 'function' ? url(extent, resolution, projection) : url, true);
+            if (format.getType() == FormatType_js_1.default.ARRAY_BUFFER) {
+                xhr.responseType = 'arraybuffer';
+            }
+            xhr.withCredentials = withCredentials;
+            /**
+             * @param {Event} event Event.
+             * @private
+             */
+            xhr.onload = function (event) {
+                // status will be 0 for file:// urls
+                if (!xhr.status || (xhr.status >= 200 && xhr.status < 300)) {
+                    const type = format.getType();
+                    /** @type {Document|Node|Object|string|undefined} */
+                    let source;
+                    if (type == FormatType_js_1.default.JSON || type == FormatType_js_1.default.TEXT) {
+                        source = xhr.responseText;
+                    }
+                    else if (type == FormatType_js_1.default.XML) {
+                        source = xhr.responseXML;
+                        if (!source) {
+                            source = new DOMParser().parseFromString(xhr.responseText, 'application/xml');
+                        }
+                    }
+                    else if (type == FormatType_js_1.default.ARRAY_BUFFER) {
+                        source = /** @type {ArrayBuffer} */ (xhr.response);
+                    }
+                    if (source) {
+                        success.call(this, format.readFeatures(source, {
+                            extent: extent,
+                            featureProjection: projection,
+                        }), format.readProjection(source));
+                    }
+                    else {
+                        failure.call(this);
+                    }
+                }
+                else {
+                    failure.call(this);
+                }
+            }.bind(this);
+            /**
+             * @private
+             */
+            xhr.onerror = function () {
+                failure.call(this);
+            }.bind(this);
+            xhr.send();
+        });
+    }
+    exports.loadFeaturesXhr = loadFeaturesXhr;
+    /**
+     * Create an XHR feature loader for a `url` and `format`. The feature loader
+     * loads features (with XHR), parses the features, and adds them to the
+     * vector source.
+     * @param {string|FeatureUrlFunction} url Feature URL service.
+     * @param {import("./format/Feature.js").default} format Feature format.
+     * @return {FeatureLoader} The feature loader.
+     * @api
+     */
+    function xhr(url, format) {
+        return loadFeaturesXhr(url, format, 
+        /**
+         * @param {Array<import("./Feature.js").default>} features The loaded features.
+         * @param {import("./proj/Projection.js").default} dataProjection Data
+         * projection.
+         * @this {import("./source/Vector").default|import("./VectorTile.js").default}
+         */
+        function (features, dataProjection) {
+            const sourceOrTile = /** @type {?} */ (this);
+            if (typeof sourceOrTile.addFeatures === 'function') {
+                /** @type {import("./source/Vector").default} */ (sourceOrTile).addFeatures(features);
+            }
+        }, 
+        /* FIXME handle error */ functions_js_8.VOID);
+    }
+    exports.xhr = xhr;
+    /**
+     * Setter for the withCredentials configuration for the XHR.
+     *
+     * @param {boolean} xhrWithCredentials The value of withCredentials to set.
+     * Compare https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/
+     * @api
+     */
+    function setWithCredentials(xhrWithCredentials) {
+        withCredentials = xhrWithCredentials;
+    }
+    exports.setWithCredentials = setWithCredentials;
+});
+define("node_modules/ol/src/VectorTile", ["require", "exports", "node_modules/ol/src/Tile", "node_modules/ol/src/TileState"], function (require, exports, Tile_js_1, TileState_js_4) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class VectorTile extends Tile_js_1.default {
+        /**
+         * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
+         * @param {import("./TileState.js").default} state State.
+         * @param {string} src Data source url.
+         * @param {import("./format/Feature.js").default} format Feature format.
+         * @param {import("./Tile.js").LoadFunction} tileLoadFunction Tile load function.
+         * @param {import("./Tile.js").Options=} opt_options Tile options.
+         */
+        constructor(tileCoord, state, src, format, tileLoadFunction, opt_options) {
+            super(tileCoord, state, opt_options);
+            /**
+             * Extent of this tile; set by the source.
+             * @type {import("./extent.js").Extent}
+             */
+            this.extent = null;
+            /**
+             * @private
+             * @type {import("./format/Feature.js").default}
+             */
+            this.format_ = format;
+            /**
+             * @private
+             * @type {Array<import("./Feature.js").default>}
+             */
+            this.features_ = null;
+            /**
+             * @private
+             * @type {import("./featureloader.js").FeatureLoader}
+             */
+            this.loader_;
+            /**
+             * Feature projection of this tile; set by the source.
+             * @type {import("./proj/Projection.js").default}
+             */
+            this.projection = null;
+            /**
+             * Resolution of this tile; set by the source.
+             * @type {number}
+             */
+            this.resolution;
+            /**
+             * @private
+             * @type {import("./Tile.js").LoadFunction}
+             */
+            this.tileLoadFunction_ = tileLoadFunction;
+            /**
+             * @private
+             * @type {string}
+             */
+            this.url_ = src;
+        }
+        /**
+         * Get the feature format assigned for reading this tile's features.
+         * @return {import("./format/Feature.js").default} Feature format.
+         * @api
+         */
+        getFormat() {
+            return this.format_;
+        }
+        /**
+         * Get the features for this tile. Geometries will be in the view projection.
+         * @return {Array<import("./Feature.js").FeatureLike>} Features.
+         * @api
+         */
+        getFeatures() {
+            return this.features_;
+        }
+        /**
+         * @return {string} Key.
+         */
+        getKey() {
+            return this.url_;
+        }
+        /**
+         * Load not yet loaded URI.
+         */
+        load() {
+            if (this.state == TileState_js_4.default.IDLE) {
+                this.setState(TileState_js_4.default.LOADING);
+                this.tileLoadFunction_(this, this.url_);
+                if (this.loader_) {
+                    this.loader_(this.extent, this.resolution, this.projection);
+                }
+            }
+        }
+        /**
+         * Handler for successful tile load.
+         * @param {Array<import("./Feature.js").default>} features The loaded features.
+         * @param {import("./proj/Projection.js").default} dataProjection Data projection.
+         */
+        onLoad(features, dataProjection) {
+            this.setFeatures(features);
+        }
+        /**
+         * Handler for tile load errors.
+         */
+        onError() {
+            this.setState(TileState_js_4.default.ERROR);
+        }
+        /**
+         * Function for use in an {@link module:ol/source/VectorTile~VectorTile}'s `tileLoadFunction`.
+         * Sets the features for the tile.
+         * @param {Array<import("./Feature.js").default>} features Features.
+         * @api
+         */
+        setFeatures(features) {
+            this.features_ = features;
+            this.setState(TileState_js_4.default.LOADED);
+        }
+        /**
+         * Set the feature loader for reading this tile's features.
+         * @param {import("./featureloader.js").FeatureLoader} loader Feature loader.
+         * @api
+         */
+        setLoader(loader) {
+            this.loader_ = loader;
+        }
+    }
+    exports.default = VectorTile;
+});
+/**
+ * @module ol/source/TileEventType
+ */
+define("node_modules/ol/src/source/TileEventType", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @enum {string}
+     */
+    exports.default = {
+        /**
+         * Triggered when a tile starts loading.
+         * @event module:ol/source/Tile.TileSourceEvent#tileloadstart
+         * @api
+         */
+        TILELOADSTART: 'tileloadstart',
+        /**
+         * Triggered when a tile finishes loading, either when its data is loaded,
+         * or when loading was aborted because the tile is no longer needed.
+         * @event module:ol/source/Tile.TileSourceEvent#tileloadend
+         * @api
+         */
+        TILELOADEND: 'tileloadend',
+        /**
+         * Triggered if tile loading results in an error.
+         * @event module:ol/source/Tile.TileSourceEvent#tileloaderror
+         * @api
+         */
+        TILELOADERROR: 'tileloaderror',
+    };
+});
+define("node_modules/ol/src/tileurlfunction", ["require", "exports", "node_modules/ol/src/asserts", "node_modules/ol/src/math", "node_modules/ol/src/tilecoord"], function (require, exports, asserts_js_15, math_js_18, tilecoord_js_4) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.expandUrl = exports.nullTileUrlFunction = exports.createFromTileUrlFunctions = exports.createFromTemplates = exports.createFromTemplate = void 0;
+    /**
+     * @param {string} template Template.
+     * @param {import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
+     * @return {import("./Tile.js").UrlFunction} Tile URL function.
+     */
+    function createFromTemplate(template, tileGrid) {
+        const zRegEx = /\{z\}/g;
+        const xRegEx = /\{x\}/g;
+        const yRegEx = /\{y\}/g;
+        const dashYRegEx = /\{-y\}/g;
+        return (
+        /**
+         * @param {import("./tilecoord.js").TileCoord} tileCoord Tile Coordinate.
+         * @param {number} pixelRatio Pixel ratio.
+         * @param {import("./proj/Projection.js").default} projection Projection.
+         * @return {string|undefined} Tile URL.
+         */
+        function (tileCoord, pixelRatio, projection) {
+            if (!tileCoord) {
+                return undefined;
+            }
+            else {
+                return template
+                    .replace(zRegEx, tileCoord[0].toString())
+                    .replace(xRegEx, tileCoord[1].toString())
+                    .replace(yRegEx, tileCoord[2].toString())
+                    .replace(dashYRegEx, function () {
+                    const z = tileCoord[0];
+                    const range = tileGrid.getFullTileRange(z);
+                    asserts_js_15.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
+                    const y = range.getHeight() - tileCoord[2] - 1;
+                    return y.toString();
+                });
+            }
+        });
+    }
+    exports.createFromTemplate = createFromTemplate;
+    /**
+     * @param {Array<string>} templates Templates.
+     * @param {import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
+     * @return {import("./Tile.js").UrlFunction} Tile URL function.
+     */
+    function createFromTemplates(templates, tileGrid) {
+        const len = templates.length;
+        const tileUrlFunctions = new Array(len);
+        for (let i = 0; i < len; ++i) {
+            tileUrlFunctions[i] = createFromTemplate(templates[i], tileGrid);
+        }
+        return createFromTileUrlFunctions(tileUrlFunctions);
+    }
+    exports.createFromTemplates = createFromTemplates;
+    /**
+     * @param {Array<import("./Tile.js").UrlFunction>} tileUrlFunctions Tile URL Functions.
+     * @return {import("./Tile.js").UrlFunction} Tile URL function.
+     */
+    function createFromTileUrlFunctions(tileUrlFunctions) {
+        if (tileUrlFunctions.length === 1) {
+            return tileUrlFunctions[0];
+        }
+        return (
+        /**
+         * @param {import("./tilecoord.js").TileCoord} tileCoord Tile Coordinate.
+         * @param {number} pixelRatio Pixel ratio.
+         * @param {import("./proj/Projection.js").default} projection Projection.
+         * @return {string|undefined} Tile URL.
+         */
+        function (tileCoord, pixelRatio, projection) {
+            if (!tileCoord) {
+                return undefined;
+            }
+            else {
+                const h = tilecoord_js_4.hash(tileCoord);
+                const index = math_js_18.modulo(h, tileUrlFunctions.length);
+                return tileUrlFunctions[index](tileCoord, pixelRatio, projection);
+            }
+        });
+    }
+    exports.createFromTileUrlFunctions = createFromTileUrlFunctions;
+    /**
+     * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("./proj/Projection.js").default} projection Projection.
+     * @return {string|undefined} Tile URL.
+     */
+    function nullTileUrlFunction(tileCoord, pixelRatio, projection) {
+        return undefined;
+    }
+    exports.nullTileUrlFunction = nullTileUrlFunction;
+    /**
+     * @param {string} url URL.
+     * @return {Array<string>} Array of urls.
+     */
+    function expandUrl(url) {
+        const urls = [];
+        let match = /\{([a-z])-([a-z])\}/.exec(url);
+        if (match) {
+            // char range
+            const startCharCode = match[1].charCodeAt(0);
+            const stopCharCode = match[2].charCodeAt(0);
+            let charCode;
+            for (charCode = startCharCode; charCode <= stopCharCode; ++charCode) {
+                urls.push(url.replace(match[0], String.fromCharCode(charCode)));
+            }
+            return urls;
+        }
+        match = /\{(\d+)-(\d+)\}/.exec(url);
+        if (match) {
+            // number range
+            const stop = parseInt(match[2], 10);
+            for (let i = parseInt(match[1], 10); i <= stop; i++) {
+                urls.push(url.replace(match[0], i.toString()));
+            }
+            return urls;
+        }
+        urls.push(url);
+        return urls;
+    }
+    exports.expandUrl = expandUrl;
+});
+define("node_modules/ol/src/source/UrlTile", ["require", "exports", "node_modules/ol/src/source/TileEventType", "node_modules/ol/src/source/Tile", "node_modules/ol/src/TileState", "node_modules/ol/src/tileurlfunction", "node_modules/ol/src/tilecoord", "node_modules/ol/src/util"], function (require, exports, TileEventType_js_1, Tile_js_2, TileState_js_5, tileurlfunction_js_1, tilecoord_js_5, util_js_19) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @typedef {Object} Options
+     * @property {import("./Source.js").AttributionLike} [attributions]
+     * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
+     * @property {number} [cacheSize]
+     * @property {boolean} [opaque=false] Whether the layer is opaque.
+     * @property {import("../proj.js").ProjectionLike} [projection]
+     * @property {import("./State.js").default} [state]
+     * @property {import("../tilegrid/TileGrid.js").default} [tileGrid]
+     * @property {import("../Tile.js").LoadFunction} tileLoadFunction
+     * @property {number} [tilePixelRatio]
+     * @property {import("../Tile.js").UrlFunction} [tileUrlFunction]
+     * @property {string} [url]
+     * @property {Array<string>} [urls]
+     * @property {boolean} [wrapX=true]
+     * @property {number} [transition]
+     * @property {string} [key]
+     * @property {number} [zDirection=0]
+     */
+    /**
+     * @classdesc
+     * Base class for sources providing tiles divided into a tile grid over http.
+     *
+     * @fires import("./Tile.js").TileSourceEvent
+     */
+    class UrlTile extends Tile_js_2.default {
+        /**
+         * @param {Options} options Image tile options.
+         */
+        constructor(options) {
+            super({
+                attributions: options.attributions,
+                cacheSize: options.cacheSize,
+                opaque: options.opaque,
+                projection: options.projection,
+                state: options.state,
+                tileGrid: options.tileGrid,
+                tilePixelRatio: options.tilePixelRatio,
+                wrapX: options.wrapX,
+                transition: options.transition,
+                key: options.key,
+                attributionsCollapsible: options.attributionsCollapsible,
+                zDirection: options.zDirection,
+            });
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.generateTileUrlFunction_ =
+                this.tileUrlFunction === UrlTile.prototype.tileUrlFunction;
+            /**
+             * @protected
+             * @type {import("../Tile.js").LoadFunction}
+             */
+            this.tileLoadFunction = options.tileLoadFunction;
+            if (options.tileUrlFunction) {
+                this.tileUrlFunction = options.tileUrlFunction.bind(this);
+            }
+            /**
+             * @protected
+             * @type {!Array<string>|null}
+             */
+            this.urls = null;
+            if (options.urls) {
+                this.setUrls(options.urls);
+            }
+            else if (options.url) {
+                this.setUrl(options.url);
+            }
+            /**
+             * @private
+             * @type {!Object<string, boolean>}
+             */
+            this.tileLoadingKeys_ = {};
+        }
+        /**
+         * Return the tile load function of the source.
+         * @return {import("../Tile.js").LoadFunction} TileLoadFunction
+         * @api
+         */
+        getTileLoadFunction() {
+            return this.tileLoadFunction;
+        }
+        /**
+         * Return the tile URL function of the source.
+         * @return {import("../Tile.js").UrlFunction} TileUrlFunction
+         * @api
+         */
+        getTileUrlFunction() {
+            return this.tileUrlFunction;
+        }
+        /**
+         * Return the URLs used for this source.
+         * When a tileUrlFunction is used instead of url or urls,
+         * null will be returned.
+         * @return {!Array<string>|null} URLs.
+         * @api
+         */
+        getUrls() {
+            return this.urls;
+        }
+        /**
+         * Handle tile change events.
+         * @param {import("../events/Event.js").default} event Event.
+         * @protected
+         */
+        handleTileChange(event) {
+            const tile = /** @type {import("../Tile.js").default} */ (event.target);
+            const uid = util_js_19.getUid(tile);
+            const tileState = tile.getState();
+            let type;
+            if (tileState == TileState_js_5.default.LOADING) {
+                this.tileLoadingKeys_[uid] = true;
+                type = TileEventType_js_1.default.TILELOADSTART;
+            }
+            else if (uid in this.tileLoadingKeys_) {
+                delete this.tileLoadingKeys_[uid];
+                type =
+                    tileState == TileState_js_5.default.ERROR
+                        ? TileEventType_js_1.default.TILELOADERROR
+                        : tileState == TileState_js_5.default.LOADED
+                            ? TileEventType_js_1.default.TILELOADEND
+                            : undefined;
+            }
+            if (type != undefined) {
+                this.dispatchEvent(new Tile_js_2.TileSourceEvent(type, tile));
+            }
+        }
+        /**
+         * Set the tile load function of the source.
+         * @param {import("../Tile.js").LoadFunction} tileLoadFunction Tile load function.
+         * @api
+         */
+        setTileLoadFunction(tileLoadFunction) {
+            this.tileCache.clear();
+            this.tileLoadFunction = tileLoadFunction;
+            this.changed();
+        }
+        /**
+         * Set the tile URL function of the source.
+         * @param {import("../Tile.js").UrlFunction} tileUrlFunction Tile URL function.
+         * @param {string=} key Optional new tile key for the source.
+         * @api
+         */
+        setTileUrlFunction(tileUrlFunction, key) {
+            this.tileUrlFunction = tileUrlFunction;
+            this.tileCache.pruneExceptNewestZ();
+            if (typeof key !== 'undefined') {
+                this.setKey(key);
+            }
+            else {
+                this.changed();
+            }
+        }
+        /**
+         * Set the URL to use for requests.
+         * @param {string} url URL.
+         * @api
+         */
+        setUrl(url) {
+            const urls = tileurlfunction_js_1.expandUrl(url);
+            this.urls = urls;
+            this.setUrls(urls);
+        }
+        /**
+         * Set the URLs to use for requests.
+         * @param {Array<string>} urls URLs.
+         * @api
+         */
+        setUrls(urls) {
+            this.urls = urls;
+            const key = urls.join('\n');
+            if (this.generateTileUrlFunction_) {
+                this.setTileUrlFunction(tileurlfunction_js_1.createFromTemplates(urls, this.tileGrid), key);
+            }
+            else {
+                this.setKey(key);
+            }
+        }
+        /**
+         * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+         * @param {number} pixelRatio Pixel ratio.
+         * @param {import("../proj/Projection.js").default} projection Projection.
+         * @return {string|undefined} Tile URL.
+         */
+        tileUrlFunction(tileCoord, pixelRatio, projection) {
+            return undefined;
+        }
+        /**
+         * Marks a tile coord as being used, without triggering a load.
+         * @param {number} z Tile coordinate z.
+         * @param {number} x Tile coordinate x.
+         * @param {number} y Tile coordinate y.
+         */
+        useTile(z, x, y) {
+            const tileCoordKey = tilecoord_js_5.getKeyZXY(z, x, y);
+            if (this.tileCache.containsKey(tileCoordKey)) {
+                this.tileCache.get(tileCoordKey);
+            }
+        }
+    }
+    exports.default = UrlTile;
+});
+define("node_modules/ol/src/geom/flat/textpath", ["require", "exports", "node_modules/ol/src/math", "node_modules/ol/src/geom/flat/transform"], function (require, exports, math_js_19, transform_js_13) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.drawTextOnPath = void 0;
+    /**
+     * @param {Array<number>} flatCoordinates Path to put text on.
+     * @param {number} offset Start offset of the `flatCoordinates`.
+     * @param {number} end End offset of the `flatCoordinates`.
+     * @param {number} stride Stride.
+     * @param {string} text Text to place on the path.
+     * @param {number} startM m along the path where the text starts.
+     * @param {number} maxAngle Max angle between adjacent chars in radians.
+     * @param {number} scale The product of the text scale and the device pixel ratio.
+     * @param {function(string, string, Object<string, number>):number} measureAndCacheTextWidth Measure and cache text width.
+     * @param {string} font The font.
+     * @param {Object<string, number>} cache A cache of measured widths.
+     * @param {number} rotation Rotation to apply to the flatCoordinates to determine whether text needs to be reversed.
+     * @return {Array<Array<*>>} The result array (or null if `maxAngle` was
+     * exceeded). Entries of the array are x, y, anchorX, angle, chunk.
+     */
+    function drawTextOnPath(flatCoordinates, offset, end, stride, text, startM, maxAngle, scale, measureAndCacheTextWidth, font, cache, rotation) {
+        const result = [];
+        // Keep text upright
+        let reverse;
+        if (rotation) {
+            const rotatedCoordinates = transform_js_13.rotate(flatCoordinates, offset, end, stride, rotation, [flatCoordinates[offset], flatCoordinates[offset + 1]]);
+            reverse =
+                rotatedCoordinates[0] >
+                    rotatedCoordinates[rotatedCoordinates.length - stride];
+        }
+        else {
+            reverse = flatCoordinates[offset] > flatCoordinates[end - stride];
+        }
+        const numChars = text.length;
+        let x1 = flatCoordinates[offset];
+        let y1 = flatCoordinates[offset + 1];
+        offset += stride;
+        let x2 = flatCoordinates[offset];
+        let y2 = flatCoordinates[offset + 1];
+        let segmentM = 0;
+        let segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        let angleChanged = false;
+        let index, previousAngle;
+        for (let i = 0; i < numChars; ++i) {
+            index = reverse ? numChars - i - 1 : i;
+            const char = text[index];
+            const charLength = scale * measureAndCacheTextWidth(font, char, cache);
+            const charM = startM + charLength / 2;
+            while (offset < end - stride && segmentM + segmentLength < charM) {
+                x1 = x2;
+                y1 = y2;
+                offset += stride;
+                x2 = flatCoordinates[offset];
+                y2 = flatCoordinates[offset + 1];
+                segmentM += segmentLength;
+                segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            }
+            const segmentPos = charM - segmentM;
+            let angle = Math.atan2(y2 - y1, x2 - x1);
+            if (reverse) {
+                angle += angle > 0 ? -Math.PI : Math.PI;
+            }
+            if (previousAngle !== undefined) {
+                let delta = angle - previousAngle;
+                angleChanged = angleChanged || delta !== 0;
+                delta +=
+                    delta > Math.PI ? -2 * Math.PI : delta < -Math.PI ? 2 * Math.PI : 0;
+                if (Math.abs(delta) > maxAngle) {
+                    return null;
+                }
+            }
+            previousAngle = angle;
+            const interpolate = segmentPos / segmentLength;
+            const x = math_js_19.lerp(x1, x2, interpolate);
+            const y = math_js_19.lerp(y1, y2, interpolate);
+            result[index] = [x, y, charLength / 2, angle, char];
+            startM += charLength;
+        }
+        return angleChanged
+            ? result
+            : [[result[0][0], result[0][1], result[0][2], result[0][3], text]];
+    }
+    exports.drawTextOnPath = drawTextOnPath;
+});
+define("node_modules/ol/src/render/canvas/Executor", ["require", "exports", "node_modules/ol/src/render/canvas/Instruction", "node_modules/rbush/index", "node_modules/ol/src/render/canvas/TextBuilder", "node_modules/ol/src/has", "node_modules/ol/src/transform", "node_modules/ol/src/extent", "node_modules/ol/src/render/canvas", "node_modules/ol/src/render/canvas", "node_modules/ol/src/geom/flat/textpath", "node_modules/ol/src/array", "node_modules/ol/src/geom/flat/length", "node_modules/ol/src/geom/flat/transform"], function (require, exports, Instruction_js_6, rbush_js_2, TextBuilder_js_2, has_js_7, transform_js_14, extent_js_32, canvas_js_6, canvas_js_7, textpath_js_1, array_js_16, length_js_2, transform_js_15) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @typedef {Object} SerializableInstructions
+     * @property {Array<*>} instructions The rendering instructions.
+     * @property {Array<*>} hitDetectionInstructions The rendering hit detection instructions.
+     * @property {Array<number>} coordinates The array of all coordinates.
+     * @property {!Object<string, import("../canvas.js").TextState>} textStates The text states (decluttering).
+     * @property {!Object<string, import("../canvas.js").FillState>} fillStates The fill states (decluttering).
+     * @property {!Object<string, import("../canvas.js").StrokeState>} strokeStates The stroke states (decluttering).
+     */
+    /**
+     * @type {import("../../extent.js").Extent}
+     */
+    const tmpExtent = extent_js_32.createEmpty();
+    /**
+     * @type {!import("../../transform.js").Transform}
+     */
+    const tmpTransform = transform_js_14.create();
+    /** @type {import("../../coordinate.js").Coordinate} */
+    const p1 = [];
+    /** @type {import("../../coordinate.js").Coordinate} */
+    const p2 = [];
+    /** @type {import("../../coordinate.js").Coordinate} */
+    const p3 = [];
+    /** @type {import("../../coordinate.js").Coordinate} */
+    const p4 = [];
+    class Executor {
+        /**
+         * @param {number} resolution Resolution.
+         * @param {number} pixelRatio Pixel ratio.
+         * @param {boolean} overlaps The replay can have overlapping geometries.
+         * @param {SerializableInstructions} instructions The serializable instructions
+         * @param {import("../../size.js").Size} renderBuffer Render buffer (width/height) in pixels.
+         */
+        constructor(resolution, pixelRatio, overlaps, instructions, renderBuffer) {
+            /**
+             * @protected
+             * @type {boolean}
+             */
+            this.overlaps = overlaps;
+            /**
+             * @protected
+             * @type {number}
+             */
+            this.pixelRatio = pixelRatio;
+            /**
+             * @protected
+             * @const
+             * @type {number}
+             */
+            this.resolution = resolution;
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.alignFill_;
+            /**
+             * @type {Array<*>}
+             */
+            this.declutterItems = [];
+            /**
+             * @protected
+             * @type {Array<*>}
+             */
+            this.instructions = instructions.instructions;
+            /**
+             * @protected
+             * @type {Array<number>}
+             */
+            this.coordinates = instructions.coordinates;
+            /**
+             * @private
+             * @type {!Object<number,import("../../coordinate.js").Coordinate|Array<import("../../coordinate.js").Coordinate>|Array<Array<import("../../coordinate.js").Coordinate>>>}
+             */
+            this.coordinateCache_ = {};
+            /**
+             * @private
+             * @type {import("../../size.js").Size}
+             */
+            this.renderBuffer_ = renderBuffer;
+            /**
+             * @private
+             * @type {!import("../../transform.js").Transform}
+             */
+            this.renderedTransform_ = transform_js_14.create();
+            /**
+             * @protected
+             * @type {Array<*>}
+             */
+            this.hitDetectionInstructions = instructions.hitDetectionInstructions;
+            /**
+             * @private
+             * @type {Array<number>}
+             */
+            this.pixelCoordinates_ = null;
+            /**
+             * @private
+             * @type {number}
+             */
+            this.viewRotation_ = 0;
+            /**
+             * @type {!Object<string, import("../canvas.js").FillState>}
+             */
+            this.fillStates = instructions.fillStates || {};
+            /**
+             * @type {!Object<string, import("../canvas.js").StrokeState>}
+             */
+            this.strokeStates = instructions.strokeStates || {};
+            /**
+             * @type {!Object<string, import("../canvas.js").TextState>}
+             */
+            this.textStates = instructions.textStates || {};
+            /**
+             * @private
+             * @type {Object<string, Object<string, number>>}
+             */
+            this.widths_ = {};
+            /**
+             * @private
+             * @type {Object<string, import("../canvas.js").Label>}
+             */
+            this.labels_ = {};
+        }
+        /**
+         * @param {string} text Text.
+         * @param {string} textKey Text style key.
+         * @param {string} fillKey Fill style key.
+         * @param {string} strokeKey Stroke style key.
+         * @return {import("../canvas.js").Label} Label.
+         */
+        createLabel(text, textKey, fillKey, strokeKey) {
+            const key = text + textKey + fillKey + strokeKey;
+            if (this.labels_[key]) {
+                return this.labels_[key];
+            }
+            const strokeState = strokeKey ? this.strokeStates[strokeKey] : null;
+            const fillState = fillKey ? this.fillStates[fillKey] : null;
+            const textState = this.textStates[textKey];
+            const pixelRatio = this.pixelRatio;
+            const scale = [
+                textState.scale[0] * pixelRatio,
+                textState.scale[1] * pixelRatio,
+            ];
+            const align = TextBuilder_js_2.TEXT_ALIGN[textState.textAlign || canvas_js_7.defaultTextAlign];
+            const strokeWidth = strokeKey && strokeState.lineWidth ? strokeState.lineWidth : 0;
+            const lines = text.split('\n');
+            const numLines = lines.length;
+            const widths = [];
+            const width = canvas_js_7.measureTextWidths(textState.font, lines, widths);
+            const lineHeight = canvas_js_7.measureTextHeight(textState.font);
+            const height = lineHeight * numLines;
+            const renderWidth = width + strokeWidth;
+            const contextInstructions = [];
+            // make canvas 2 pixels wider to account for italic text width measurement errors
+            const w = (renderWidth + 2) * scale[0];
+            const h = (height + strokeWidth) * scale[1];
+            /** @type {import("../canvas.js").Label} */
+            const label = {
+                width: w < 0 ? Math.floor(w) : Math.ceil(w),
+                height: h < 0 ? Math.floor(h) : Math.ceil(h),
+                contextInstructions: contextInstructions,
+            };
+            if (scale[0] != 1 || scale[1] != 1) {
+                contextInstructions.push('scale', scale);
+            }
+            contextInstructions.push('font', textState.font);
+            if (strokeKey) {
+                contextInstructions.push('strokeStyle', strokeState.strokeStyle);
+                contextInstructions.push('lineWidth', strokeWidth);
+                contextInstructions.push('lineCap', strokeState.lineCap);
+                contextInstructions.push('lineJoin', strokeState.lineJoin);
+                contextInstructions.push('miterLimit', strokeState.miterLimit);
+                // eslint-disable-next-line
+                const Context = has_js_7.WORKER_OFFSCREEN_CANVAS ? OffscreenCanvasRenderingContext2D : CanvasRenderingContext2D;
+                if (Context.prototype.setLineDash) {
+                    contextInstructions.push('setLineDash', [strokeState.lineDash]);
+                    contextInstructions.push('lineDashOffset', strokeState.lineDashOffset);
+                }
+            }
+            if (fillKey) {
+                contextInstructions.push('fillStyle', fillState.fillStyle);
+            }
+            contextInstructions.push('textBaseline', 'middle');
+            contextInstructions.push('textAlign', 'center');
+            const leftRight = 0.5 - align;
+            const x = align * renderWidth + leftRight * strokeWidth;
+            let i;
+            if (strokeKey) {
+                for (i = 0; i < numLines; ++i) {
+                    contextInstructions.push('strokeText', [
+                        lines[i],
+                        x + leftRight * widths[i],
+                        0.5 * (strokeWidth + lineHeight) + i * lineHeight,
+                    ]);
+                }
+            }
+            if (fillKey) {
+                for (i = 0; i < numLines; ++i) {
+                    contextInstructions.push('fillText', [
+                        lines[i],
+                        x + leftRight * widths[i],
+                        0.5 * (strokeWidth + lineHeight) + i * lineHeight,
+                    ]);
+                }
+            }
+            this.labels_[key] = label;
+            return label;
+        }
+        /**
+         * @param {CanvasRenderingContext2D} context Context.
+         * @param {import("../../coordinate.js").Coordinate} p1 1st point of the background box.
+         * @param {import("../../coordinate.js").Coordinate} p2 2nd point of the background box.
+         * @param {import("../../coordinate.js").Coordinate} p3 3rd point of the background box.
+         * @param {import("../../coordinate.js").Coordinate} p4 4th point of the background box.
+         * @param {Array<*>} fillInstruction Fill instruction.
+         * @param {Array<*>} strokeInstruction Stroke instruction.
+         * @param {boolean} declutter Declutter.
+         */
+        replayTextBackground_(context, p1, p2, p3, p4, fillInstruction, strokeInstruction, declutter) {
+            context.beginPath();
+            context.moveTo.apply(context, p1);
+            context.lineTo.apply(context, p2);
+            context.lineTo.apply(context, p3);
+            context.lineTo.apply(context, p4);
+            context.lineTo.apply(context, p1);
+            if (fillInstruction) {
+                this.alignFill_ = /** @type {boolean} */ (fillInstruction[2]);
+                if (declutter) {
+                    context.fillStyle = /** @type {import("../../colorlike.js").ColorLike} */ (fillInstruction[1]);
+                }
+                this.fill_(context);
+            }
+            if (strokeInstruction) {
+                this.setStrokeStyle_(context, 
+                /** @type {Array<*>} */ (strokeInstruction));
+                context.stroke();
+            }
+        }
+        /**
+         * @private
+         * @param {CanvasRenderingContext2D} context Context.
+         * @param {number} contextScale Scale of the context.
+         * @param {number} x X.
+         * @param {number} y Y.
+         * @param {import("../canvas.js").Label|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} imageOrLabel Image.
+         * @param {number} anchorX Anchor X.
+         * @param {number} anchorY Anchor Y.
+         * @param {import("../canvas.js").DeclutterGroup} declutterGroup Declutter group.
+         * @param {number} height Height.
+         * @param {number} opacity Opacity.
+         * @param {number} originX Origin X.
+         * @param {number} originY Origin Y.
+         * @param {number} rotation Rotation.
+         * @param {import("../../size.js").Size} scale Scale.
+         * @param {boolean} snapToPixel Snap to pixel.
+         * @param {number} width Width.
+         * @param {Array<number>} padding Padding.
+         * @param {Array<*>} fillInstruction Fill instruction.
+         * @param {Array<*>} strokeInstruction Stroke instruction.
+         * @return {boolean} The image or label was rendered.
+         */
+        replayImageOrLabel_(context, contextScale, x, y, imageOrLabel, anchorX, anchorY, declutterGroup, height, opacity, originX, originY, rotation, scale, snapToPixel, width, padding, fillInstruction, strokeInstruction) {
+            const fillStroke = fillInstruction || strokeInstruction;
+            anchorX *= scale[0];
+            anchorY *= scale[1];
+            x -= anchorX;
+            y -= anchorY;
+            const w = width + originX > imageOrLabel.width
+                ? imageOrLabel.width - originX
+                : width;
+            const h = height + originY > imageOrLabel.height
+                ? imageOrLabel.height - originY
+                : height;
+            const boxW = padding[3] + w * scale[0] + padding[1];
+            const boxH = padding[0] + h * scale[1] + padding[2];
+            const boxX = x - padding[3];
+            const boxY = y - padding[0];
+            if (fillStroke || rotation !== 0) {
+                p1[0] = boxX;
+                p4[0] = boxX;
+                p1[1] = boxY;
+                p2[1] = boxY;
+                p2[0] = boxX + boxW;
+                p3[0] = p2[0];
+                p3[1] = boxY + boxH;
+                p4[1] = p3[1];
+            }
+            let transform = null;
+            if (rotation !== 0) {
+                const centerX = x + anchorX;
+                const centerY = y + anchorY;
+                transform = transform_js_14.compose(tmpTransform, centerX, centerY, 1, 1, rotation, -centerX, -centerY);
+                transform_js_14.apply(tmpTransform, p1);
+                transform_js_14.apply(tmpTransform, p2);
+                transform_js_14.apply(tmpTransform, p3);
+                transform_js_14.apply(tmpTransform, p4);
+                extent_js_32.createOrUpdate(Math.min(p1[0], p2[0], p3[0], p4[0]), Math.min(p1[1], p2[1], p3[1], p4[1]), Math.max(p1[0], p2[0], p3[0], p4[0]), Math.max(p1[1], p2[1], p3[1], p4[1]), tmpExtent);
+            }
+            else {
+                extent_js_32.createOrUpdate(boxX, boxY, boxX + boxW, boxY + boxH, tmpExtent);
+            }
+            let renderBufferX = 0;
+            let renderBufferY = 0;
+            if (declutterGroup) {
+                const renderBuffer = this.renderBuffer_;
+                renderBuffer[0] = Math.max(renderBuffer[0], extent_js_32.getWidth(tmpExtent));
+                renderBufferX = renderBuffer[0];
+                renderBuffer[1] = Math.max(renderBuffer[1], extent_js_32.getHeight(tmpExtent));
+                renderBufferY = renderBuffer[1];
+            }
+            const canvas = context.canvas;
+            const strokePadding = strokeInstruction
+                ? (strokeInstruction[2] * scale[0]) / 2
+                : 0;
+            const intersects = tmpExtent[0] - strokePadding <=
+                (canvas.width + renderBufferX) / contextScale &&
+                tmpExtent[2] + strokePadding >= -renderBufferX / contextScale &&
+                tmpExtent[1] - strokePadding <=
+                    (canvas.height + renderBufferY) / contextScale &&
+                tmpExtent[3] + strokePadding >= -renderBufferY / contextScale;
+            if (snapToPixel) {
+                x = Math.round(x);
+                y = Math.round(y);
+            }
+            if (declutterGroup) {
+                if (!intersects && declutterGroup[0] == 1) {
+                    return false;
+                }
+                const declutterArgs = intersects
+                    ? [
+                        context,
+                        transform ? transform.slice(0) : null,
+                        opacity,
+                        imageOrLabel,
+                        originX,
+                        originY,
+                        w,
+                        h,
+                        x,
+                        y,
+                        scale,
+                        tmpExtent.slice(),
+                    ]
+                    : null;
+                if (declutterArgs) {
+                    if (fillStroke) {
+                        declutterArgs.push(fillInstruction, strokeInstruction, p1.slice(0), p2.slice(0), p3.slice(0), p4.slice(0));
+                    }
+                    declutterGroup.push(declutterArgs);
+                }
+            }
+            else if (intersects) {
+                if (fillStroke) {
+                    this.replayTextBackground_(context, p1, p2, p3, p4, 
+                    /** @type {Array<*>} */ (fillInstruction), 
+                    /** @type {Array<*>} */ (strokeInstruction), false);
+                }
+                canvas_js_6.drawImageOrLabel(context, transform, opacity, imageOrLabel, originX, originY, w, h, x, y, scale);
+            }
+            return true;
+        }
+        /**
+         * @private
+         * @param {CanvasRenderingContext2D} context Context.
+         */
+        fill_(context) {
+            if (this.alignFill_) {
+                const origin = transform_js_14.apply(this.renderedTransform_, [0, 0]);
+                const repeatSize = 512 * this.pixelRatio;
+                context.save();
+                context.translate(origin[0] % repeatSize, origin[1] % repeatSize);
+                context.rotate(this.viewRotation_);
+            }
+            context.fill();
+            if (this.alignFill_) {
+                context.restore();
+            }
+        }
+        /**
+         * @private
+         * @param {CanvasRenderingContext2D} context Context.
+         * @param {Array<*>} instruction Instruction.
+         */
+        setStrokeStyle_(context, instruction) {
+            context.strokeStyle = /** @type {import("../../colorlike.js").ColorLike} */ (instruction[1]);
+            context.lineWidth = /** @type {number} */ (instruction[2]);
+            context.lineCap = /** @type {CanvasLineCap} */ (instruction[3]);
+            context.lineJoin = /** @type {CanvasLineJoin} */ (instruction[4]);
+            context.miterLimit = /** @type {number} */ (instruction[5]);
+            if (context.setLineDash) {
+                context.lineDashOffset = /** @type {number} */ (instruction[7]);
+                context.setLineDash(/** @type {Array<number>} */ (instruction[6]));
+            }
+        }
+        /**
+         * @param {import("../canvas.js").DeclutterGroup} declutterGroup Declutter group.
+         * @param {import("../../Feature.js").FeatureLike} feature Feature.
+         * @param {number} opacity Layer opacity.
+         * @param {?} declutterTree Declutter tree.
+         * @return {?} Declutter tree.
+         */
+        renderDeclutter(declutterGroup, feature, opacity, declutterTree) {
+            /** @type {Array<import("../../structs/RBush.js").Entry>} */
+            const boxes = [];
+            for (let i = 1, ii = declutterGroup.length; i < ii; ++i) {
+                const declutterData = declutterGroup[i];
+                const box = declutterData[11];
+                boxes.push({
+                    minX: box[0],
+                    minY: box[1],
+                    maxX: box[2],
+                    maxY: box[3],
+                    value: feature,
+                });
+            }
+            if (!declutterTree) {
+                declutterTree = new rbush_js_2.default(9);
+            }
+            let collides = false;
+            for (let i = 0, ii = boxes.length; i < ii; ++i) {
+                if (declutterTree.collides(boxes[i])) {
+                    collides = true;
+                    break;
+                }
+            }
+            if (!collides) {
+                declutterTree.load(boxes);
+                for (let j = 1, jj = declutterGroup.length; j < jj; ++j) {
+                    const declutterData = /** @type {Array} */ (declutterGroup[j]);
+                    const context = declutterData[0];
+                    const currentAlpha = context.globalAlpha;
+                    if (currentAlpha !== opacity) {
+                        context.globalAlpha = opacity;
+                    }
+                    if (declutterData.length > 12) {
+                        this.replayTextBackground_(declutterData[0], declutterData[14], declutterData[15], declutterData[16], declutterData[17], declutterData[12], declutterData[13], true);
+                    }
+                    canvas_js_6.drawImageOrLabel.apply(undefined, declutterData);
+                    if (currentAlpha !== opacity) {
+                        context.globalAlpha = currentAlpha;
+                    }
+                }
+            }
+            declutterGroup.length = 1;
+            return declutterTree;
+        }
+        /**
+         * @private
+         * @param {string} text The text to draw.
+         * @param {string} textKey The key of the text state.
+         * @param {string} strokeKey The key for the stroke state.
+         * @param {string} fillKey The key for the fill state.
+         * @return {{label: import("../canvas.js").Label, anchorX: number, anchorY: number}} The text image and its anchor.
+         */
+        drawLabelWithPointPlacement_(text, textKey, strokeKey, fillKey) {
+            const textState = this.textStates[textKey];
+            const label = this.createLabel(text, textKey, fillKey, strokeKey);
+            const strokeState = this.strokeStates[strokeKey];
+            const pixelRatio = this.pixelRatio;
+            const align = TextBuilder_js_2.TEXT_ALIGN[textState.textAlign || canvas_js_7.defaultTextAlign];
+            const baseline = TextBuilder_js_2.TEXT_ALIGN[textState.textBaseline || canvas_js_6.defaultTextBaseline];
+            const strokeWidth = strokeState && strokeState.lineWidth ? strokeState.lineWidth : 0;
+            // Remove the 2 pixels we added in createLabel() for the anchor
+            const width = label.width / pixelRatio - 2 * textState.scale[0];
+            const anchorX = align * width + 2 * (0.5 - align) * strokeWidth;
+            const anchorY = (baseline * label.height) / pixelRatio +
+                2 * (0.5 - baseline) * strokeWidth;
+            return {
+                label: label,
+                anchorX: anchorX,
+                anchorY: anchorY,
+            };
+        }
+        /**
+         * @private
+         * @param {CanvasRenderingContext2D} context Context.
+         * @param {number} contextScale Scale of the context.
+         * @param {import("../../transform.js").Transform} transform Transform.
+         * @param {Array<*>} instructions Instructions array.
+         * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
+         * @param {function(import("../../Feature.js").FeatureLike): T|undefined} featureCallback Feature callback.
+         * @param {import("../../extent.js").Extent=} opt_hitExtent Only check features that intersect this
+         *     extent.
+         * @return {T|undefined} Callback result.
+         * @template T
+         */
+        execute_(context, contextScale, transform, instructions, snapToPixel, featureCallback, opt_hitExtent) {
+            this.declutterItems.length = 0;
+            /** @type {Array<number>} */
+            let pixelCoordinates;
+            if (this.pixelCoordinates_ && array_js_16.equals(transform, this.renderedTransform_)) {
+                pixelCoordinates = this.pixelCoordinates_;
+            }
+            else {
+                if (!this.pixelCoordinates_) {
+                    this.pixelCoordinates_ = [];
+                }
+                pixelCoordinates = transform_js_15.transform2D(this.coordinates, 0, this.coordinates.length, 2, transform, this.pixelCoordinates_);
+                transform_js_14.setFromArray(this.renderedTransform_, transform);
+            }
+            let i = 0; // instruction index
+            const ii = instructions.length; // end of instructions
+            let d = 0; // data index
+            let dd; // end of per-instruction data
+            let anchorX, anchorY, prevX, prevY, roundX, roundY, declutterGroup, declutterGroups, image, text, textKey;
+            let strokeKey, fillKey;
+            let pendingFill = 0;
+            let pendingStroke = 0;
+            let lastFillInstruction = null;
+            let lastStrokeInstruction = null;
+            const coordinateCache = this.coordinateCache_;
+            const viewRotation = this.viewRotation_;
+            const viewRotationFromTransform = Math.round(Math.atan2(-transform[1], transform[0]) * 1e12) / 1e12;
+            const state = /** @type {import("../../render.js").State} */ ({
+                context: context,
+                pixelRatio: this.pixelRatio,
+                resolution: this.resolution,
+                rotation: viewRotation,
+            });
+            // When the batch size gets too big, performance decreases. 200 is a good
+            // balance between batch size and number of fill/stroke instructions.
+            const batchSize = this.instructions != instructions || this.overlaps ? 0 : 200;
+            let /** @type {import("../../Feature.js").FeatureLike} */ feature;
+            let x, y;
+            while (i < ii) {
+                const instruction = instructions[i];
+                const type = /** @type {import("./Instruction.js").default} */ (instruction[0]);
+                switch (type) {
+                    case Instruction_js_6.default.BEGIN_GEOMETRY:
+                        feature = /** @type {import("../../Feature.js").FeatureLike} */ (instruction[1]);
+                        if (!feature.getGeometry()) {
+                            i = /** @type {number} */ (instruction[2]);
+                        }
+                        else if (opt_hitExtent !== undefined &&
+                            !extent_js_32.intersects(opt_hitExtent, instruction[3])) {
+                            i = /** @type {number} */ (instruction[2]) + 1;
+                        }
+                        else {
+                            ++i;
+                        }
+                        break;
+                    case Instruction_js_6.default.BEGIN_PATH:
+                        if (pendingFill > batchSize) {
+                            this.fill_(context);
+                            pendingFill = 0;
+                        }
+                        if (pendingStroke > batchSize) {
+                            context.stroke();
+                            pendingStroke = 0;
+                        }
+                        if (!pendingFill && !pendingStroke) {
+                            context.beginPath();
+                            prevX = NaN;
+                            prevY = NaN;
+                        }
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.CIRCLE:
+                        d = /** @type {number} */ (instruction[1]);
+                        const x1 = pixelCoordinates[d];
+                        const y1 = pixelCoordinates[d + 1];
+                        const x2 = pixelCoordinates[d + 2];
+                        const y2 = pixelCoordinates[d + 3];
+                        const dx = x2 - x1;
+                        const dy = y2 - y1;
+                        const r = Math.sqrt(dx * dx + dy * dy);
+                        context.moveTo(x1 + r, y1);
+                        context.arc(x1, y1, r, 0, 2 * Math.PI, true);
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.CLOSE_PATH:
+                        context.closePath();
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.CUSTOM:
+                        d = /** @type {number} */ (instruction[1]);
+                        dd = instruction[2];
+                        const geometry = /** @type {import("../../geom/SimpleGeometry.js").default} */ (instruction[3]);
+                        const renderer = instruction[4];
+                        const fn = instruction.length == 6 ? instruction[5] : undefined;
+                        state.geometry = geometry;
+                        state.feature = feature;
+                        if (!(i in coordinateCache)) {
+                            coordinateCache[i] = [];
+                        }
+                        const coords = coordinateCache[i];
+                        if (fn) {
+                            fn(pixelCoordinates, d, dd, 2, coords);
+                        }
+                        else {
+                            coords[0] = pixelCoordinates[d];
+                            coords[1] = pixelCoordinates[d + 1];
+                            coords.length = 2;
+                        }
+                        renderer(coords, state);
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.DRAW_IMAGE:
+                        d = /** @type {number} */ (instruction[1]);
+                        dd = /** @type {number} */ (instruction[2]);
+                        image = /** @type {HTMLCanvasElement|HTMLVideoElement|HTMLImageElement} */ (instruction[3]);
+                        // Remaining arguments in DRAW_IMAGE are in alphabetical order
+                        anchorX = /** @type {number} */ (instruction[4]);
+                        anchorY = /** @type {number} */ (instruction[5]);
+                        declutterGroups = featureCallback ? null : instruction[6];
+                        let height = /** @type {number} */ (instruction[7]);
+                        const opacity = /** @type {number} */ (instruction[8]);
+                        const originX = /** @type {number} */ (instruction[9]);
+                        const originY = /** @type {number} */ (instruction[10]);
+                        const rotateWithView = /** @type {boolean} */ (instruction[11]);
+                        let rotation = /** @type {number} */ (instruction[12]);
+                        const scale = /** @type {import("../../size.js").Size} */ (instruction[13]);
+                        let width = /** @type {number} */ (instruction[14]);
+                        if (!image && instruction.length >= 19) {
+                            // create label images
+                            text = /** @type {string} */ (instruction[18]);
+                            textKey = /** @type {string} */ (instruction[19]);
+                            strokeKey = /** @type {string} */ (instruction[20]);
+                            fillKey = /** @type {string} */ (instruction[21]);
+                            const labelWithAnchor = this.drawLabelWithPointPlacement_(text, textKey, strokeKey, fillKey);
+                            image = labelWithAnchor.label;
+                            instruction[3] = image;
+                            const textOffsetX = /** @type {number} */ (instruction[22]);
+                            anchorX = (labelWithAnchor.anchorX - textOffsetX) * this.pixelRatio;
+                            instruction[4] = anchorX;
+                            const textOffsetY = /** @type {number} */ (instruction[23]);
+                            anchorY = (labelWithAnchor.anchorY - textOffsetY) * this.pixelRatio;
+                            instruction[5] = anchorY;
+                            height = image.height;
+                            instruction[7] = height;
+                            width = image.width;
+                            instruction[14] = width;
+                        }
+                        let geometryWidths;
+                        if (instruction.length > 24) {
+                            geometryWidths = /** @type {number} */ (instruction[24]);
+                        }
+                        let padding, backgroundFill, backgroundStroke;
+                        if (instruction.length > 16) {
+                            padding = /** @type {Array<number>} */ (instruction[15]);
+                            backgroundFill = /** @type {boolean} */ (instruction[16]);
+                            backgroundStroke = /** @type {boolean} */ (instruction[17]);
+                        }
+                        else {
+                            padding = canvas_js_6.defaultPadding;
+                            backgroundFill = false;
+                            backgroundStroke = false;
+                        }
+                        if (rotateWithView && viewRotationFromTransform) {
+                            // Canvas is expected to be rotated to reverse view rotation.
+                            rotation += viewRotation;
+                        }
+                        else if (!rotateWithView && !viewRotationFromTransform) {
+                            // Canvas is not rotated, images need to be rotated back to be north-up.
+                            rotation -= viewRotation;
+                        }
+                        let widthIndex = 0;
+                        let declutterGroupIndex = 0;
+                        for (; d < dd; d += 2) {
+                            if (geometryWidths &&
+                                geometryWidths[widthIndex++] < width / this.pixelRatio) {
+                                continue;
+                            }
+                            if (declutterGroups) {
+                                const index = Math.floor(declutterGroupIndex);
+                                declutterGroup =
+                                    declutterGroups.length < index + 1
+                                        ? [declutterGroups[0][0]]
+                                        : declutterGroups[index];
+                            }
+                            const rendered = this.replayImageOrLabel_(context, contextScale, pixelCoordinates[d], pixelCoordinates[d + 1], image, anchorX, anchorY, declutterGroup, height, opacity, originX, originY, rotation, scale, snapToPixel, width, padding, backgroundFill
+                                ? /** @type {Array<*>} */ (lastFillInstruction)
+                                : null, backgroundStroke
+                                ? /** @type {Array<*>} */ (lastStrokeInstruction)
+                                : null);
+                            if (rendered &&
+                                declutterGroup &&
+                                declutterGroups[declutterGroups.length - 1] !== declutterGroup) {
+                                declutterGroups.push(declutterGroup);
+                            }
+                            if (declutterGroup) {
+                                if (declutterGroup.length - 1 === declutterGroup[0]) {
+                                    this.declutterItems.push(this, declutterGroup, feature);
+                                }
+                                declutterGroupIndex += 1 / declutterGroup[0];
+                            }
+                        }
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.DRAW_CHARS:
+                        const begin = /** @type {number} */ (instruction[1]);
+                        const end = /** @type {number} */ (instruction[2]);
+                        const baseline = /** @type {number} */ (instruction[3]);
+                        declutterGroup = featureCallback ? null : instruction[4];
+                        const overflow = /** @type {number} */ (instruction[5]);
+                        fillKey = /** @type {string} */ (instruction[6]);
+                        const maxAngle = /** @type {number} */ (instruction[7]);
+                        const measurePixelRatio = /** @type {number} */ (instruction[8]);
+                        const offsetY = /** @type {number} */ (instruction[9]);
+                        strokeKey = /** @type {string} */ (instruction[10]);
+                        const strokeWidth = /** @type {number} */ (instruction[11]);
+                        text = /** @type {string} */ (instruction[12]);
+                        textKey = /** @type {string} */ (instruction[13]);
+                        const pixelRatioScale = [
+                            /** @type {number} */ (instruction[14]),
+                            /** @type {number} */ (instruction[14]),
+                        ];
+                        const textState = this.textStates[textKey];
+                        const font = textState.font;
+                        const textScale = [
+                            textState.scale[0] * measurePixelRatio,
+                            textState.scale[1] * measurePixelRatio,
+                        ];
+                        let cachedWidths;
+                        if (font in this.widths_) {
+                            cachedWidths = this.widths_[font];
+                        }
+                        else {
+                            cachedWidths = {};
+                            this.widths_[font] = cachedWidths;
+                        }
+                        const pathLength = length_js_2.lineStringLength(pixelCoordinates, begin, end, 2);
+                        const textLength = Math.abs(textScale[0]) *
+                            canvas_js_7.measureAndCacheTextWidth(font, text, cachedWidths);
+                        if (overflow || textLength <= pathLength) {
+                            const textAlign = this.textStates[textKey].textAlign;
+                            const startM = (pathLength - textLength) * TextBuilder_js_2.TEXT_ALIGN[textAlign];
+                            const parts = textpath_js_1.drawTextOnPath(pixelCoordinates, begin, end, 2, text, startM, maxAngle, Math.abs(textScale[0]), canvas_js_7.measureAndCacheTextWidth, font, cachedWidths, viewRotationFromTransform ? 0 : this.viewRotation_);
+                            if (parts) {
+                                let rendered = false;
+                                let c, cc, chars, label, part;
+                                if (strokeKey) {
+                                    for (c = 0, cc = parts.length; c < cc; ++c) {
+                                        part = parts[c]; // x, y, anchorX, rotation, chunk
+                                        chars = /** @type {string} */ (part[4]);
+                                        label = this.createLabel(chars, textKey, '', strokeKey);
+                                        anchorX = /** @type {number} */ (part[2]) + strokeWidth;
+                                        anchorY =
+                                            baseline * label.height +
+                                                ((0.5 - baseline) * 2 * strokeWidth * textScale[1]) /
+                                                    textScale[0] -
+                                                offsetY;
+                                        rendered =
+                                            this.replayImageOrLabel_(context, contextScale, 
+                                            /** @type {number} */ (part[0]), 
+                                            /** @type {number} */ (part[1]), label, anchorX, anchorY, declutterGroup, label.height, 1, 0, 0, 
+                                            /** @type {number} */ (part[3]), pixelRatioScale, false, label.width, canvas_js_6.defaultPadding, null, null) || rendered;
+                                    }
+                                }
+                                if (fillKey) {
+                                    for (c = 0, cc = parts.length; c < cc; ++c) {
+                                        part = parts[c]; // x, y, anchorX, rotation, chunk
+                                        chars = /** @type {string} */ (part[4]);
+                                        label = this.createLabel(chars, textKey, fillKey, '');
+                                        anchorX = /** @type {number} */ (part[2]);
+                                        anchorY = baseline * label.height - offsetY;
+                                        rendered =
+                                            this.replayImageOrLabel_(context, contextScale, 
+                                            /** @type {number} */ (part[0]), 
+                                            /** @type {number} */ (part[1]), label, anchorX, anchorY, declutterGroup, label.height, 1, 0, 0, 
+                                            /** @type {number} */ (part[3]), pixelRatioScale, false, label.width, canvas_js_6.defaultPadding, null, null) || rendered;
+                                    }
+                                }
+                                if (rendered) {
+                                    this.declutterItems.push(this, declutterGroup, feature);
+                                }
+                            }
+                        }
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.END_GEOMETRY:
+                        if (featureCallback !== undefined) {
+                            feature = /** @type {import("../../Feature.js").FeatureLike} */ (instruction[1]);
+                            const result = featureCallback(feature);
+                            if (result) {
+                                return result;
+                            }
+                        }
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.FILL:
+                        if (batchSize) {
+                            pendingFill++;
+                        }
+                        else {
+                            this.fill_(context);
+                        }
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.MOVE_TO_LINE_TO:
+                        d = /** @type {number} */ (instruction[1]);
+                        dd = /** @type {number} */ (instruction[2]);
+                        x = pixelCoordinates[d];
+                        y = pixelCoordinates[d + 1];
+                        roundX = (x + 0.5) | 0;
+                        roundY = (y + 0.5) | 0;
+                        if (roundX !== prevX || roundY !== prevY) {
+                            context.moveTo(x, y);
+                            prevX = roundX;
+                            prevY = roundY;
+                        }
+                        for (d += 2; d < dd; d += 2) {
+                            x = pixelCoordinates[d];
+                            y = pixelCoordinates[d + 1];
+                            roundX = (x + 0.5) | 0;
+                            roundY = (y + 0.5) | 0;
+                            if (d == dd - 2 || roundX !== prevX || roundY !== prevY) {
+                                context.lineTo(x, y);
+                                prevX = roundX;
+                                prevY = roundY;
+                            }
+                        }
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.SET_FILL_STYLE:
+                        lastFillInstruction = instruction;
+                        this.alignFill_ = instruction[2];
+                        if (pendingFill) {
+                            this.fill_(context);
+                            pendingFill = 0;
+                            if (pendingStroke) {
+                                context.stroke();
+                                pendingStroke = 0;
+                            }
+                        }
+                        context.fillStyle = /** @type {import("../../colorlike.js").ColorLike} */ (instruction[1]);
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.SET_STROKE_STYLE:
+                        lastStrokeInstruction = instruction;
+                        if (pendingStroke) {
+                            context.stroke();
+                            pendingStroke = 0;
+                        }
+                        this.setStrokeStyle_(context, /** @type {Array<*>} */ (instruction));
+                        ++i;
+                        break;
+                    case Instruction_js_6.default.STROKE:
+                        if (batchSize) {
+                            pendingStroke++;
+                        }
+                        else {
+                            context.stroke();
+                        }
+                        ++i;
+                        break;
+                    default:
+                        ++i; // consume the instruction anyway, to avoid an infinite loop
+                        break;
+                }
+            }
+            if (pendingFill) {
+                this.fill_(context);
+            }
+            if (pendingStroke) {
+                context.stroke();
+            }
+            return undefined;
+        }
+        /**
+         * @param {CanvasRenderingContext2D} context Context.
+         * @param {number} contextScale Scale of the context.
+         * @param {import("../../transform.js").Transform} transform Transform.
+         * @param {number} viewRotation View rotation.
+         * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
+         */
+        execute(context, contextScale, transform, viewRotation, snapToPixel) {
+            this.viewRotation_ = viewRotation;
+            this.execute_(context, contextScale, transform, this.instructions, snapToPixel, undefined, undefined);
+        }
+        /**
+         * @param {CanvasRenderingContext2D} context Context.
+         * @param {import("../../transform.js").Transform} transform Transform.
+         * @param {number} viewRotation View rotation.
+         * @param {function(import("../../Feature.js").FeatureLike): T=} opt_featureCallback
+         *     Feature callback.
+         * @param {import("../../extent.js").Extent=} opt_hitExtent Only check features that intersect this
+         *     extent.
+         * @return {T|undefined} Callback result.
+         * @template T
+         */
+        executeHitDetection(context, transform, viewRotation, opt_featureCallback, opt_hitExtent) {
+            this.viewRotation_ = viewRotation;
+            return this.execute_(context, 1, transform, this.hitDetectionInstructions, true, opt_featureCallback, opt_hitExtent);
+        }
+    }
+    exports.default = Executor;
+});
+/**
+ * @module ol/render/canvas/ExecutorGroup
+ */
+define("node_modules/ol/src/render/canvas/ExecutorGroup", ["require", "exports", "node_modules/ol/src/render/canvas/BuilderType", "node_modules/ol/src/render/canvas/Executor", "node_modules/ol/src/extent", "node_modules/ol/src/transform", "node_modules/ol/src/dom", "node_modules/ol/src/obj", "node_modules/ol/src/array", "node_modules/ol/src/geom/flat/transform"], function (require, exports, BuilderType_js_2, Executor_js_1, extent_js_33, transform_js_16, dom_js_7, obj_js_14, array_js_17, transform_js_17) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.replayDeclutter = exports.getCircleArray = void 0;
+    /**
+     * @const
+     * @type {Array<import("./BuilderType.js").default>}
+     */
+    const ORDER = [
+        BuilderType_js_2.default.POLYGON,
+        BuilderType_js_2.default.CIRCLE,
+        BuilderType_js_2.default.LINE_STRING,
+        BuilderType_js_2.default.IMAGE,
+        BuilderType_js_2.default.TEXT,
+        BuilderType_js_2.default.DEFAULT,
+    ];
+    class ExecutorGroup {
+        /**
+         * @param {import("../../extent.js").Extent} maxExtent Max extent for clipping. When a
+         * `maxExtent` was set on the Buillder for this executor group, the same `maxExtent`
+         * should be set here, unless the target context does not exceet that extent (which
+         * can be the case when rendering to tiles).
+         * @param {number} resolution Resolution.
+         * @param {number} pixelRatio Pixel ratio.
+         * @param {boolean} overlaps The executor group can have overlapping geometries.
+         * @param {!Object<string, !Object<import("./BuilderType.js").default, import("./Builder.js").SerializableInstructions>>} allInstructions
+         * The serializable instructions.
+         * @param {number=} opt_renderBuffer Optional rendering buffer.
+         */
+        constructor(maxExtent, resolution, pixelRatio, overlaps, allInstructions, opt_renderBuffer) {
+            /**
+             * @private
+             * @type {import("../../extent.js").Extent}
+             */
+            this.maxExtent_ = maxExtent;
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.overlaps_ = overlaps;
+            /**
+             * @private
+             * @type {number}
+             */
+            this.pixelRatio_ = pixelRatio;
+            /**
+             * @private
+             * @type {number}
+             */
+            this.resolution_ = resolution;
+            /**
+             * @private
+             * @type {number|undefined}
+             */
+            this.renderBuffer_ = opt_renderBuffer;
+            /**
+             * @private
+             * @type {!Object<string, !Object<import("./BuilderType.js").default, import("./Executor").default>>}
+             */
+            this.executorsByZIndex_ = {};
+            /**
+             * @private
+             * @type {CanvasRenderingContext2D}
+             */
+            this.hitDetectionContext_ = null;
+            /**
+             * @private
+             * @type {import("../../transform.js").Transform}
+             */
+            this.hitDetectionTransform_ = transform_js_16.create();
+            this.createExecutors_(allInstructions);
+        }
+        /**
+         * @param {CanvasRenderingContext2D} context Context.
+         * @param {import("../../transform.js").Transform} transform Transform.
+         */
+        clip(context, transform) {
+            const flatClipCoords = this.getClipCoords(transform);
+            context.beginPath();
+            context.moveTo(flatClipCoords[0], flatClipCoords[1]);
+            context.lineTo(flatClipCoords[2], flatClipCoords[3]);
+            context.lineTo(flatClipCoords[4], flatClipCoords[5]);
+            context.lineTo(flatClipCoords[6], flatClipCoords[7]);
+            context.clip();
+        }
+        /**
+         * Create executors and populate them using the provided instructions.
+         * @private
+         * @param {!Object<string, !Object<import("./BuilderType.js").default, import("./Builder.js").SerializableInstructions>>} allInstructions The serializable instructions
+         */
+        createExecutors_(allInstructions) {
+            for (const zIndex in allInstructions) {
+                let executors = this.executorsByZIndex_[zIndex];
+                if (executors === undefined) {
+                    executors = {};
+                    this.executorsByZIndex_[zIndex] = executors;
+                }
+                const instructionByZindex = allInstructions[zIndex];
+                const renderBuffer = [this.renderBuffer_ || 0, this.renderBuffer_ || 0];
+                for (const builderType in instructionByZindex) {
+                    const instructions = instructionByZindex[builderType];
+                    executors[builderType] = new Executor_js_1.default(this.resolution_, this.pixelRatio_, this.overlaps_, instructions, renderBuffer);
+                }
+            }
+        }
+        /**
+         * @param {Array<import("./BuilderType.js").default>} executors Executors.
+         * @return {boolean} Has executors of the provided types.
+         */
+        hasExecutors(executors) {
+            for (const zIndex in this.executorsByZIndex_) {
+                const candidates = this.executorsByZIndex_[zIndex];
+                for (let i = 0, ii = executors.length; i < ii; ++i) {
+                    if (executors[i] in candidates) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        /**
+         * @param {import("../../coordinate.js").Coordinate} coordinate Coordinate.
+         * @param {number} resolution Resolution.
+         * @param {number} rotation Rotation.
+         * @param {number} hitTolerance Hit tolerance in pixels.
+         * @param {function(import("../../Feature.js").FeatureLike): T} callback Feature callback.
+         * @param {Array<import("../../Feature.js").FeatureLike>} declutteredFeatures Decluttered features.
+         * @return {T|undefined} Callback result.
+         * @template T
+         */
+        forEachFeatureAtCoordinate(coordinate, resolution, rotation, hitTolerance, callback, declutteredFeatures) {
+            hitTolerance = Math.round(hitTolerance);
+            const contextSize = hitTolerance * 2 + 1;
+            const transform = transform_js_16.compose(this.hitDetectionTransform_, hitTolerance + 0.5, hitTolerance + 0.5, 1 / resolution, -1 / resolution, -rotation, -coordinate[0], -coordinate[1]);
+            if (!this.hitDetectionContext_) {
+                this.hitDetectionContext_ = dom_js_7.createCanvasContext2D(contextSize, contextSize);
+            }
+            const context = this.hitDetectionContext_;
+            if (context.canvas.width !== contextSize ||
+                context.canvas.height !== contextSize) {
+                context.canvas.width = contextSize;
+                context.canvas.height = contextSize;
+            }
+            else {
+                context.clearRect(0, 0, contextSize, contextSize);
+            }
+            /**
+             * @type {import("../../extent.js").Extent}
+             */
+            let hitExtent;
+            if (this.renderBuffer_ !== undefined) {
+                hitExtent = extent_js_33.createEmpty();
+                extent_js_33.extendCoordinate(hitExtent, coordinate);
+                extent_js_33.buffer(hitExtent, resolution * (this.renderBuffer_ + hitTolerance), hitExtent);
+            }
+            const mask = getCircleArray(hitTolerance);
+            let builderType;
+            /**
+             * @param {import("../../Feature.js").FeatureLike} feature Feature.
+             * @return {?} Callback result.
+             */
+            function featureCallback(feature) {
+                const imageData = context.getImageData(0, 0, contextSize, contextSize)
+                    .data;
+                for (let i = 0; i < contextSize; i++) {
+                    for (let j = 0; j < contextSize; j++) {
+                        if (mask[i][j]) {
+                            if (imageData[(j * contextSize + i) * 4 + 3] > 0) {
+                                let result;
+                                if (!(declutteredFeatures &&
+                                    (builderType == BuilderType_js_2.default.IMAGE ||
+                                        builderType == BuilderType_js_2.default.TEXT)) ||
+                                    declutteredFeatures.indexOf(feature) !== -1) {
+                                    result = callback(feature);
+                                }
+                                if (result) {
+                                    return result;
+                                }
+                                else {
+                                    context.clearRect(0, 0, contextSize, contextSize);
+                                    return undefined;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            /** @type {Array<number>} */
+            const zs = Object.keys(this.executorsByZIndex_).map(Number);
+            zs.sort(array_js_17.numberSafeCompareFunction);
+            let i, j, executors, executor, result;
+            for (i = zs.length - 1; i >= 0; --i) {
+                const zIndexKey = zs[i].toString();
+                executors = this.executorsByZIndex_[zIndexKey];
+                for (j = ORDER.length - 1; j >= 0; --j) {
+                    builderType = ORDER[j];
+                    executor = executors[builderType];
+                    if (executor !== undefined) {
+                        result = executor.executeHitDetection(context, transform, rotation, featureCallback, hitExtent);
+                        if (result) {
+                            return result;
+                        }
+                    }
+                }
+            }
+            return undefined;
+        }
+        /**
+         * @param {import("../../transform.js").Transform} transform Transform.
+         * @return {Array<number>} Clip coordinates.
+         */
+        getClipCoords(transform) {
+            const maxExtent = this.maxExtent_;
+            if (!maxExtent) {
+                return null;
+            }
+            const minX = maxExtent[0];
+            const minY = maxExtent[1];
+            const maxX = maxExtent[2];
+            const maxY = maxExtent[3];
+            const flatClipCoords = [minX, minY, minX, maxY, maxX, maxY, maxX, minY];
+            transform_js_17.transform2D(flatClipCoords, 0, 8, 2, transform, flatClipCoords);
+            return flatClipCoords;
+        }
+        /**
+         * @return {boolean} Is empty.
+         */
+        isEmpty() {
+            return obj_js_14.isEmpty(this.executorsByZIndex_);
+        }
+        /**
+         * @param {CanvasRenderingContext2D} context Context.
+         * @param {number} contextScale Scale of the context.
+         * @param {import("../../transform.js").Transform} transform Transform.
+         * @param {number} viewRotation View rotation.
+         * @param {boolean} snapToPixel Snap point symbols and test to integer pixel.
+         * @param {Array<import("./BuilderType.js").default>=} opt_builderTypes Ordered replay types to replay.
+         *     Default is {@link module:ol/render/replay~ORDER}
+         * @param {Object<string, import("../canvas.js").DeclutterGroup>=} opt_declutterReplays Declutter replays.
+         */
+        execute(context, contextScale, transform, viewRotation, snapToPixel, opt_builderTypes, opt_declutterReplays) {
+            /** @type {Array<number>} */
+            const zs = Object.keys(this.executorsByZIndex_).map(Number);
+            zs.sort(array_js_17.numberSafeCompareFunction);
+            // setup clipping so that the parts of over-simplified geometries are not
+            // visible outside the current extent when panning
+            if (this.maxExtent_) {
+                context.save();
+                this.clip(context, transform);
+            }
+            const builderTypes = opt_builderTypes ? opt_builderTypes : ORDER;
+            let i, ii, j, jj, replays, replay;
+            for (i = 0, ii = zs.length; i < ii; ++i) {
+                const zIndexKey = zs[i].toString();
+                replays = this.executorsByZIndex_[zIndexKey];
+                for (j = 0, jj = builderTypes.length; j < jj; ++j) {
+                    const builderType = builderTypes[j];
+                    replay = replays[builderType];
+                    if (replay !== undefined) {
+                        if (opt_declutterReplays &&
+                            (builderType == BuilderType_js_2.default.IMAGE ||
+                                builderType == BuilderType_js_2.default.TEXT)) {
+                            const declutter = opt_declutterReplays[zIndexKey];
+                            if (!declutter) {
+                                opt_declutterReplays[zIndexKey] = [replay, transform.slice(0)];
+                            }
+                            else {
+                                declutter.push(replay, transform.slice(0));
+                            }
+                        }
+                        else {
+                            replay.execute(context, contextScale, transform, viewRotation, snapToPixel);
+                        }
+                    }
+                }
+            }
+            if (this.maxExtent_) {
+                context.restore();
+            }
+        }
+    }
+    /**
+     * This cache is used for storing calculated pixel circles for increasing performance.
+     * It is a static property to allow each Replaygroup to access it.
+     * @type {Object<number, Array<Array<(boolean|undefined)>>>}
+     */
+    const circleArrayCache = {
+        0: [[true]],
+    };
+    /**
+     * This method fills a row in the array from the given coordinate to the
+     * middle with `true`.
+     * @param {Array<Array<(boolean|undefined)>>} array The array that will be altered.
+     * @param {number} x X coordinate.
+     * @param {number} y Y coordinate.
+     */
+    function fillCircleArrayRowToMiddle(array, x, y) {
+        let i;
+        const radius = Math.floor(array.length / 2);
+        if (x >= radius) {
+            for (i = radius; i < x; i++) {
+                array[i][y] = true;
+            }
+        }
+        else if (x < radius) {
+            for (i = x + 1; i < radius; i++) {
+                array[i][y] = true;
+            }
+        }
+    }
+    /**
+     * This methods creates a circle inside a fitting array. Points inside the
+     * circle are marked by true, points on the outside are undefined.
+     * It uses the midpoint circle algorithm.
+     * A cache is used to increase performance.
+     * @param {number} radius Radius.
+     * @returns {Array<Array<(boolean|undefined)>>} An array with marked circle points.
+     */
+    function getCircleArray(radius) {
+        if (circleArrayCache[radius] !== undefined) {
+            return circleArrayCache[radius];
+        }
+        const arraySize = radius * 2 + 1;
+        const arr = new Array(arraySize);
+        for (let i = 0; i < arraySize; i++) {
+            arr[i] = new Array(arraySize);
+        }
+        let x = radius;
+        let y = 0;
+        let error = 0;
+        while (x >= y) {
+            fillCircleArrayRowToMiddle(arr, radius + x, radius + y);
+            fillCircleArrayRowToMiddle(arr, radius + y, radius + x);
+            fillCircleArrayRowToMiddle(arr, radius - y, radius + x);
+            fillCircleArrayRowToMiddle(arr, radius - x, radius + y);
+            fillCircleArrayRowToMiddle(arr, radius - x, radius - y);
+            fillCircleArrayRowToMiddle(arr, radius - y, radius - x);
+            fillCircleArrayRowToMiddle(arr, radius + y, radius - x);
+            fillCircleArrayRowToMiddle(arr, radius + x, radius - y);
+            y++;
+            error += 1 + 2 * y;
+            if (2 * (error - x) + 1 > 0) {
+                x -= 1;
+                error += 1 - 2 * x;
+            }
+        }
+        circleArrayCache[radius] = arr;
+        return arr;
+    }
+    exports.getCircleArray = getCircleArray;
+    /**
+     * @param {!Object<string, Array<*>>} declutterReplays Declutter replays.
+     * @param {CanvasRenderingContext2D} context Context.
+     * @param {number} rotation Rotation.
+     * @param {number} opacity Opacity.
+     * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
+     * @param {Array<import("../../PluggableMap.js").DeclutterItems>} declutterItems Declutter items.
+     */
+    function replayDeclutter(declutterReplays, context, rotation, opacity, snapToPixel, declutterItems) {
+        const zs = Object.keys(declutterReplays)
+            .map(Number)
+            .sort(array_js_17.numberSafeCompareFunction);
+        for (let z = 0, zz = zs.length; z < zz; ++z) {
+            const executorData = declutterReplays[zs[z].toString()];
+            let currentExecutor;
+            for (let i = 0, ii = executorData.length; i < ii;) {
+                const executor = executorData[i++];
+                const transform = executorData[i++];
+                executor.execute(context, 1, transform, rotation, snapToPixel);
+                if (executor !== currentExecutor && executor.declutterItems.length > 0) {
+                    currentExecutor = executor;
+                    declutterItems.push({
+                        items: executor.declutterItems,
+                        opacity: opacity,
+                    });
+                }
+            }
+        }
+    }
+    exports.replayDeclutter = replayDeclutter;
+    exports.default = ExecutorGroup;
+});
+define("node_modules/ol/src/VectorRenderTile", ["require", "exports", "node_modules/ol/src/Tile", "node_modules/ol/src/dom", "node_modules/ol/src/util"], function (require, exports, Tile_js_3, dom_js_8, util_js_20) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @typedef {Object} ReplayState
+     * @property {boolean} dirty
+     * @property {null|import("./render.js").OrderFunction} renderedRenderOrder
+     * @property {number} renderedTileRevision
+     * @property {number} renderedResolution
+     * @property {number} renderedRevision
+     * @property {number} renderedZ
+     * @property {number} renderedTileResolution
+     * @property {number} renderedTileZ
+     */
+    /**
+     * @type {Array<HTMLCanvasElement>}
+     */
+    const canvasPool = [];
+    class VectorRenderTile extends Tile_js_3.default {
+        /**
+         * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
+         * @param {import("./TileState.js").default} state State.
+         * @param {import("./tilecoord.js").TileCoord} urlTileCoord Wrapped tile coordinate for source urls.
+         * @param {function(VectorRenderTile):Array<import("./VectorTile").default>} getSourceTiles Function
+         * to get source tiles for this tile.
+         */
+        constructor(tileCoord, state, urlTileCoord, getSourceTiles) {
+            super(tileCoord, state, { transition: 0 });
+            /**
+             * @private
+             * @type {!Object<string, CanvasRenderingContext2D>}
+             */
+            this.context_ = {};
+            /**
+             * Executor groups by layer uid. Entries are read/written by the renderer.
+             * @type {Object<string, Array<import("./render/canvas/ExecutorGroup.js").default>>}
+             */
+            this.executorGroups = {};
+            /**
+             * Number of loading source tiles. Read/written by the source.
+             * @type {number}
+             */
+            this.loadingSourceTiles = 0;
+            /**
+             * Tile keys of error source tiles. Read/written by the source.
+             * @type {Object<string, boolean>}
+             */
+            this.errorSourceTileKeys = {};
+            /**
+             * @type {Object<number, ImageData>}
+             */
+            this.hitDetectionImageData = {};
+            /**
+             * @private
+             * @type {!Object<string, ReplayState>}
+             */
+            this.replayState_ = {};
+            /**
+             * @type {Array<import("./VectorTile.js").default>}
+             */
+            this.sourceTiles = null;
+            /**
+             * @type {number}
+             */
+            this.wantedResolution;
+            /**
+             * @type {!function():Array<import("./VectorTile.js").default>}
+             */
+            this.getSourceTiles = getSourceTiles.bind(undefined, this);
+            /**
+             * z of the source tiles of the last getSourceTiles call.
+             * @type {number}
+             */
+            this.sourceZ = -1;
+            /**
+             * True when all tiles for this tile's nominal resolution are available.
+             * @type {boolean}
+             */
+            this.hifi = false;
+            /**
+             * @type {import("./tilecoord.js").TileCoord}
+             */
+            this.wrappedTileCoord = urlTileCoord;
+        }
+        /**
+         * @param {import("./layer/Layer.js").default} layer Layer.
+         * @return {CanvasRenderingContext2D} The rendering context.
+         */
+        getContext(layer) {
+            const key = util_js_20.getUid(layer);
+            if (!(key in this.context_)) {
+                this.context_[key] = dom_js_8.createCanvasContext2D(1, 1, canvasPool);
+            }
+            return this.context_[key];
+        }
+        /**
+         * @param {import("./layer/Layer.js").default} layer Layer.
+         * @return {boolean} Tile has a rendering context for the given layer.
+         */
+        hasContext(layer) {
+            return util_js_20.getUid(layer) in this.context_;
+        }
+        /**
+         * Get the Canvas for this tile.
+         * @param {import("./layer/Layer.js").default} layer Layer.
+         * @return {HTMLCanvasElement} Canvas.
+         */
+        getImage(layer) {
+            return this.hasContext(layer) ? this.getContext(layer).canvas : null;
+        }
+        /**
+         * @param {import("./layer/Layer.js").default} layer Layer.
+         * @return {ReplayState} The replay state.
+         */
+        getReplayState(layer) {
+            const key = util_js_20.getUid(layer);
+            if (!(key in this.replayState_)) {
+                this.replayState_[key] = {
+                    dirty: false,
+                    renderedRenderOrder: null,
+                    renderedResolution: NaN,
+                    renderedRevision: -1,
+                    renderedTileResolution: NaN,
+                    renderedTileRevision: -1,
+                    renderedZ: -1,
+                    renderedTileZ: -1,
+                };
+            }
+            return this.replayState_[key];
+        }
+        /**
+         * Load the tile.
+         */
+        load() {
+            this.getSourceTiles();
+        }
+        /**
+         * Remove from the cache due to expiry
+         */
+        release() {
+            for (const key in this.context_) {
+                canvasPool.push(this.context_[key].canvas);
+            }
+            super.release();
+        }
+    }
+    exports.default = VectorRenderTile;
+});
+/**
+ * @module ol/source/VectorTile
+ */
+define("node_modules/ol/src/source/VectorTile", ["require", "exports", "node_modules/ol/src/events/EventType", "node_modules/ol/src/VectorTile", "node_modules/ol/src/TileCache", "node_modules/ol/src/TileState", "node_modules/ol/src/source/UrlTile", "node_modules/ol/src/VectorRenderTile", "node_modules/ol/src/extent", "node_modules/ol/src/tilegrid", "node_modules/ol/src/array", "node_modules/ol/src/tilecoord", "node_modules/ol/src/featureloader", "node_modules/ol/src/size"], function (require, exports, EventType_js_20, VectorTile_js_1, TileCache_js_2, TileState_js_6, UrlTile_js_1, VectorRenderTile_js_1, extent_js_34, tilegrid_js_2, array_js_18, tilecoord_js_6, featureloader_js_2, size_js_7) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.defaultLoadFunction = void 0;
+    /**
+     * @typedef {Object} Options
+     * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
+     * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
+     * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least twice the number of tiles in the viewport.
+     * @property {import("../extent.js").Extent} [extent]
+     * @property {import("../format/Feature.js").default} [format] Feature format for tiles. Used and required by the default.
+     * @property {boolean} [overlaps=true] This source may have overlapping geometries. Setting this
+     * to `false` (e.g. for sources with polygons that represent administrative
+     * boundaries or TopoJSON sources) allows the renderer to optimise fill and
+     * stroke operations.
+     * @property {import("../proj.js").ProjectionLike} [projection='EPSG:3857'] Projection of the tile grid.
+     * @property {import("./State.js").default} [state] Source state.
+     * @property {typeof import("../VectorTile.js").default} [tileClass] Class used to instantiate image tiles.
+     * Default is {@link module:ol/VectorTile}.
+     * @property {number} [maxZoom=22] Optional max zoom level. Not used if `tileGrid` is provided.
+     * @property {number} [minZoom] Optional min zoom level. Not used if `tileGrid` is provided.
+     * @property {number|import("../size.js").Size} [tileSize=512] Optional tile size. Not used if `tileGrid` is provided.
+     * @property {number} [maxResolution] Optional tile grid resolution at level zero. Not used if `tileGrid` is provided.
+     * @property {import("../tilegrid/TileGrid.js").default} [tileGrid] Tile grid.
+     * @property {import("../Tile.js").LoadFunction} [tileLoadFunction]
+     * Optional function to load a tile given a URL. Could look like this for pbf tiles:
+     * ```js
+     * function(tile, url) {
+     *   tile.setLoader(function(extent, resolution, projection) {
+     *     fetch(url).then(function(response) {
+     *       response.arrayBuffer().then(function(data) {
+     *         const format = tile.getFormat() // ol/format/MVT configured as source format
+     *         const features = format.readFeatures(data, {
+     *           extent: extent,
+     *           featureProjection: projection
+     *         });
+     *         tile.setFeatures(features);
+     *       });
+     *     });
+     *   });
+     * }
+     * ```
+     * If you do not need extent, resolution and projection to get the features for a tile (e.g.
+     * for GeoJSON tiles), your `tileLoadFunction` does not need a `setLoader()` call. Only make sure
+     * to call `setFeatures()` on the tile:
+     * ```js
+     * const format = new GeoJSON({featureProjection: map.getView().getProjection()});
+     * async function tileLoadFunction(tile, url) {
+     *   const response = await fetch(url);
+     *   const data = await response.json();
+     *   tile.setFeatures(format.readFeatures(data));
+     * }
+     * ```
+     * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] Optional function to get tile URL given a tile coordinate and the projection.
+     * @property {string} [url] URL template. Must include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
+     * A `{?-?}` template pattern, for example `subdomain{a-f}.domain.com`, may be
+     * used instead of defining each one separately in the `urls` option.
+     * @property {number} [transition] A duration for tile opacity
+     * transitions in milliseconds. A duration of 0 disables the opacity transition.
+     * @property {Array<string>} [urls] An array of URL templates.
+     * @property {boolean} [wrapX=true] Whether to wrap the world horizontally.
+     * When set to `false`, only one world
+     * will be rendered. When set to `true`, tiles will be wrapped horizontally to
+     * render multiple worlds.
+     * @property {number} [zDirection=1] Indicate which resolution should be used
+     * by a renderer if the view resolution does not match any resolution of the tile source.
+     * If 0, the nearest resolution will be used. If 1, the nearest lower resolution
+     * will be used. If -1, the nearest higher resolution will be used.
+     */
+    /**
+     * @classdesc
+     * Class for layer sources providing vector data divided into a tile grid, to be
+     * used with {@link module:ol/layer/VectorTile~VectorTile}. Although this source receives tiles
+     * with vector features from the server, it is not meant for feature editing.
+     * Features are optimized for rendering, their geometries are clipped at or near
+     * tile boundaries and simplified for a view resolution. See
+     * {@link module:ol/source/Vector} for vector sources that are suitable for feature
+     * editing.
+     *
+     * @fires import("./Tile.js").TileSourceEvent
+     * @api
+     */
+    class VectorTile extends UrlTile_js_1.default {
+        /**
+         * @param {!Options} options Vector tile options.
+         */
+        constructor(options) {
+            const projection = options.projection || 'EPSG:3857';
+            const extent = options.extent || tilegrid_js_2.extentFromProjection(projection);
+            const tileGrid = options.tileGrid ||
+                tilegrid_js_2.createXYZ({
+                    extent: extent,
+                    maxResolution: options.maxResolution,
+                    maxZoom: options.maxZoom !== undefined ? options.maxZoom : 22,
+                    minZoom: options.minZoom,
+                    tileSize: options.tileSize || 512,
+                });
+            super({
+                attributions: options.attributions,
+                attributionsCollapsible: options.attributionsCollapsible,
+                cacheSize: options.cacheSize,
+                opaque: false,
+                projection: projection,
+                state: options.state,
+                tileGrid: tileGrid,
+                tileLoadFunction: options.tileLoadFunction
+                    ? options.tileLoadFunction
+                    : defaultLoadFunction,
+                tileUrlFunction: options.tileUrlFunction,
+                url: options.url,
+                urls: options.urls,
+                wrapX: options.wrapX === undefined ? true : options.wrapX,
+                transition: options.transition,
+                zDirection: options.zDirection === undefined ? 1 : options.zDirection,
+            });
+            /**
+             * @private
+             * @type {import("../format/Feature.js").default}
+             */
+            this.format_ = options.format ? options.format : null;
+            /**
+             * @type {Object<string, import("./VectorTile").default>}
+             */
+            this.loadingTiles_ = {};
+            /**
+             * @private
+             * @type {TileCache}
+             */
+            this.sourceTileCache = new TileCache_js_2.default(this.tileCache.highWaterMark);
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.overlaps_ = options.overlaps == undefined ? true : options.overlaps;
+            /**
+             * @protected
+             * @type {typeof import("../VectorTile.js").default}
+             */
+            this.tileClass = options.tileClass ? options.tileClass : VectorTile_js_1.default;
+            /**
+             * @private
+             * @type {Object<string, import("../tilegrid/TileGrid.js").default>}
+             */
+            this.tileGrids_ = {};
+        }
+        /**
+         * Get features whose bounding box intersects the provided extent. Only features for cached
+         * tiles for the last rendered zoom level are available in the source. So this method is only
+         * suitable for requesting tiles for extents that are currently rendered.
+         *
+         * Features are returned in random tile order and as they are included in the tiles. This means
+         * they can be clipped, duplicated across tiles, and simplified to the render resolution.
+         *
+         * @param {import("../extent.js").Extent} extent Extent.
+         * @return {Array<import("../Feature.js").FeatureLike>} Features.
+         * @api
+         */
+        getFeaturesInExtent(extent) {
+            const features = [];
+            const tileCache = this.tileCache;
+            if (tileCache.getCount() === 0) {
+                return features;
+            }
+            const z = tilecoord_js_6.fromKey(tileCache.peekFirstKey())[0];
+            const tileGrid = this.tileGrid;
+            tileCache.forEach(function (tile) {
+                if (tile.tileCoord[0] !== z || tile.getState() !== TileState_js_6.default.LOADED) {
+                    return;
+                }
+                const sourceTiles = tile.getSourceTiles();
+                for (let i = 0, ii = sourceTiles.length; i < ii; ++i) {
+                    const sourceTile = sourceTiles[i];
+                    const tileCoord = sourceTile.tileCoord;
+                    if (extent_js_34.intersects(extent, tileGrid.getTileCoordExtent(tileCoord))) {
+                        const tileFeatures = sourceTile.getFeatures();
+                        if (tileFeatures) {
+                            for (let j = 0, jj = tileFeatures.length; j < jj; ++j) {
+                                const candidate = tileFeatures[j];
+                                const geometry = candidate.getGeometry();
+                                if (extent_js_34.intersects(extent, geometry.getExtent())) {
+                                    features.push(candidate);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            return features;
+        }
+        /**
+         * @return {boolean} The source can have overlapping geometries.
+         */
+        getOverlaps() {
+            return this.overlaps_;
+        }
+        /**
+         * clear {@link module:ol/TileCache~TileCache} and delete all source tiles
+         * @api
+         */
+        clear() {
+            this.tileCache.clear();
+            this.sourceTileCache.clear();
+        }
+        /**
+         * @param {import("../proj/Projection.js").default} projection Projection.
+         * @param {!Object<string, boolean>} usedTiles Used tiles.
+         */
+        expireCache(projection, usedTiles) {
+            super.expireCache(projection, usedTiles);
+            this.sourceTileCache.expireCache({});
+        }
+        /**
+         * @param {number} pixelRatio Pixel ratio.
+         * @param {import("../proj/Projection").default} projection Projection.
+         * @param {VectorRenderTile} tile Vector image tile.
+         * @return {Array<import("../VectorTile").default>} Tile keys.
+         */
+        getSourceTiles(pixelRatio, projection, tile) {
+            const urlTileCoord = tile.wrappedTileCoord;
+            const tileGrid = this.getTileGridForProjection(projection);
+            const extent = tileGrid.getTileCoordExtent(urlTileCoord);
+            const z = urlTileCoord[0];
+            const resolution = tileGrid.getResolution(z);
+            // make extent 1 pixel smaller so we don't load tiles for < 0.5 pixel render space
+            extent_js_34.buffer(extent, -resolution, extent);
+            const sourceTileGrid = this.tileGrid;
+            const sourceExtent = sourceTileGrid.getExtent();
+            if (sourceExtent) {
+                extent_js_34.getIntersection(extent, sourceExtent, extent);
+            }
+            const sourceZ = sourceTileGrid.getZForResolution(resolution, 1);
+            const minZoom = sourceTileGrid.getMinZoom();
+            const previousSourceTiles = tile.sourceTiles;
+            let sourceTiles, covered, loadedZ;
+            if (previousSourceTiles &&
+                previousSourceTiles.length > 0 &&
+                previousSourceTiles[0].tileCoord[0] === sourceZ) {
+                sourceTiles = previousSourceTiles;
+                covered = true;
+                loadedZ = sourceZ;
+            }
+            else {
+                sourceTiles = [];
+                loadedZ = sourceZ + 1;
+                do {
+                    --loadedZ;
+                    covered = true;
+                    sourceTileGrid.forEachTileCoord(extent, loadedZ, function (sourceTileCoord) {
+                        const tileUrl = this.tileUrlFunction(sourceTileCoord, pixelRatio, projection);
+                        let sourceTile;
+                        if (tileUrl !== undefined) {
+                            if (this.sourceTileCache.containsKey(tileUrl)) {
+                                sourceTile = this.sourceTileCache.get(tileUrl);
+                                const state = sourceTile.getState();
+                                if (state === TileState_js_6.default.LOADED ||
+                                    state === TileState_js_6.default.ERROR ||
+                                    state === TileState_js_6.default.EMPTY) {
+                                    sourceTiles.push(sourceTile);
+                                    return;
+                                }
+                            }
+                            else if (loadedZ === sourceZ) {
+                                sourceTile = new this.tileClass(sourceTileCoord, TileState_js_6.default.IDLE, tileUrl, this.format_, this.tileLoadFunction);
+                                sourceTile.extent = sourceTileGrid.getTileCoordExtent(sourceTileCoord);
+                                sourceTile.projection = projection;
+                                sourceTile.resolution = sourceTileGrid.getResolution(sourceTileCoord[0]);
+                                this.sourceTileCache.set(tileUrl, sourceTile);
+                                sourceTile.addEventListener(EventType_js_20.default.CHANGE, this.handleTileChange.bind(this));
+                                sourceTile.load();
+                            }
+                        }
+                        covered =
+                            covered &&
+                                sourceTile &&
+                                sourceTile.getState() === TileState_js_6.default.LOADED;
+                        if (!sourceTile) {
+                            return;
+                        }
+                        if (sourceTile.getState() !== TileState_js_6.default.EMPTY &&
+                            tile.getState() === TileState_js_6.default.IDLE) {
+                            tile.loadingSourceTiles++;
+                            sourceTile.addEventListener(EventType_js_20.default.CHANGE, function listenChange() {
+                                const state = sourceTile.getState();
+                                const sourceTileKey = sourceTile.getKey();
+                                if (state === TileState_js_6.default.LOADED || state === TileState_js_6.default.ERROR) {
+                                    if (state === TileState_js_6.default.LOADED) {
+                                        sourceTile.removeEventListener(EventType_js_20.default.CHANGE, listenChange);
+                                        tile.loadingSourceTiles--;
+                                        delete tile.errorSourceTileKeys[sourceTileKey];
+                                    }
+                                    else if (state === TileState_js_6.default.ERROR) {
+                                        tile.errorSourceTileKeys[sourceTileKey] = true;
+                                    }
+                                    const errorTileCount = Object.keys(tile.errorSourceTileKeys)
+                                        .length;
+                                    if (tile.loadingSourceTiles - errorTileCount === 0) {
+                                        tile.hifi = errorTileCount === 0;
+                                        tile.sourceZ = sourceZ;
+                                        tile.setState(TileState_js_6.default.LOADED);
+                                    }
+                                }
+                            });
+                        }
+                    }.bind(this));
+                    if (!covered) {
+                        sourceTiles.length = 0;
+                    }
+                } while (!covered && loadedZ > minZoom);
+            }
+            if (tile.getState() === TileState_js_6.default.IDLE) {
+                tile.setState(TileState_js_6.default.LOADING);
+            }
+            if (covered) {
+                tile.hifi = sourceZ === loadedZ;
+                tile.sourceZ = loadedZ;
+                if (tile.getState() < TileState_js_6.default.LOADED) {
+                    tile.setState(TileState_js_6.default.LOADED);
+                }
+                else if (!previousSourceTiles ||
+                    !array_js_18.equals(sourceTiles, previousSourceTiles)) {
+                    tile.sourceTiles = sourceTiles;
+                }
+            }
+            return sourceTiles;
+        }
+        /**
+         * @param {number} z Tile coordinate z.
+         * @param {number} x Tile coordinate x.
+         * @param {number} y Tile coordinate y.
+         * @param {number} pixelRatio Pixel ratio.
+         * @param {import("../proj/Projection.js").default} projection Projection.
+         * @return {!VectorRenderTile} Tile.
+         */
+        getTile(z, x, y, pixelRatio, projection) {
+            const coordKey = tilecoord_js_6.getKeyZXY(z, x, y);
+            const key = this.getKey();
+            let tile;
+            if (this.tileCache.containsKey(coordKey)) {
+                tile = this.tileCache.get(coordKey);
+                if (tile.key === key) {
+                    return tile;
+                }
+            }
+            const tileCoord = [z, x, y];
+            let urlTileCoord = this.getTileCoordForTileUrlFunction(tileCoord, projection);
+            const sourceExtent = this.getTileGrid().getExtent();
+            const tileGrid = this.getTileGridForProjection(projection);
+            if (urlTileCoord && sourceExtent) {
+                const tileExtent = tileGrid.getTileCoordExtent(urlTileCoord);
+                // make extent 1 pixel smaller so we don't load tiles for < 0.5 pixel render space
+                extent_js_34.buffer(tileExtent, -tileGrid.getResolution(z), tileExtent);
+                if (!extent_js_34.intersects(sourceExtent, tileExtent)) {
+                    urlTileCoord = null;
+                }
+            }
+            let empty = true;
+            if (urlTileCoord !== null) {
+                const sourceTileGrid = this.tileGrid;
+                const resolution = tileGrid.getResolution(z);
+                const sourceZ = sourceTileGrid.getZForResolution(resolution, 1);
+                // make extent 1 pixel smaller so we don't load tiles for < 0.5 pixel render space
+                const extent = tileGrid.getTileCoordExtent(urlTileCoord);
+                extent_js_34.buffer(extent, -resolution, extent);
+                sourceTileGrid.forEachTileCoord(extent, sourceZ, function (sourceTileCoord) {
+                    empty =
+                        empty &&
+                            !this.tileUrlFunction(sourceTileCoord, pixelRatio, projection);
+                }.bind(this));
+            }
+            const newTile = new VectorRenderTile_js_1.default(tileCoord, empty ? TileState_js_6.default.EMPTY : TileState_js_6.default.IDLE, urlTileCoord, this.getSourceTiles.bind(this, pixelRatio, projection));
+            newTile.key = key;
+            if (tile) {
+                newTile.interimTile = tile;
+                newTile.refreshInterimChain();
+                this.tileCache.replace(coordKey, newTile);
+            }
+            else {
+                this.tileCache.set(coordKey, newTile);
+            }
+            return newTile;
+        }
+        /**
+         * @param {import("../proj/Projection.js").default} projection Projection.
+         * @return {!import("../tilegrid/TileGrid.js").default} Tile grid.
+         */
+        getTileGridForProjection(projection) {
+            const code = projection.getCode();
+            let tileGrid = this.tileGrids_[code];
+            if (!tileGrid) {
+                // A tile grid that matches the tile size of the source tile grid is more
+                // likely to have 1:1 relationships between source tiles and rendered tiles.
+                const sourceTileGrid = this.tileGrid;
+                tileGrid = tilegrid_js_2.createForProjection(projection, undefined, sourceTileGrid
+                    ? sourceTileGrid.getTileSize(sourceTileGrid.getMinZoom())
+                    : undefined);
+                this.tileGrids_[code] = tileGrid;
+            }
+            return tileGrid;
+        }
+        /**
+         * Get the tile pixel ratio for this source.
+         * @param {number} pixelRatio Pixel ratio.
+         * @return {number} Tile pixel ratio.
+         */
+        getTilePixelRatio(pixelRatio) {
+            return pixelRatio;
+        }
+        /**
+         * @param {number} z Z.
+         * @param {number} pixelRatio Pixel ratio.
+         * @param {import("../proj/Projection.js").default} projection Projection.
+         * @return {import("../size.js").Size} Tile size.
+         */
+        getTilePixelSize(z, pixelRatio, projection) {
+            const tileGrid = this.getTileGridForProjection(projection);
+            const tileSize = size_js_7.toSize(tileGrid.getTileSize(z), this.tmpSize);
+            return [
+                Math.round(tileSize[0] * pixelRatio),
+                Math.round(tileSize[1] * pixelRatio),
+            ];
+        }
+        /**
+         * Increases the cache size if needed
+         * @param {number} tileCount Minimum number of tiles needed.
+         * @param {import("../proj/Projection.js").default} projection Projection.
+         */
+        updateCacheSize(tileCount, projection) {
+            super.updateCacheSize(tileCount * 2, projection);
+        }
+    }
+    exports.default = VectorTile;
+    /**
+     * Sets the loader for a tile.
+     * @param {import("../VectorTile.js").default} tile Vector tile.
+     * @param {string} url URL.
+     */
+    function defaultLoadFunction(tile, url) {
+        const loader = featureloader_js_2.loadFeaturesXhr(url, tile.getFormat(), tile.onLoad.bind(tile), tile.onError.bind(tile));
+        tile.setLoader(loader);
+    }
+    exports.defaultLoadFunction = defaultLoadFunction;
+});
+define("test/pbfTest", ["require", "exports", "node_modules/ol/src/source/VectorTile", "chai"], function (require, exports, VectorTile_1, chai_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.PbfLab = void 0;
+    class PbfLab {
+        async run() {
+            const response = await fetch('https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer/tile/0/0/0.pbf');
+            const data = await response.arrayBuffer();
+            chai_1.assert.isTrue(!!data);
+            console.log(data);
+            const reader = new VectorTile_1.default({});
+            reader.loading;
+        }
+    }
+    exports.PbfLab = PbfLab;
+});
+define("test/index", ["require", "exports", "node_modules/ol/src/Feature", "node_modules/ol/src/geom", "fun/computeDistanceVector", "chai", "test/pbfTest"], function (require, exports, Feature_1, geom_1, computeDistanceVector_1, chai_2, pbfTest_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     describe("describe", () => {
@@ -24991,8 +29570,12 @@ define("test/index", ["require", "exports", "node_modules/ol/src/Feature", "node
             const f1 = new Feature_1.default(new geom_1.Point([0, 0]));
             const f2 = new Feature_1.default(new geom_1.Point([0, 1]));
             const result = computeDistanceVector_1.computeDistanceVector(f1, f2);
-            chai_1.assert.equal(0, result[0], "x offset");
-            chai_1.assert.equal(-1, result[1], "y offset");
+            chai_2.assert.equal(0, result[0], "x offset");
+            chai_2.assert.equal(-1, result[1], "y offset");
+        });
+        it("pbf", () => {
+            const lab = new pbfTest_1.PbfLab();
+            lab.run();
         });
     });
 });

@@ -6,9 +6,9 @@
     "incremental": true,
     "skipDefaultLibCheck": true,
     "allowJs": true,
-    "target": "es2020", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
-    "module": "amd", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "jsx": "react", /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+    "target": "es2020" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */,
+    "module": "amd" /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
     "jsxFactory": "create",
     "sourceMap": true,
     "inlineSources": true,
@@ -16,30 +16,14 @@
     "outFile": "./built/index.js",
     "strict": false,
     "paths": {
-      "@ol/*": [
-        "./node_modules/ol/src/*"
-      ],
-      "rbush/rbush.js": [
-        "./node_modules/rbush/index.js"
-      ],
-      "quickselect": [
-        "./node_modules/quickselect/index.js"
-      ],
-      "csstype": [
-        "./node_modules/csstype/index.d.ts"
-      ],
-      "pbf": [
-        "assets/pbf.js"
-      ],
-      "ieee754": [
-        "assets/ieee754.js"
-      ],
+      "@ol/*": ["./node_modules/ol/src/*"],
+      "rbush/rbush.js": ["./node_modules/rbush/index.js"],
+      "quickselect": ["./node_modules/quickselect/index.js"],
+      "csstype": ["./node_modules/csstype/index.d.ts"],
+      "pbf": ["assets/pbf.js"],
+      "ieee754": ["assets/ieee754.js"]
     }
   },
-  "files": [
-    "./index.tsx",
-  ],
-  "exclude": [
-    "./built/*"
-  ],
+  "files": ["./index.tsx"],
+  "exclude": ["./built/*"]
 }

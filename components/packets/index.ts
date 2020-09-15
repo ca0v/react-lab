@@ -75,7 +75,7 @@ const packets: Dictionary<IPacket<any>> = {
         type: "geojson",
         url: "./data/holysites.json",
         name: "name",
-        style: () => "Fast",
+        style: () => "EsriAerial",
     },
     "Greenville Parks": {
         type: "agsjson",

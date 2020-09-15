@@ -29,3 +29,5 @@ The current react typings have errors so tsc reports errors. If you fix them don
 - Keep analyics on past performance to predict final scores
 - Update to latest react typings
 - hint for city could give country or continent depending on current extent
+- Write tests to read a PBF file (featureloader exports loadFeaturesXhr will load a pbf file via MVT reader; VectorTile load() will return this function)
+- Possible to convert \*.json to pbf format?

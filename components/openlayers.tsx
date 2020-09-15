@@ -219,7 +219,7 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
                   "https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer/tile/{z}/{y}/{x}.pbf",
               }),
             });
-            map.getLayers().insertAt(0, layer);
+            map.addLayer(layer);
           }
           default: {
             console.log(`unknown layer type: ${layerType}`);
@@ -438,15 +438,16 @@ export class OpenLayers extends Component<OpenLayersProps, OpenLayersState> {
               if (this.props.onFeatureClick) {
                 let features = map.getFeaturesAtPixel(args.pixel);
                 if (!features) return;
-                if (features.length !== 1) return;
-                let feature = features[0];
-                if (feature instanceof Feature) {
-                  this.props.onFeatureClick({
-                    layer: vector,
-                    feature: feature,
-                    coordinate: args.coordinate,
-                  });
-                }
+                if (!features.length) return;
+                features.forEach((feature) => {
+                  if (feature instanceof Feature) {
+                    this.props.onFeatureClick({
+                      layer: vector,
+                      feature: feature,
+                      coordinate: args.coordinate,
+                    });
+                  }
+                });
               }
             });
           }

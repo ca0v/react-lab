@@ -9,6 +9,7 @@ export = {
         (score < 500 && "AerialWithLabels") ||
         (score < 1000 && "EsriAerial") ||
         (score < 2000 && "Aerial") ||
+        (score < 3000 && "Fast") ||
         (score < 4000 && "CanvasDark") ||
         "Black"
 };

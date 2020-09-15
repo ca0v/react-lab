@@ -59042,7 +59042,7 @@ define("components/openlayers", ["require", "exports", "react", "components/inde
                                     url: "https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer/tile/{z}/{y}/{x}.pbf",
                                 }),
                             });
-                            map.getLayers().insertAt(0, layer);
+                            map.addLayer(layer);
                         }
                         default: {
                             console.log(`unknown layer type: ${layerType}`);
@@ -59194,16 +59194,17 @@ define("components/openlayers", ["require", "exports", "react", "components/inde
                                     let features = map.getFeaturesAtPixel(args.pixel);
                                     if (!features)
                                         return;
-                                    if (features.length !== 1)
+                                    if (!features.length)
                                         return;
-                                    let feature = features[0];
-                                    if (feature instanceof Feature_1.default) {
-                                        this.props.onFeatureClick({
-                                            layer: vector,
-                                            feature: feature,
-                                            coordinate: args.coordinate,
-                                        });
-                                    }
+                                    features.forEach((feature) => {
+                                        if (feature instanceof Feature_1.default) {
+                                            this.props.onFeatureClick({
+                                                layer: vector,
+                                                feature: feature,
+                                                coordinate: args.coordinate,
+                                            });
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -60439,6 +60440,7 @@ define("components/packets/usstates_usa", ["require", "exports"], function (requ
         style: (score) => (score < 500 && "AerialWithLabels") ||
             (score < 1000 && "EsriAerial") ||
             (score < 2000 && "Aerial") ||
+            (score < 3000 && "Fast") ||
             (score < 4000 && "CanvasDark") ||
             "Black"
     };
@@ -60916,7 +60918,7 @@ define("components/packets/index", ["require", "exports", "components/packets/co
             type: "geojson",
             url: "./data/holysites.json",
             name: "name",
-            style: () => "Fast",
+            style: () => "EsriAerial",
         },
         "Greenville Parks": {
             type: "agsjson",

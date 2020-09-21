@@ -11,6 +11,11 @@ export class AudioAsset {
         document.body.append(this.audio);
     }
 
+    async playAnyTrack() {
+        const track = Math.round(Math.random() * (this.options.frames.length - 1));
+        return this.playTrack(track);
+    }
+
     async playTrack(index: number) {
         if (0 > index)
             throw "too small";
@@ -19,7 +24,6 @@ export class AudioAsset {
         const duration = this.options.frames[index + 1] - this.options.frames[index];
         return this.playUntil(this.audio, this.options.frames[index], duration);
     }
-
 
     private async playUntil(player: HTMLMediaElement, start: number, duration: number) {
         return new Promise<any>((good, bad) => {

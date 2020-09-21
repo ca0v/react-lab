@@ -66,6 +66,46 @@ define("common/player", ["require", "exports"], function (require, exports) {
     }
     exports.player = new Player();
 });
+define("components/AudioAsset", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.GoodJobAssets = exports.AudioAsset = void 0;
+    class AudioAsset {
+        constructor(options) {
+            this.options = options;
+            this.audio = document.createElement("audio");
+            this.audio.src = options.src;
+            document.body.append(this.audio);
+        }
+        async playAnyTrack() {
+            const track = Math.round(Math.random() * (this.options.frames.length - 1));
+            return this.playTrack(track);
+        }
+        async playTrack(index) {
+            if (0 > index)
+                throw "too small";
+            if (index >= this.options.frames.length)
+                throw "too large";
+            const duration = this.options.frames[index + 1] - this.options.frames[index];
+            return this.playUntil(this.audio, this.options.frames[index], duration);
+        }
+        async playUntil(player, start, duration) {
+            return new Promise((good, bad) => {
+                player.currentTime = start / 1000;
+                player.play();
+                setTimeout(() => {
+                    player.pause();
+                    good();
+                }, duration);
+            });
+        }
+    }
+    exports.AudioAsset = AudioAsset;
+    exports.GoodJobAssets = new AudioAsset({
+        src: "../assets/familygamesoundsofencouragement.mp3",
+        frames: [0, 1.858482, 3.361143, 4.923747, 7.064392, 10.123734, 11.810846, 14.969253, 17.200211, 19.633819, 21.609585, 23.702719, 26.342752].map(i => i * 1000)
+    });
+});
 define("components/index", ["require", "exports", "react"], function (require, exports, react_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -60000,7 +60040,7 @@ define("fun/scaleExtent", ["require", "exports", "node_modules/ol/src/extent"], 
     }
     exports.scaleExtent = scaleExtent;
 });
-define("components/quizlet", ["require", "exports", "common/player", "components/openlayers", "react", "common/common", "common/quizlet-styles", "common/storage", "effects/explode", "effects/kaplunk", "node_modules/ol/src/extent", "node_modules/ol/src/Collection", "fun/computeDistanceHint", "fun/computeDirectionHint", "fun/scaleExtent"], function (require, exports, player_1, openlayers_1, react_4, common_3, quizlet_styles_1, storage_1, explode_1, kaplunk_1, extent_4, Collection_1, computeDistanceHint_1, computeDirectionHint_1, scaleExtent_1) {
+define("components/quizlet", ["require", "exports", "common/player", "components/AudioAsset", "components/openlayers", "react", "common/common", "common/quizlet-styles", "common/storage", "effects/explode", "node_modules/ol/src/extent", "node_modules/ol/src/Collection", "fun/computeDistanceHint", "fun/computeDirectionHint", "fun/scaleExtent"], function (require, exports, player_1, AudioAsset_1, openlayers_1, react_4, common_3, quizlet_styles_1, storage_1, explode_1, extent_4, Collection_1, computeDistanceHint_1, computeDirectionHint_1, scaleExtent_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.QuizletComponent = void 0;
@@ -60016,7 +60056,8 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                     features: new Collection_1.default(),
                     answers: [],
                     score: score,
-                    bingImagerySet: (props.getLayerStyle && props.getLayerStyle(score)) || (score > 1000 ? "Aerial" : "AerialWithLabels")
+                    bingImagerySet: (props.getLayerStyle && props.getLayerStyle(score)) ||
+                        (score > 1000 ? "Aerial" : "AerialWithLabels"),
                 };
             }
             document.addEventListener("keypress", (args) => {
@@ -60034,26 +60075,25 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 let counts = {};
                 let gameStorage = this.getStat();
                 let correct = (v) => v.correct - v.incorrect - v.hint;
-                Object.keys(gameStorage.stats).forEach(k => counts[correct(gameStorage.stats[k])] = true);
-                let values = Object.keys(counts).map(v => parseInt(v)).sort().reverse();
+                Object.keys(gameStorage.stats).forEach((k) => (counts[correct(gameStorage.stats[k])] = true));
+                let values = Object.keys(counts)
+                    .map((v) => parseInt(v))
+                    .sort()
+                    .reverse();
                 let nextAnswers = args.answers;
-                while (values.length && nextAnswers.length > this.props.questionsPerQuiz) {
+                while (values.length &&
+                    nextAnswers.length > this.props.questionsPerQuiz) {
                     args.answers = nextAnswers;
                     let maxCount = values.pop() || 0;
                     console.log(`removing where count >= ${maxCount}`);
-                    nextAnswers = nextAnswers.filter(f => !gameStorage.stats[f] || (correct(gameStorage.stats[f]) < maxCount));
+                    nextAnswers = nextAnswers.filter((f) => !gameStorage.stats[f] || correct(gameStorage.stats[f]) < maxCount);
                 }
                 console.log(args.answers);
             });
-            this.dispatcher.on("correct", (args) => {
+            this.dispatcher.on("correct", async (args) => {
                 let answer = this.state.answer || "";
                 if (!answer)
                     return;
-                var boing = new kaplunk_1.AudioMedia({
-                    source: "data/sound/switch-9.mp3"
-                });
-                boing.play(0);
-                console.log("correct");
                 let score = this.score(20);
                 let gameStorage = this.getStat();
                 if (gameStorage && gameStorage.stats) {
@@ -60066,20 +60106,29 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                     feature.setStyle(quizlet_styles_1.styles.correct(this));
                     this.state.features.remove(feature);
                     this.state.features.push(feature);
-                    let options = ["AerialWithLabels", "Aerial", "CanvasDark", "CanvasLight", "CanvasGray", "Road"];
-                    let bingImagerySet = (props.getLayerStyle && props.getLayerStyle(score)) || (options[Math.floor(this.state.score / 1000) % options.length]);
+                    let options = [
+                        "AerialWithLabels",
+                        "Aerial",
+                        "CanvasDark",
+                        "CanvasLight",
+                        "CanvasGray",
+                        "Road",
+                    ];
+                    let bingImagerySet = (props.getLayerStyle && props.getLayerStyle(score)) ||
+                        options[Math.floor(this.state.score / 1000) % options.length];
                     this.setState(() => ({
-                        bingImagerySet: bingImagerySet
+                        bingImagerySet: bingImagerySet,
                     }));
                     if (!this.next()) {
+                        await AudioAsset_1.GoodJobAssets.playAnyTrack();
                         setTimeout(() => {
                             this.setState(() => ({
                                 mapTrigger: {
                                     message: "extent",
                                     args: {
-                                        extent: scaleExtent_1.scaleExtent(this.props.source.getExtent())
-                                    }
-                                }
+                                        extent: scaleExtent_1.scaleExtent(this.props.source.getExtent()),
+                                    },
+                                },
                             }));
                             this.init();
                         }, 1000);
@@ -60097,7 +60146,9 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 // }).play(0);
                 const distanceHint = computeDistanceHint_1.computeDistanceHint(this.find(), args.feature);
                 const directionHint = computeDirectionHint_1.computeDirectionHint(this.find(), args.feature);
-                this.dispatcher.trigger("play", { en: `That is ${this.getFeatureName(args.feature)}, you are looking for ${answer} which is ${distanceHint} away.  Look ${directionHint}.` });
+                this.dispatcher.trigger("play", {
+                    en: `That is ${this.getFeatureName(args.feature)}, you are looking for ${answer} which is ${distanceHint} away.  Look ${directionHint}.`,
+                });
                 let gameStorage = this.getStat();
                 gameStorage.stats[answer].incorrect++;
                 gameStorage.score = this.state.score;
@@ -60125,29 +60176,28 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                     return;
                 this.score(-5);
                 let center = extent_4.getCenter(feature.getGeometry().getExtent());
-                this.setState(prev => ({
+                this.setState((prev) => ({
                     hint: (prev.hint || 0) + 1,
                     mapTrigger: {
                         message: "extent",
                         args: {
-                            extent: scaleExtent_1.scaleExtent(this.props.source.getExtent(), 1 / ((prev.hint || 0) + 3), center)
-                        }
-                    }
+                            extent: scaleExtent_1.scaleExtent(this.props.source.getExtent(), 1 / ((prev.hint || 0) + 3), center),
+                        },
+                    },
                 }));
             });
             this.dispatcher.on("reload", () => location.reload());
-            this.dispatcher.on("play", args => player_1.player.play(args));
-            this.dispatcher.on("update", () => {
-            });
+            this.dispatcher.on("play", (args) => player_1.player.play(args));
+            this.dispatcher.on("update", () => { });
         }
         getStat() {
             let answer = this.state.answer || "";
             let key = this.props.quizletName || "";
-            return storage_1.storage.update(key, data => {
-                let stat = data.stats[answer] = (data.stats[answer] || {
+            return storage_1.storage.update(key, (data) => {
+                let stat = (data.stats[answer] = data.stats[answer] || {
                     correct: 0,
                     incorrect: 0,
-                    hint: 0
+                    hint: 0,
                 });
                 return data;
             });
@@ -60165,39 +60215,38 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 return;
             const extent = feature.getGeometry().getExtent();
             const panToExtent = scaleExtent_1.scaleExtent(extent, 8);
-            this.setState(prev => ({
+            this.setState((prev) => ({
                 mapTrigger: {
                     message: "ensure-extent-visible",
                     args: {
-                        extent: extent
-                    }
-                }
+                        extent: extent,
+                    },
+                },
             }));
         }
-        componentDidMount() {
-        }
+        componentDidMount() { }
         render() {
-            return react_4.createElement("div", { className: "quizlet" },
+            return (react_4.createElement("div", { className: "quizlet" },
                 react_4.createElement(openlayers_1.OpenLayers, { trigger: this.state.mapTrigger, allowKeyboard: true, orientation: "full", center: this.state.center, zoom: this.state.zoom, controls: {
                         mousePosition: true,
                     }, bingImagerySet: this.state.bingImagerySet, layers: {
-                        source: [this.props.source]
+                        source: [this.props.source],
                     }, setCenter: (center, zoom) => {
                         this.setState(() => ({
                             center: center,
-                            zoom: zoom
+                            zoom: zoom,
                         }));
                     }, onLayerAdd: (args) => {
                         let source = args.layer.getSource();
                         source.once("addfeature", common_3.debounce(() => {
                             let extent = source.getExtent();
-                            this.setState(prev => ({
+                            this.setState((prev) => ({
                                 mapTrigger: {
                                     message: "extent",
                                     args: {
-                                        extent: scaleExtent_1.scaleExtent(extent)
-                                    }
-                                }
+                                        extent: scaleExtent_1.scaleExtent(extent),
+                                    },
+                                },
                             }));
                             this.init();
                         }, 500));
@@ -60214,7 +60263,7 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                         }
                     } },
                     react_4.createElement(openlayers_1.OpenLayers, { className: "inset", osm: false, center: this.state.center, zoom: Math.max(0, this.state.zoom - 5), allowZoom: true, allowPan: true, orientation: "landscape", onClick: (args) => {
-                            this.setState(prev => ({
+                            this.setState((prev) => ({
                                 center: args.coordinate,
                                 zoom: Math.max(prev.zoom, 5 + args.map.getView().getZoom()),
                             }));
@@ -60225,15 +60274,15 @@ define("components/quizlet", ["require", "exports", "common/player", "components
                 react_4.createElement("div", { className: "score" },
                     "Find",
                     react_4.createElement("label", null, this.state.answer)),
-                !!this.state.answers.length && react_4.createElement("div", { className: "score" },
+                !!this.state.answers.length && (react_4.createElement("div", { className: "score" },
                     "Remaining",
-                    react_4.createElement("label", null, (1 + this.state.answers.length) || "?")),
+                    react_4.createElement("label", null, 1 + this.state.answers.length || "?"))),
                 react_4.createElement("br", null),
                 " ",
                 react_4.createElement("div", { className: "score" },
                     react_4.createElement("button", { onClick: () => this.dispatcher.trigger("skip") }, "Skip"),
                     react_4.createElement("button", { onClick: () => this.dispatcher.trigger("hint") }, "Hint"),
-                    react_4.createElement("button", { onClick: () => this.dispatcher.trigger("reload") }, "\uD83D\uDDD9")));
+                    react_4.createElement("button", { onClick: () => this.dispatcher.trigger("reload") }, "\uD83D\uDDD9"))));
         }
         skip() {
             if (!this.state.answer)
@@ -60244,14 +60293,14 @@ define("components/quizlet", ["require", "exports", "common/player", "components
             this.next();
         }
         score(value) {
-            this.setState(prev => ({
-                score: prev.score + value
+            this.setState((prev) => ({
+                score: prev.score + value,
             }));
             return this.state.score;
         }
         generate(features) {
             let fieldName = this.props.featureNameFieldName;
-            let answers = features.map(f => f.get(fieldName));
+            let answers = features.map((f) => f.get(fieldName));
             {
                 let byref = { answers: answers };
                 this.dispatcher.trigger("adjust-answers", byref);
@@ -60266,11 +60315,11 @@ define("components/quizlet", ["require", "exports", "common/player", "components
         init() {
             let source = this.props.source;
             let features = source.getFeatures();
-            features.forEach(f => f.setStyle(quizlet_styles_1.styles.indeterminate(this)));
+            features.forEach((f) => f.setStyle(quizlet_styles_1.styles.indeterminate(this)));
             let answers = this.generate(features);
             let answer = answers.pop();
             this.state.features.clear();
-            this.setState(prev => ({
+            this.setState((prev) => ({
                 answer: answer,
                 answers: answers,
             }));
@@ -60284,20 +60333,20 @@ define("components/quizlet", ["require", "exports", "common/player", "components
             return feature.get(this.props.featureNameFieldName);
         }
         zoomToFeature(feature, grow = 2) {
-            this.setState(prev => ({
+            this.setState((prev) => ({
                 mapTrigger: {
                     message: "extent",
                     args: {
-                        extent: scaleExtent_1.scaleExtent(feature.getGeometry().getExtent(), grow)
-                    }
-                }
+                        extent: scaleExtent_1.scaleExtent(feature.getGeometry().getExtent(), grow),
+                    },
+                },
             }));
         }
         next() {
             let answers = this.state.answers;
             if (!answers.length)
                 return false;
-            this.setState(prev => ({
+            this.setState((prev) => ({
                 answer: answers.pop(),
                 hint: 0,
             }));
@@ -60308,7 +60357,10 @@ define("components/quizlet", ["require", "exports", "common/player", "components
             if (!source)
                 return;
             let exclude = this.state.features.getArray();
-            let features = source.getFeatures().filter(f => f.get(this.props.featureNameFieldName) === this.state.answer && -1 === exclude.indexOf(f));
+            let features = source
+                .getFeatures()
+                .filter((f) => f.get(this.props.featureNameFieldName) === this.state.answer &&
+                -1 === exclude.indexOf(f));
             if (features && features.length >= 1) {
                 let feature = features[0];
                 return feature;

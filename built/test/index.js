@@ -29562,9 +29562,76 @@ define("test/pbfTest", ["require", "exports", "node_modules/ol/src/source/Vector
     }
     exports.PbfLab = PbfLab;
 });
-define("test/index", ["require", "exports", "node_modules/ol/src/Feature", "node_modules/ol/src/geom", "fun/computeDistanceVector", "chai", "test/pbfTest"], function (require, exports, Feature_1, geom_1, computeDistanceVector_1, chai_2, pbfTest_1) {
+define("components/AudioAsset", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.GoodJobAssets = exports.AudioAsset = void 0;
+    class AudioAsset {
+        constructor(options) {
+            this.options = options;
+            this.audio = document.createElement("audio");
+            this.audio.src = options.src;
+            document.body.append(this.audio);
+        }
+        async playTrack(index) {
+            if (0 > index)
+                throw "too small";
+            if (index >= this.options.frames.length)
+                throw "too large";
+            const duration = this.options.frames[index + 1] - this.options.frames[index];
+            return this.playUntil(this.audio, this.options.frames[index], duration);
+        }
+        async playUntil(player, start, duration) {
+            return new Promise((good, bad) => {
+                player.currentTime = start / 1000;
+                player.play();
+                setTimeout(() => {
+                    player.pause();
+                    good();
+                }, duration);
+            });
+        }
+    }
+    exports.AudioAsset = AudioAsset;
+    exports.GoodJobAssets = new AudioAsset({
+        src: "../assets/familygamesoundsofencouragement.mp3",
+        frames: [0, 1.858482, 3.361143, 4.923747, 7.064392, 10.123734, 11.810846, 14.969253, 17.200211, 19.633819, 21.609585, 23.702719, 26.342752].map(i => i * 1000)
+    });
+});
+define("test/index", ["require", "exports", "node_modules/ol/src/Feature", "node_modules/ol/src/geom", "fun/computeDistanceVector", "chai", "test/pbfTest", "components/AudioAsset"], function (require, exports, Feature_1, geom_1, computeDistanceVector_1, chai_2, pbfTest_1, AudioAsset_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.slowloop = void 0;
+    async function slowloop(functions, interval = 1000, cycles = 1, progress) {
+        let index = 0;
+        let cycle = 0;
+        const results = [];
+        return new Promise((good, bad) => {
+            if (!functions || 0 >= cycles) {
+                good();
+            }
+            const h = setInterval(() => {
+                if (index === functions.length) {
+                    index = 0;
+                    if (++cycle === cycles) {
+                        good(results);
+                        clearInterval(h);
+                        return;
+                    }
+                }
+                try {
+                    progress && progress({ index, cycle });
+                    results[index] = functions[index]();
+                    index++;
+                }
+                catch (ex) {
+                    clearInterval(h);
+                    bad(ex);
+                }
+            }, interval);
+        });
+    }
+    exports.slowloop = slowloop;
     describe("describe", () => {
         it("computeDistanceVector", () => {
             const f1 = new Feature_1.default(new geom_1.Point([0, 0]));
@@ -29577,6 +29644,42 @@ define("test/index", ["require", "exports", "node_modules/ol/src/Feature", "node
             const lab = new pbfTest_1.PbfLab();
             lab.run();
         });
+        it("audio splits recorder", async () => {
+            // open mp3 file in assets
+            const audio = document.createElement("audio");
+            audio.src = "../assets/familygamesoundsofencouragement.mp3";
+            document.body.append(audio);
+            await audio.play();
+            audio.playbackRate = 0.5;
+            const keyframes = [];
+            window.addEventListener("keydown", (e) => {
+                switch (e.code) {
+                    case "Space":
+                        audio.paused ? audio.play() :
+                            audio.pause();
+                }
+                keyframes.push(audio.currentTime);
+                console.log(keyframes);
+            });
+            return;
+            const indexes = [1.641965, 3.24797, 5.02473, 7.161817];
+            slowloop(indexes.map(v => () => {
+                audio.fastSeek(v);
+                audio.play();
+            }, 2000));
+        });
+        it("audio splits playback", async () => {
+            const keystates = [0, 1.858482, 3.361143, 4.923747, 7.064392, 10.123734, 11.810846, 14.969253, 17.200211, 19.633819, 21.609585, 23.702719, 26.342752].map(i => i * 1000);
+            const asset = new AudioAsset_1.AudioAsset({
+                src: "../assets/familygamesoundsofencouragement.mp3",
+                frames: keystates
+            });
+            // open mp3 file in assets
+            await asset.playTrack(3);
+            await asset.playTrack(2);
+            await asset.playTrack(0);
+            await asset.playTrack(1);
+        }).timeout(10000);
     });
 });
 //# sourceMappingURL=index.js.map

@@ -1,3 +1,5 @@
+declare var requirejs: any;
+
 import Feature from "@ol/Feature";
 import { Point } from "@ol/geom";
 import { computeDistanceVector } from "../fun/computeDistanceVector";
@@ -85,7 +87,7 @@ describe("describe", () => {
   it("audio splits playback", async () => {
     const keystates = [0, 1.858482, 3.361143, 4.923747, 7.064392, 10.123734, 11.810846, 14.969253, 17.200211, 19.633819, 21.609585, 23.702719, 26.342752].map(i => i * 1000);
     const asset = new AudioAsset({
-      src: "../assets/familygamesoundsofencouragement.mp3"
+      src: requirejs.toUrl("../assets/familygamesoundsofencouragement.mp3")
       , frames: keystates
     });
 

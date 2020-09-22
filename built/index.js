@@ -103,7 +103,7 @@ define("components/AudioAsset", ["require", "exports"], function (require, expor
     exports.AudioAsset = AudioAsset;
     exports.GoodJobAssets = new AudioAsset({
         src: "../assets/familygamesoundsofencouragement.mp3",
-        frames: [0, 1.858482, 3.361143, 4.923747, 7.064392, 10.123734, 11.810846, 14.969253, 17.200211, 19.633819, 21.609585, 23.702719, 26.342752].map(i => i * 1000)
+        frames: [0, 2012, 3319, 4921, 7107, 10144, 11799, 15021, 17252, 18444, 19551, 21608, 23723, 26287, 28688, 31163, 34389, 36482, 38591, 43942, 45785, 48108, 52396, 54328, 56022, 57790, 59723, 61999, 64229, 66143, 68007, 70143, 71683, 73280, 75741, 79327, 81563, 84675, 86912, 88806, 91523, 94121, 96239, 98456, 100728, 103843]
     });
 });
 define("components/index", ["require", "exports", "react"], function (require, exports, react_1) {
